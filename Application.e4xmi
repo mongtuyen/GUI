@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_c3AF0MjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.application" bindingContexts="_c3AF2cjYEeSyMNYR5xypkQ">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_c3AF0cjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.window.main" label="Manage Student" width="700" height="600">
+    <children xsi:type="advanced:PerspectiveStack" xmi:id="_5aHtAKMBEemiCpJzHNb5Ww" elementId="rcptest.perspectivestack.0">
+      <children xsi:type="advanced:Perspective" xmi:id="_696bAKMBEemiCpJzHNb5Ww" elementId="rcptest.perspective.0">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_960RAKMBEemiCpJzHNb5Ww" elementId="" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_W7A_EKMCEemiCpJzHNb5Ww" elementId="rcptest.partstack.1">
+            <children xsi:type="basic:Part" xmi:id="_maB1UKMDEemiCpJzHNb5Ww" elementId="" contributionURI="bundleclass://RCPTest/com.rcp.ListClass" label="Class"/>
+          </children>
+          <children xsi:type="basic:PartStack" xmi:id="_7uE7UKO_EemwMvP8GlQWjg" elementId="rcptest.partstack.2">
+            <children xsi:type="basic:Part" xmi:id="_8w0KsKO_EemwMvP8GlQWjg" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/com.rcp.ListStudent" label="Student"/>
+          </children>
+        </children>
+      </children>
+    </children>
+    <mainMenu xmi:id="_BMYsQKL-EemiCpJzHNb5Ww" elementId="main.menu" mnemonics="">
+      <children xsi:type="menu:Menu" xmi:id="_GqG5MKL-EemiCpJzHNb5Ww" elementId="" label="File">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_SCtJIKL-EemiCpJzHNb5Ww" elementId="" label="Exit" command="_fXRocKL8EemiCpJzHNb5Ww"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_hdy-IKL-EemiCpJzHNb5Ww" elementId="" label="Import" command="_noTDcKL8EemiCpJzHNb5Ww"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_bkYx4K4OEemZyugBggKJpQ" elementId="rcptest.handledmenuitem.export" label="Export" command="_Bbt_4K4OEemZyugBggKJpQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_49UjoKL-EemiCpJzHNb5Ww" elementId="" label="Save" iconURI="" command="_r64S8KL8EemiCpJzHNb5Ww"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_powX8KL_EemiCpJzHNb5Ww" elementId="" label="About" command="_vtpZ8KL8EemiCpJzHNb5Ww"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_eexBMKL-EemiCpJzHNb5Ww" elementId="" label="Help"/>
+    </mainMenu>
+  </children>
+  <handlers xmi:id="_jgymEKL9EemiCpJzHNb5Ww" elementId="handler.exit" contributionURI="bundleclass://RCPTest/com.rcp.QuitHandler" command="_fXRocKL8EemiCpJzHNb5Ww"/>
+  <handlers xmi:id="_yjE5gKL9EemiCpJzHNb5Ww" elementId="open" contributionURI="bundleclass://RCPTest/com.rcp.OpenHandler" command="_noTDcKL8EemiCpJzHNb5Ww"/>
+  <handlers xmi:id="_10ihYK4NEemZyugBggKJpQ" elementId="export" contributionURI="bundleclass://RCPTest/com.rcp.ExportHandler" command="_Bbt_4K4OEemZyugBggKJpQ"/>
+  <handlers xmi:id="_1nTfgKL9EemiCpJzHNb5Ww" elementId="save" contributionURI="bundleclass://RCPTest/com.rcp.SaveHandler" command="_r64S8KL8EemiCpJzHNb5Ww"/>
+  <handlers xmi:id="_60sxcKL9EemiCpJzHNb5Ww" elementId="about" contributionURI="bundleclass://RCPTest/com.rcp.AboutHandler" command="_vtpZ8KL8EemiCpJzHNb5Ww"/>
+  <rootContext xmi:id="_c3AF2cjYEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
+    <children xmi:id="_c3AF2sjYEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
+    <children xmi:id="_c3AF28jYEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
+  </rootContext>
+  <descriptors xmi:id="_nS7kYKSREemfb4bJL3ttwg" elementId="rcptest.partdescriptor.ygyuhgyg" label="ygyuhgyg" contributionURI="bundleclass://RCPTest/com.rcp.AddStudent"/>
+  <commands xmi:id="_fXRocKL8EemiCpJzHNb5Ww" elementId="exit" commandName="exitCommand"/>
+  <commands xmi:id="_noTDcKL8EemiCpJzHNb5Ww" elementId="open" commandName="openCommand"/>
+  <commands xmi:id="_Bbt_4K4OEemZyugBggKJpQ" elementId="rcptest.command.exportcommand" commandName="exportCommand"/>
+  <commands xmi:id="_r64S8KL8EemiCpJzHNb5Ww" elementId="save" commandName="saveCommand"/>
+  <commands xmi:id="_vtpZ8KL8EemiCpJzHNb5Ww" elementId="about" commandName="aboutCommand"/>
+  <addons xmi:id="_c3AF0sjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
+  <addons xmi:id="_c3AF08jYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
+  <addons xmi:id="_c3AF1MjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
+  <addons xmi:id="_c3AF1cjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.workbench.commands.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.CommandProcessingAddon"/>
+  <addons xmi:id="_c3AF1sjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.workbench.handler.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.HandlerProcessingAddon"/>
+  <addons xmi:id="_c3AF18jYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.workbench.contexts.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.ContextProcessingAddon"/>
+  <addons xmi:id="_c3AF2MjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.workbench.bindings.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.swt/org.eclipse.e4.ui.workbench.swt.util.BindingProcessingAddon"/>
+</application:Application>

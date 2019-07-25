@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<StudentDefinitions xmls="uri://testXML/tuyen">
+ <class operator="create">
+  <id>1</id>
+  <name>class mot</name>
+ </class>
+ <class operator="create">
+  <id>2</id>
+  <name>class 2</name>
+ </class>
+ <class operator="create">
+  <id>3</id>
+  <name>class 22</name>
+ </class>
+ <class operator="create">
+  <id>126</id>
+  <name>class 44</name>
+ </class>
+ <class operator="create">
+  <id>234</id>
+  <name>class 555555</name>
+ </class>
+ <student operator="create">
+  <id>1</id>
+  <name>Mot</name>
+  <age>22</age>
+  <point>9.8</point>
+  <class>1</class>
+ </student>
+ <student operator="create">
+  <id>2</id>
+  <name>Hai edit</name>
+  <age>20</age>
+  <point>9.8</point>
+  <class>2</class>
+ </student>
+</StudentDefinitions>
