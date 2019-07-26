@@ -2,13 +2,9 @@ package com.rcp;
 
 import java.io.IOException;
 import java.text.Collator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
-
 import javax.annotation.PostConstruct;
-
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -24,10 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-
-import com.tuyen.model.Clazz;
 import com.tuyen.model.Student;
-
 import connect.ServerConnector;
 
 public class ListStudent {
@@ -50,17 +43,19 @@ public class ListStudent {
 		table.setLayoutData(gd_table);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		String[] titles = { "ID", "Name", "Age", "Point", "Class" };
+		String[] titles = { "ID", "Code", "Name", "Age", "Email","Address"};
+		final TableColumn column0 = new TableColumn(table, SWT.NONE);
+		column0.setText("ID");
 		final TableColumn column1 = new TableColumn(table, SWT.NONE);
-		column1.setText("ID");
+		column1.setText("Code");
 		final TableColumn column2 = new TableColumn(table, SWT.NONE);
 		column2.setText("Name");
 		final TableColumn column3 = new TableColumn(table, SWT.NONE);
 		column3.setText("Age");
 		final TableColumn column4 = new TableColumn(table, SWT.NONE);
-		column4.setText("Point");
+		column4.setText("Email");
 		final TableColumn column5 = new TableColumn(table, SWT.NONE);
-		column5.setText("Class");
+		column5.setText("Address");
 //		for (int i = 0; i < titles.length; i++) {
 //			TableColumn column = new TableColumn(table, SWT.NULL);
 //			column.setText(titles[i]);
@@ -69,7 +64,7 @@ public class ListStudent {
 			table.getColumn(i).pack();
 		}
 		// Sort id
-		column1.addListener(SWT.Selection, new Listener() {
+		column0.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
 				TableItem[] items = table.getItems();
 				for (int i = 1; i < items.length; i++) {
@@ -78,7 +73,7 @@ public class ListStudent {
 						int value2 = Integer.parseInt(items[j].getText(0));
 						if (value1 < value2) {
 							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2),
-									items[i].getText(3), items[i].getText(4) };
+									items[i].getText(3), items[i].getText(4), items[i].getText(5)};
 							items[i].dispose();
 							TableItem item = new TableItem(table, SWT.NONE, j);
 							item.setText(values);
@@ -89,20 +84,42 @@ public class ListStudent {
 				}
 			}
 		});
-		table.setSortColumn(column1);
+		table.setSortColumn(column0);
 		table.setSortDirection(SWT.UP);
+		// Sort name
+				column1.addListener(SWT.Selection, new Listener() {
+					public void handleEvent(Event e) {
+						TableItem[] items = table.getItems();
+						Collator collator = Collator.getInstance(Locale.getDefault());
+						for (int i = 1; i < items.length; i++) {
+							String value1 = items[i].getText(1);
+							for (int j = 0; j < i; j++) {
+								String value2 = items[j].getText(1);
+								if (collator.compare(value1, value2) < 0) {
+									String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2),
+											items[i].getText(3), items[i].getText(4), items[i].getText(5) };
+									items[i].dispose();
+									TableItem item = new TableItem(table, SWT.NONE, j);
+									item.setText(values);
+									items = table.getItems();
+									break;
+								}
+							}
+						}
+					}
+				});
 		// Sort name
 		column2.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
 				TableItem[] items = table.getItems();
 				Collator collator = Collator.getInstance(Locale.getDefault());
 				for (int i = 1; i < items.length; i++) {
-					String value1 = items[i].getText(1);
+					String value1 = items[i].getText(2);
 					for (int j = 0; j < i; j++) {
-						String value2 = items[j].getText(1);
+						String value2 = items[j].getText(2);
 						if (collator.compare(value1, value2) < 0) {
 							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2),
-									items[i].getText(3), items[i].getText(4) };
+									items[i].getText(3), items[i].getText(4), items[i].getText(5) };
 							items[i].dispose();
 							TableItem item = new TableItem(table, SWT.NONE, j);
 							item.setText(values);
@@ -119,33 +136,12 @@ public class ListStudent {
 			public void handleEvent(Event e) {
 				TableItem[] items = table.getItems();
 				for (int i = 1; i < items.length; i++) {
-					int value1 = Integer.parseInt(items[i].getText(2));
+					int value1 = Integer.parseInt(items[i].getText(3));
 					for (int j = 0; j < i; j++) {
-						int value2 = Integer.parseInt(items[j].getText(2));
+						int value2 = Integer.parseInt(items[j].getText(3));
 						if (value1 < value2) {
 							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2),
-									items[i].getText(3), items[i].getText(4) };
-							items[i].dispose();
-							TableItem item = new TableItem(table, SWT.NONE, j);
-							item.setText(values);
-							items = table.getItems();
-							break;
-						}
-					}
-				}
-			}
-		});
-		// sort point
-		column4.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				TableItem[] items = table.getItems();
-				for (int i = 1; i < items.length; i++) {
-					float value1 = Float.parseFloat(items[i].getText(3));
-					for (int j = 0; j < i; j++) {
-						float value2 = Float.parseFloat(items[j].getText(3));
-						if (value1 < value2) {
-							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2),
-									items[i].getText(3), items[i].getText(4) };
+									items[i].getText(3), items[i].getText(4), items[i].getText(5)};
 							items[i].dispose();
 							TableItem item = new TableItem(table, SWT.NONE, j);
 							item.setText(values);
@@ -215,9 +211,11 @@ public class ListStudent {
 		for (int i = 0; i < l.size(); i++) {
 			TableItem item = new TableItem(table, SWT.NULL);
 			item.setText(0, String.valueOf(l.get(i).getId()));
-			item.setText(1, l.get(i).getName());
-			item.setText(2, String.valueOf(l.get(i).getAge()));
-			item.setText(3, String.valueOf(l.get(i).getPoint()));
+			item.setText(1, l.get(i).getCode());
+			item.setText(2, l.get(i).getName());
+			item.setText(3, String.valueOf(l.get(i).getAge()));
+			item.setText(4, String.valueOf(l.get(i).getEmail()));
+			item.setText(5, String.valueOf(l.get(i).getAddress()));
 
 //			Set<Clazz> classes=l.get(i).getClasses();
 //			String str=",";

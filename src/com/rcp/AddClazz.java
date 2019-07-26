@@ -28,9 +28,11 @@ public class AddClazz {
 //		lbID.setText("ID:");
 //		Text txtID = new Text(shell, SWT.BORDER);
 //		txtID.setLayoutData(data);
+		Label label0 = new Label(shell, SWT.NONE);
+		label0.setText("Class code:");
 		
 		Label label = new Label(shell, SWT.NONE);
-		label.setText("Name Class:");
+		label.setText("Name class:");
 		Text txtClass = new Text(shell, SWT.BORDER);
 		txtClass.setLayoutData(data);
 

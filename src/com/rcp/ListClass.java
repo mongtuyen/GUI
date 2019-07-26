@@ -38,6 +38,7 @@ public class ListClass {
 	private static Table table;
 	static int sum;
 	static Label labelClassSum;
+	
 
 	@PostConstruct
 	public void createComposite(Composite parent) throws IOException {
@@ -53,7 +54,7 @@ public class ListClass {
 
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		String[] titles = { "ID", "Name" };
+		String[] titles = { "ID", "Code", "Name" };
 
 //		for (int i = 0; i < titles.length; i++) {
 //			TableColumn column = new TableColumn(table, SWT.BORDER);
@@ -61,13 +62,15 @@ public class ListClass {
 //			column.setWidth(600);
 //		}
 
+		final TableColumn column0 = new TableColumn(table, SWT.NONE);
+		column0.setText("ID");
 		final TableColumn column1 = new TableColumn(table, SWT.NONE);
-		column1.setText("ID");
+		column1.setText("Code");
 		final TableColumn column2 = new TableColumn(table, SWT.NONE);
 		column2.setText("Name");
 
 		// sort id
-		column1.addListener(SWT.Selection, new Listener() {
+		column0.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
 				TableItem[] items = table.getItems();
 				for (int i = 1; i < items.length; i++) {
@@ -75,7 +78,7 @@ public class ListClass {
 					for (int j = 0; j < i; j++) {
 						int value2 = Integer.parseInt(items[j].getText(0));
 						if (value1 < value2) {
-							String[] values = { items[i].getText(0), items[i].getText(1) };
+							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2)};
 							items[i].dispose();
 							TableItem item = new TableItem(table, SWT.NONE, j);
 							item.setText(values);
@@ -86,6 +89,28 @@ public class ListClass {
 				}
 			}
 		});
+		// sort code
+				column1.addListener(SWT.Selection, new Listener() {
+					public void handleEvent(Event e) {
+						// sort column 2
+						TableItem[] items = table.getItems();
+						Collator collator = Collator.getInstance(Locale.getDefault());
+						for (int i = 1; i < items.length; i++) {
+							String value1 = items[i].getText(1);
+							for (int j = 0; j < i; j++) {
+								String value2 = items[j].getText(1);
+								if (collator.compare(value1, value2) < 0) {
+									String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2) };
+									items[i].dispose();
+									TableItem item = new TableItem(table, SWT.NONE, j);
+									item.setText(values);
+									items = table.getItems();
+									break;
+								}
+							}
+						}
+					}
+				});
 		// sort name
 		column2.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
@@ -93,11 +118,11 @@ public class ListClass {
 				TableItem[] items = table.getItems();
 				Collator collator = Collator.getInstance(Locale.getDefault());
 				for (int i = 1; i < items.length; i++) {
-					String value1 = items[i].getText(1);
+					String value1 = items[i].getText(2);
 					for (int j = 0; j < i; j++) {
-						String value2 = items[j].getText(1);
+						String value2 = items[j].getText(2);
 						if (collator.compare(value1, value2) < 0) {
-							String[] values = { items[i].getText(0), items[i].getText(1) };
+							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2)};
 							items[i].dispose();
 							TableItem item = new TableItem(table, SWT.NONE, j);
 							item.setText(values);
@@ -109,7 +134,7 @@ public class ListClass {
 			}
 		});
 
-		table.setSortColumn(column1);
+		table.setSortColumn(column0);
 		table.setSortDirection(SWT.UP);
 
 		for (int i = 0; i < titles.length; i++) {
@@ -126,9 +151,11 @@ public class ListClass {
 
 			@Override
 			public void handleEvent(Event arg0) {
-				AddClazz addShell = new AddClazz();
-				addShell.openShell(Display.getCurrent());
-				// List<Clazz> l = ServerConnector.getInstance().getClassService().findAll();
+				Shell shell = null;
+				CreateClass a=new CreateClass(shell);
+//				AddClazz addShell = new AddClazz();
+//				addShell.openShell(Display.getCurrent());
+//				// List<Clazz> l = ServerConnector.getInstance().getClassService().findAll();
 				// updateClazzTable(l);
 			}
 		});
@@ -179,7 +206,8 @@ public class ListClass {
 		for (int i = 0; i < list.size(); i++) {
 			TableItem item = new TableItem(table, SWT.BORDER);
 			item.setText(0, String.valueOf(list.get(i).getId()));
-			item.setText(1, list.get(i).getName());
+			item.setText(2, list.get(i).getName());
+			item.setText(1,list.get(i).getCode());
 		}
 		for (int j = 0; j < table.getColumnCount(); j++) {
 			table.getColumn(j).pack();

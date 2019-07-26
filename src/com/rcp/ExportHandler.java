@@ -78,6 +78,10 @@ public class ExportHandler {
 				studentId.appendChild(document.createTextNode(String.valueOf(lt.get(i).getId())));
 				student.appendChild(studentId);
 				
+				Element studentCode = document.createElement("code");
+				studentCode.appendChild(document.createTextNode(lt.get(i).getCode()));
+				student.appendChild(studentCode);
+				
 				Element studentName = document.createElement("name");
 				studentName.appendChild(document.createTextNode(lt.get(i).getName()));
 				student.appendChild(studentName);
@@ -86,9 +90,13 @@ public class ExportHandler {
 				studentAge.appendChild(document.createTextNode(String.valueOf(lt.get(i).getAge())));
 				student.appendChild(studentAge);
 
-				Element studentPoint = document.createElement("point");
-				studentPoint.appendChild(document.createTextNode(Float.toString(lt.get(i).getPoint())));
-				student.appendChild(studentPoint);
+				Element studentEmail = document.createElement("email");
+				studentEmail.appendChild(document.createTextNode(lt.get(i).getEmail()));
+				student.appendChild(studentEmail);
+				
+				Element studentAddress = document.createElement("address");
+				studentAddress.appendChild(document.createTextNode(lt.get(i).getAddress()));
+				student.appendChild(studentAddress);
 
 				Element studentClazz = document.createElement("class");
 				studentClazz.appendChild(document.createTextNode(String.valueOf(lt.get(i).getClasses())));

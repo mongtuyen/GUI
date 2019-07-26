@@ -4,7 +4,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -12,6 +19,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
@@ -23,7 +31,9 @@ import com.tuyen.model.Student;
 import connect.ServerConnector;
 
 public class AddStudent {
-
+	final static Logger logger = Logger.getLogger(AddStudent.class);
+	
+	 static Button checkButton;
 	public void openShell(Display display) {
 		GridData data = new GridData(SWT.NONE, SWT.NONE, true, true);
 		data.widthHint = 350;
@@ -57,31 +67,62 @@ public class AddStudent {
 		Label label4 = new Label(shell, SWT.NONE);
 		label4.setText("Class");
 		List<Clazz> l = ServerConnector.getInstance().getClassService().findAll();
-		
-		Table table = new Table(shell, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL
-    	        | SWT.H_SCROLL);
-		for (int i = 0; i < l.size(); i++) {
-    	      TableItem item = new TableItem(table, SWT.NONE);
-    	      item.setText(l.get(i).getName().toString());
-    	    }
-    	    table.setSize(100, 100);
-    	    table.addListener(SWT.Selection, new Listener() {
-    	      public void handleEvent(Event event) {
-    	    	  TableItem[] indices = table.getSelection();
-    	    	  
-    	    	  System.out.println( indices);
-    	    	  System.out.println("Selected items:");
-    	            for (int i=0; i<indices.length; i++) {
-    	               System.out.println(indices.toString());  
-    	            }
-//    	        String string = event.detail == SWT.CHECK ? "Checked"
-//    	            : "Selected";
-//    	        System.out.println(event.item + " " + string);
-    	      }
-    	    });
-		//table.setLayout(data);
-		
-		
+		//check class
+		System.out.print("LENTH"+l.size());
+		Group buttonGroup = new Group(shell, SWT.NONE);
+	      GridLayout gridLayout = new GridLayout();
+	      gridLayout.numColumns = 1;
+	      buttonGroup.setLayout(gridLayout);
+	      buttonGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	      final String str="";
+	      Set<Clazz> set; 
+	      SelectionListener selectionListener = new SelectionAdapter () {
+	          int classID;
+	          public void widgetSelected(SelectionEvent event) {
+	           Button button = ((Button) event.widget);
+	           String className= button.getText();
+	            //System.out.print(button.getText());
+	            if(button.getSelection()) {
+				for (int i = 0; i < l.size(); i++) {
+					if (l.get(i).getName().equals(className)) {
+						classID = l.get(i).getId();
+						logger.info("ID selected"+classID);
+						Clazz clazz = ServerConnector.getInstance().getClassService().findById(classID);
+						Set<Clazz> set=new HashSet<Clazz>();
+					}
+				//	comboClass.add(l.get(i).getName().toString());
+
+				}}
+	            //System.out.println(" selected = " + button.getSelection());
+	         };
+	      };
+	      for (int i = 0; i < l.size(); i++) {         
+	    	  Button button1 = new Button(buttonGroup, SWT.CHECK);
+	    	  button1.setText(l.get(i).getName());
+	    	  button1.addSelectionListener(selectionListener);
+	      }
+	     
+//		Table table = new Table(shell, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+//	    for (int i = 0; i < l.size(); i++) {
+//	      TableItem item = new TableItem(table, SWT.NONE);
+//	      
+//	      item.setText(l.get(i).getName());
+//	      
+//	      Button checkBox = new Button(shell,SWT.CHECK);
+//	      checkBox.setText(l.get(i).getName());
+//	      checkBox.addSelectionListener(new SelectionAdapter() {
+//	          @Override
+//	          public void widgetSelected(SelectionEvent event) {
+//	              //if (event.detail == SWT.CHECK) {
+//	            	  Button btn = (Button) event.getSource();
+//	                  System.out.println(btn.getSelection());
+//	               
+//	             //}
+//	          }
+//	      });
+//	    }
+//	    table.setSize(100, 100);
+
 		
 		//add Class
 		Combo comboClass = new Combo(shell, SWT.MULTI);
@@ -110,6 +151,8 @@ public class AddStudent {
 					comboClass.add(l.get(i).getName().toString());
 
 				}
+				
+				
 				int studentAge = Integer.parseInt(txtAge.getText());
 				float studentPoint = Float.parseFloat(txtPoint.getText());
 				Clazz clazz = ServerConnector.getInstance().getClassService().findById(classID);

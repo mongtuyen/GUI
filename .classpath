@@ -51,5 +51,6 @@
 	<classpathentry kind="lib" path="C:/Users/ntmongtuyen/eclipse-workspace/RCPTest/target/dependency/spring-tx-4.3.8.RELEASE.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ntmongtuyen/eclipse-workspace/RCPTest/target/dependency/student-deployment-1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="D:/jboss-eap-6.3/bin/client/jboss-client.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ntmongtuyen/eclipse-workspace/RCPTest/lib/XMLBean-1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_c3AF0MjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.application" bindingContexts="_c3AF2cjYEeSyMNYR5xypkQ">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_c3AF0cjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.window.main" label="Manage Student" width="700" height="600">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_c3AF0cjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.window.main" label="Manage Student" iconURI="platform:/plugin/RCPTest/icons/icons8-student-male-20.png" width="700" height="600">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_5aHtAKMBEemiCpJzHNb5Ww" elementId="rcptest.perspectivestack.0">
       <children xsi:type="advanced:Perspective" xmi:id="_696bAKMBEemiCpJzHNb5Ww" elementId="rcptest.perspective.0">
         <children xsi:type="basic:PartSashContainer" xmi:id="_960RAKMBEemiCpJzHNb5Ww" elementId="" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_W7A_EKMCEemiCpJzHNb5Ww" elementId="rcptest.partstack.1">
             <children xsi:type="basic:Part" xmi:id="_maB1UKMDEemiCpJzHNb5Ww" elementId="" contributionURI="bundleclass://RCPTest/com.rcp.ListClass" label="Class"/>
+            <children xsi:type="basic:Part" xmi:id="_XxQY0K9eEeml6cbjhUJDVw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/com.rcp.ListStudent" label="Student"/>
           </children>
-          <children xsi:type="basic:PartStack" xmi:id="_7uE7UKO_EemwMvP8GlQWjg" elementId="rcptest.partstack.2">
-            <children xsi:type="basic:Part" xmi:id="_8w0KsKO_EemwMvP8GlQWjg" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/com.rcp.ListStudent" label="Student"/>
+          <children xsi:type="basic:PartStack" xmi:id="_swNCsK-EEeml6cbjhUJDVw" elementId="rcptest.partstack.0">
+            <children xsi:type="basic:Part" xmi:id="_uT0xkK-EEeml6cbjhUJDVw" elementId="rcptest.part.detail" label="Detail" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png"/>
           </children>
         </children>
       </children>
@@ -23,6 +24,12 @@
       </children>
       <children xsi:type="menu:Menu" xmi:id="_eexBMKL-EemiCpJzHNb5Ww" elementId="" label="Help"/>
     </mainMenu>
+    <trimBars xmi:id="_RRQaEK9fEeml6cbjhUJDVw" elementId="rcptest.trimbar.0">
+      <children xsi:type="menu:ToolBar" xmi:id="_TjuzAK9fEeml6cbjhUJDVw" elementId="rcptest.toolbar.0">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_ViSxcK9fEeml6cbjhUJDVw" elementId="rcptest.handledtoolitem.0" iconURI="platform:/plugin/RCPTest/icons/icons8-import-20.png" command="_noTDcKL8EemiCpJzHNb5Ww"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_Oh62QK9wEeml6cbjhUJDVw" elementId="rcptest.handledtoolitem.1" iconURI="platform:/plugin/RCPTest/icons/icons8-export-20.png" command="_Bbt_4K4OEemZyugBggKJpQ"/>
+      </children>
+    </trimBars>
   </children>
   <handlers xmi:id="_jgymEKL9EemiCpJzHNb5Ww" elementId="handler.exit" contributionURI="bundleclass://RCPTest/com.rcp.QuitHandler" command="_fXRocKL8EemiCpJzHNb5Ww"/>
   <handlers xmi:id="_yjE5gKL9EemiCpJzHNb5Ww" elementId="open" contributionURI="bundleclass://RCPTest/com.rcp.OpenHandler" command="_noTDcKL8EemiCpJzHNb5Ww"/>
@@ -35,8 +42,8 @@
   </rootContext>
   <descriptors xmi:id="_nS7kYKSREemfb4bJL3ttwg" elementId="rcptest.partdescriptor.ygyuhgyg" label="ygyuhgyg" contributionURI="bundleclass://RCPTest/com.rcp.AddStudent"/>
   <commands xmi:id="_fXRocKL8EemiCpJzHNb5Ww" elementId="exit" commandName="exitCommand"/>
-  <commands xmi:id="_noTDcKL8EemiCpJzHNb5Ww" elementId="open" commandName="openCommand"/>
-  <commands xmi:id="_Bbt_4K4OEemZyugBggKJpQ" elementId="rcptest.command.exportcommand" commandName="exportCommand"/>
+  <commands xmi:id="_noTDcKL8EemiCpJzHNb5Ww" elementId="open" commandName="Import data"/>
+  <commands xmi:id="_Bbt_4K4OEemZyugBggKJpQ" elementId="rcptest.command.exportcommand" commandName="Export data"/>
   <commands xmi:id="_r64S8KL8EemiCpJzHNb5Ww" elementId="save" commandName="saveCommand"/>
   <commands xmi:id="_vtpZ8KL8EemiCpJzHNb5Ww" elementId="about" commandName="aboutCommand"/>
   <addons xmi:id="_c3AF0sjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
