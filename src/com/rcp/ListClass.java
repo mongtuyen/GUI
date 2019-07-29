@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import com.tuyen.model.Clazz;
+
+import add.addClass;
 import connect.ServerConnector;
 
 public class ListClass {
@@ -153,8 +155,10 @@ public class ListClass {
 			public void handleEvent(Event arg0) {
 				Shell shell = null;
 				CreateClass a=new CreateClass(shell);
-//				AddClazz addShell = new AddClazz();
-//				addShell.openShell(Display.getCurrent());
+				
+				addClass addShell = new addClass();
+				//AddClazz addShell = new AddClazz();
+				//addShell.openShell(Display.getCurrent());
 //				// List<Clazz> l = ServerConnector.getInstance().getClassService().findAll();
 				// updateClazzTable(l);
 			}

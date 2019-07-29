@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.ui-3.5.0.I20090604-2000.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/student-api-1.0-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XMLBean-1.0-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xmlbeans.jar"/>

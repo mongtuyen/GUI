@@ -161,11 +161,16 @@ public class ListStudent {
 
 		Button btnAdd = new Button(parent, SWT.NONE);
 		btnAdd.setText("Add");
+		Display display=new Display();
+		Shell a=new Shell(display);
 		btnAdd.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
-				AddStudent addShell = new AddStudent();
-				addShell.openShell(Display.getCurrent());
+				//AddStudent addShell = new AddStudent();
+				AddStudentComposist add=new AddStudentComposist(a, 1);
+				//add.g
+				//addShell.openShell(Display.getCurrent());
+				add.getDisplay();
 			}
 		});
 

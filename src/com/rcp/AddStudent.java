@@ -44,10 +44,10 @@ public class AddStudent {
 		Label label_1 = new Label(shell, SWT.NONE);
 		label_1.setText("ADD STUDENT");
 
-//		Label lbID = new Label(shell, SWT.NONE);
-//		lbID.setText("ID");
-//		Text txtStudentID = new Text(shell, SWT.BORDER);
-//		txtStudentID.setLayoutData(data);
+		Label lbID = new Label(shell, SWT.NONE);
+		lbID.setText("Student ID");
+		Text txtStudentID = new Text(shell, SWT.BORDER);
+		txtStudentID.setLayoutData(data);
 		
 		Label label1 = new Label(shell, SWT.NONE);
 		label1.setText("Name");
@@ -60,12 +60,19 @@ public class AddStudent {
 		txtAge.setLayoutData(data);
 		
 		Label label3 = new Label(shell, SWT.NONE);
-		label3.setText("Point");
-		Text txtPoint = new Text(shell, SWT.BORDER);
-		txtPoint.setLayoutData(data);
+		label3.setText("Email");
+		Text txtEmail = new Text(shell, SWT.BORDER);
+		txtEmail.setLayoutData(data);
 		
 		Label label4 = new Label(shell, SWT.NONE);
-		label4.setText("Class");
+		label4.setText("Address");
+		Text txtAddress = new Text(shell, SWT.BORDER);
+		txtAddress.setLayoutData(data);
+		
+		
+		
+		Label label5 = new Label(shell, SWT.NONE);
+		label5.setText("Class");
 		List<Clazz> l = ServerConnector.getInstance().getClassService().findAll();
 		//check class
 		System.out.print("LENTH"+l.size());
