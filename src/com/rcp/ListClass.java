@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
 
 //import org.apache.logging.log4j.LogManager;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -31,8 +33,10 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import com.tuyen.model.Clazz;
 
+import add.MyWizardClass;
 import add.addClass;
 import connect.ServerConnector;
+import edit.MyWizardEdit;
 
 public class ListClass {
 	
@@ -149,19 +153,32 @@ public class ListClass {
 		updateClazzTable(l);
 		Button btnAdd = new Button(parent, SWT.NONE);
 		btnAdd.setText("Add");
-		btnAdd.addListener(SWT.Selection, new Listener() {
-
-			@Override
-			public void handleEvent(Event arg0) {
-				Shell shell = null;
-				CreateClass a=new CreateClass(shell);
-				
-				addClass addShell = new addClass();
-				//AddClazz addShell = new AddClazz();
-				//addShell.openShell(Display.getCurrent());
-//				// List<Clazz> l = ServerConnector.getInstance().getClassService().findAll();
-				// updateClazzTable(l);
-			}
+//		btnAdd.addListener(SWT.Selection, new Listener() {
+//
+//			@Override
+//			public void handleEvent(Event arg0) {
+//				Shell shell = null;
+//				CreateClass a=new CreateClass(shell);
+//				
+//				addClass addShell = new addClass();
+//
+//				//AddClazz addShell = new AddClazz();
+//				//addShell.openShell(Display.getCurrent());
+////				// List<Clazz> l = ServerConnector.getInstance().getClassService().findAll();
+//				// updateClazzTable(l);
+//			}
+//		});
+		
+		btnAdd.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		        WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardClass());
+		        if (wizardDialog.open() == Window.OK) {
+		            System.out.println("Ok pressed");
+		        } else {
+		            System.out.println("Cancel pressed");
+		        }
+		    }
 		});
 
 		Button buttonDelete = new Button(parent, SWT.NONE);
@@ -186,20 +203,36 @@ public class ListClass {
 
 		Button checkUpdate = new Button(parent, SWT.NONE);
 		checkUpdate.setText("Edit");
-		checkUpdate.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event arg0) {
-				if (table.getSelection().length > 0) {
-					int idClazz = Integer.parseInt(table.getSelection()[0].getText());
-					EditClass editShell = new EditClass();
-					Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
-					editShell.openShell(Display.getCurrent(), clazz);
-				} else {
-					MessageDialog.openWarning(new Shell(), "Warning", "Please choose a class to edit");
-
-				}
-			}
+		
+		checkUpdate.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		    	int idClazz = Integer.parseInt(table.getSelection()[0].getText());
+		    	Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
+		        WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardEdit(clazz));
+		        if (wizardDialog.open() == Window.OK) {
+		            System.out.println("Ok pressed");
+		        } else {
+		            System.out.println("Cancel pressed");
+		        }
+		    }
 		});
+		
+		
+//		checkUpdate.addListener(SWT.Selection, new Listener() {
+//			@Override
+//			public void handleEvent(Event arg0) {
+//				if (table.getSelection().length > 0) {
+//					int idClazz = Integer.parseInt(table.getSelection()[0].getText());
+//					EditClass editShell = new EditClass();
+//					Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
+//					editShell.openShell(Display.getCurrent(), clazz);
+//				} else {
+//					MessageDialog.openWarning(new Shell(), "Warning", "Please choose a class to edit");
+//
+//				}
+//			}
+//		});
 		
 	}
 

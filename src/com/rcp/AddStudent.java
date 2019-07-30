@@ -161,14 +161,14 @@ public class AddStudent {
 				
 				
 				int studentAge = Integer.parseInt(txtAge.getText());
-				float studentPoint = Float.parseFloat(txtPoint.getText());
+				//float studentPoint = Float.parseFloat(txtPoint.getText());
 				Clazz clazz = ServerConnector.getInstance().getClassService().findById(classID);
 				Set<Clazz> set=new HashSet<Clazz>();
 				set.add(clazz);
 				Student student = new Student();
 				student.setName(studentName);
 				student.setAge(studentAge);
-				student.setPoint(studentPoint);
+				//student.setPoint(studentPoint);
 				student.setClasses(set);
 				ServerConnector.getInstance().getStudentService().persist(student);
 				shell.dispose();

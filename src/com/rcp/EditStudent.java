@@ -64,7 +64,7 @@ public class EditStudent {
 		Label label3 = new Label(shell, SWT.NONE);
 		label3.setText("Point");
 		Text txtStudentPoint = new Text(shell, SWT.BORDER);
-		txtStudentPoint.setText(String.valueOf(student.getPoint()));
+		//txtStudentPoint.setText(String.valueOf(student.getPoint()));
 		txtStudentPoint.setLayoutData(data);
 		
 		Label label4 = new Label(shell, SWT.NONE);
@@ -107,7 +107,7 @@ public class EditStudent {
 				student.setId(studentID);
 				student.setName(studentName);
 				student.setAge(studentAge);
-				student.setPoint(studentPoint);
+				//student.setPoint(studentPoint);
 				student.setClasses(set);
 				ServerConnector tmp = ServerConnector.getInstance();
 				StudentService studentService = tmp.getStudentService();

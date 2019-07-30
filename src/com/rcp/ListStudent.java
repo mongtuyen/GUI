@@ -7,7 +7,11 @@ import java.util.Locale;
 import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -20,8 +24,15 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+
+import com.tuyen.model.Clazz;
 import com.tuyen.model.Student;
+
+import add.MyWizardClass;
+import add.MyWizardStudent;
 import connect.ServerConnector;
+import edit.MyWizardEdit;
+import edit.MyWizardStudentEdit;
 
 public class ListStudent {
 	
@@ -161,19 +172,34 @@ public class ListStudent {
 
 		Button btnAdd = new Button(parent, SWT.NONE);
 		btnAdd.setText("Add");
-		Display display=new Display();
-		Shell a=new Shell(display);
-		btnAdd.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event arg0) {
-				//AddStudent addShell = new AddStudent();
-				AddStudentComposist add=new AddStudentComposist(a, 1);
-				//add.g
-				//addShell.openShell(Display.getCurrent());
-				add.getDisplay();
-			}
-		});
+		//Display display=new Display();
+		//Shell a=new Shell(display);
+//		btnAdd.addListener(SWT.Selection, new Listener() {
+//			@Override
+//			public void handleEvent(Event arg0) {
+//				//AddStudent addShell = new AddStudent();
+//				//AddStudentComposist add=new AddStudentComposist(a, 1);
 
+//				//addShell.openShell(Display.getCurrent());
+//				//add.getDisplay();
+//				
+//				
+//			}
+//		});
+
+		btnAdd.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		        WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardStudent());
+		        if (wizardDialog.open() == Window.OK) {
+		            System.out.println("Ok pressed");
+		        } else {
+		            System.out.println("Cancel pressed");
+		        }
+		    }
+		});
+		
+		
 		Button buttonDelete = new Button(parent, SWT.NONE);
 		buttonDelete.setText("Delete");
 		buttonDelete.addListener(SWT.Selection, new Listener() {
@@ -195,19 +221,34 @@ public class ListStudent {
 
 		Button checkUpdate = new Button(parent, SWT.NONE);
 		checkUpdate.setText("Edit");
-		checkUpdate.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event arg0) {
-				if (table.getSelection().length > 0) {
-					int studentID = Integer.parseInt(table.getSelection()[0].getText());
-					EditStudent editShell = new EditStudent();
-					Student student = ServerConnector.getInstance().getStudentService().findById(studentID);
-					editShell.openShell(Display.getCurrent(), student);
-				} else {
-					MessageDialog.openWarning(new Shell(), "Warning", "Please choose a student to edit");
-				}
-			}
+		checkUpdate.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		    	int idStudent = Integer.parseInt(table.getSelection()[0].getText());
+		    	System.out.println("ID STUDENT: "+ idStudent);
+		    	Student student = ServerConnector.getInstance().getStudentService().findById(idStudent);
+		        WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardStudentEdit(student));
+		        if (wizardDialog.open() == Window.OK) {
+		            System.out.println("Ok pressed");
+		        } else {
+		            System.out.println("Cancel pressed");
+		        }
+		    }
 		});
+		
+//		checkUpdate.addListener(SWT.Selection, new Listener() {
+//			@Override
+//			public void handleEvent(Event arg0) {
+//				if (table.getSelection().length > 0) {
+//					int studentID = Integer.parseInt(table.getSelection()[0].getText());
+//					EditStudent editShell = new EditStudent();
+//					Student student = ServerConnector.getInstance().getStudentService().findById(studentID);
+//					editShell.openShell(Display.getCurrent(), student);
+//				} else {
+//					MessageDialog.openWarning(new Shell(), "Warning", "Please choose a student to edit");
+//				}
+//			}
+//		});
 	}
 
 	public static void updateStudentTable(List<Student> l) {
