@@ -1,6 +1,9 @@
 package add;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.Wizard;
+
+import connect.ServerConnector;
 
 public class MyWizardClass extends Wizard {
 
@@ -13,7 +16,7 @@ public class MyWizardClass extends Wizard {
 
     @Override
     public String getWindowTitle() {
-        return "Edit class";
+        return "Add class";
     }
 
     @Override
@@ -26,9 +29,15 @@ public class MyWizardClass extends Wizard {
 
     @Override
     public boolean performFinish() {
-        // Print the result to the console
-        System.out.println(one.getClassID());
-  
+    	ServerConnector.getInstance().getClassService().persist(one.getClazzEdit());
         return true;
     }
+    @Override
+    public boolean performCancel() {
+        boolean ans = MessageDialog.openConfirm(getShell(), "Confirmation", "Are you sure to cancel the task?");
+        if(ans)
+          return true;
+        else
+          return false;
+      } 
 }

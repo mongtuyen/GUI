@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+
 import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 
@@ -17,6 +19,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -27,11 +30,14 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import com.tuyen.model.Clazz;
+import com.tuyen.model.Student;
 
 import add.MyWizardClass;
 import add.addClass;
@@ -42,9 +48,48 @@ public class ListClass {
 	
 	final static Logger logger = Logger.getLogger(ListClass.class);
 	private static Table table;
+	private static Table tableStudent;
 	static int sum;
 	static Label labelClassSum;
 	
+	static Label sumStudent ;
+	
+	
+	
+	
+	public static Table getTable() {
+		return table;
+	}
+
+	public static void setTable(Table table) {
+		ListClass.table = table;
+	}
+
+	public static int getSum() {
+		return sum;
+	}
+
+	public static void setSum(int sum) {
+		ListClass.sum = sum;
+	}
+
+	public static Label getLabelClassSum() {
+		return labelClassSum;
+	}
+
+	public static void setLabelClassSum(Label labelClassSum) {
+		ListClass.labelClassSum = labelClassSum;
+	}
+
+	
+
+	public static Label getSumStudent() {
+		return sumStudent;
+	}
+
+	public static void setSumStudent(Label sumStudent) {
+		ListClass.sumStudent = sumStudent;
+	}
 
 	@PostConstruct
 	public void createComposite(Composite parent) throws IOException {
@@ -54,6 +99,8 @@ public class ListClass {
 		label_1.setBounds(130, 26, 100, 15);
 
 		table = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
+		
+		
 		GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);// SWT.TOP
 		gd_table.heightHint = 120;
 		table.setLayoutData(gd_table);
@@ -61,12 +108,6 @@ public class ListClass {
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		String[] titles = { "ID", "Code", "Name" };
-
-//		for (int i = 0; i < titles.length; i++) {
-//			TableColumn column = new TableColumn(table, SWT.BORDER);
-//			column.setText(titles[i]);
-//			column.setWidth(600);
-//		}
 
 		final TableColumn column0 = new TableColumn(table, SWT.NONE);
 		column0.setText("ID");
@@ -153,22 +194,7 @@ public class ListClass {
 		updateClazzTable(l);
 		Button btnAdd = new Button(parent, SWT.NONE);
 		btnAdd.setText("Add");
-//		btnAdd.addListener(SWT.Selection, new Listener() {
-//
-//			@Override
-//			public void handleEvent(Event arg0) {
-//				Shell shell = null;
-//				CreateClass a=new CreateClass(shell);
-//				
-//				addClass addShell = new addClass();
-//
-//				//AddClazz addShell = new AddClazz();
-//				//addShell.openShell(Display.getCurrent());
-////				// List<Clazz> l = ServerConnector.getInstance().getClassService().findAll();
-//				// updateClazzTable(l);
-//			}
-//		});
-		
+
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 		    @Override
 		    public void widgetSelected(SelectionEvent e) {
@@ -218,25 +244,74 @@ public class ListClass {
 		    }
 		});
 		
+		//List student of class
 		
-//		checkUpdate.addListener(SWT.Selection, new Listener() {
+		sumStudent = new Label(parent, SWT.NONE);
+		sumStudent.setText("                                                           ");
+		
+		
+		tableStudent = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI|SWT.VIRTUAL);
+		tableStudent.setVisible(false);
+		
+		GridData gd_table1 = new GridData(SWT.TOP, SWT.FILL, true, true, 2, 1);// SWT.TOP
+		gd_table1.heightHint = 80;
+		gd_table1.widthHint=160;
+		tableStudent.setLayoutData(gd_table1);
+
+		tableStudent.setHeaderVisible(true);
+		tableStudent.setLinesVisible(true);
+		
+//		for (int i = 0; i < titles.length; i++) {
+//			TableColumn column = new TableColumn(table, SWT.BORDER);
+//			column.setText(titles[i]);
+//			column.setWidth(600);
+//		}
+
+	
+		final TableColumn column3 = new TableColumn(tableStudent, SWT.NONE);
+		column3.setText("Student ID");
+		final TableColumn column4 = new TableColumn(tableStudent, SWT.NONE);
+		column4.setText("Name");
+		
+		table.addListener(SWT.DefaultSelection, new Listener() {
+			int classID;
+			public void handleEvent(Event e) {
+				//String string = "";
+				TableItem[] selection = table.getSelection();
+				for (int i = 0; i < selection.length; i++) {
+					classID= Integer.parseInt(selection[i].getText());
+					//string += selection[i].getText() + "gg ";
+				}
+				//System.out.println("DefaultSelection={" + string + "}");
+				
+				//listStudentFromClass(classID);
+			}
+		});
+		
+//		Menu menu =new Menu(parent);
+//		MenuItem view =  new MenuItem(menu,SWT.NONE);
+//		view.setText("View");
+//		view.addListener(SWT.Selection, new Listener() {
+//			
 //			@Override
-//			public void handleEvent(Event arg0) {
-//				if (table.getSelection().length > 0) {
-//					int idClazz = Integer.parseInt(table.getSelection()[0].getText());
-//					EditClass editShell = new EditClass();
-//					Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
-//					editShell.openShell(Display.getCurrent(), clazz);
-//				} else {
-//					MessageDialog.openWarning(new Shell(), "Warning", "Please choose a class to edit");
-//
-//				}
+//			public void handleEvent(Event event) {
+//				int index = table.getSelectionIndex();
+//				System.out.println("index  "+index);
 //			}
 //		});
-		
+//		table.addListener(SWT.MenuDetect, new Listener() {
+//			  @Override
+//			  public void handleEvent(Event event) {
+//			    if (table.getSelectionCount() <= 0) {
+//			      event.doit = false;
+//			    }
+//			  }
+//			});
+//		table.setMenu(menu);
 	}
 
 	public static void updateClazzTable(List<Clazz> list) {
+		
 		table.removeAll();
 		logger.info("update list class");
 
@@ -253,6 +328,25 @@ public class ListClass {
 		labelClassSum.setText("Total: " + sum);
 		logger.info(list);
 
+	}
+	
+	public static void listStudentFromClass(int clazzID) {
+		tableStudent.removeAll();
+		tableStudent.setVisible(true);
+		
+		Clazz clazz=ServerConnector.getInstance().getClassService().findById(clazzID);
+		sumStudent.setText("LIST STUDENT OF CLASS " +clazz.getCode());
+		
+		Set<Student> list=clazz.getStudents();
+		for(Student student:list) {
+			TableItem item = new TableItem(tableStudent, SWT.BORDER);
+			item.setText(0, student.getCode());		
+			item.setText(1, student.getName());		
+		}
+
+		for (int j = 0; j < tableStudent.getColumnCount(); j++) {
+			tableStudent.getColumn(j).pack();
+		}
 	}
 
 }

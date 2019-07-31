@@ -2,6 +2,8 @@ package edit;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -12,6 +14,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import com.tuyen.model.Clazz;
+import com.tuyen.model.Student;
 import com.tuyen.service.ClazzService;
 
 import connect.ServerConnector;
@@ -25,8 +28,8 @@ public class EditClass extends WizardPage {
 
 	public EditClass(Clazz clazz) {
 		super("wizardPage");
-		setTitle("Edit class");
-		setDescription("");
+		setTitle("Update class");
+		setDescription("Please enter Student details");
 		this.clazz = clazz;
 	}
 
@@ -45,40 +48,39 @@ public class EditClass extends WizardPage {
 		Label label1 = new Label(container, SWT.NONE);
 		label1.setText("Class ID");
 
-		
 		classID = new Text(container, SWT.BORDER | SWT.SINGLE);
 		classID.setText(clazz.getCode());
 
-//		classID.addKeyListener(new KeyListener() {
-//			@Override
-//			public void keyPressed(KeyEvent e) {
-//			}
-//
-//			@Override
-//			public void keyReleased(KeyEvent e) {
-//				if (!classID.getText().isEmpty()) {
-//					setPageComplete(true);
-//				}
-//			}
-//		});
+		classID.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (!className.getText().isEmpty() && !className.getText().isEmpty()) {
+					setPageComplete(true);
+				}
+			}
+		});
 
 		Label label2 = new Label(container, SWT.NONE);
 		label2.setText("Name");
 
 		className = new Text(container, SWT.BORDER | SWT.SINGLE);
 		className.setText(clazz.getName());
-//		className.addKeyListener(new KeyListener() {
-//			@Override
-//			public void keyPressed(KeyEvent e) {
-//			}
-//
-//			@Override
-//			public void keyReleased(KeyEvent e) {
-//				if (!className.getText().isEmpty()) {
-//					setPageComplete(true);
-//				}
-//			}
-//		});
+		className.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (!className.getText().isEmpty() && !className.getText().isEmpty()) {
+					setPageComplete(true);
+				}
+			}
+		});
 
 		classID.setLayoutData(gd);
 		className.setLayoutData(gd);
@@ -105,36 +107,48 @@ public class EditClass extends WizardPage {
 //		btnSave.setText("Save");
 //        
 
-		Button btnSave = new Button(container, SWT.NONE);
-		btnSave.setText("Save");
-	
-		btnSave.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-//				if (classCode.equals("")) {
-//					new OpenDialog(new InfoDialog("Class code cannot null")).openPage();
-//				}
-//				if (clazzName.equals("")) {
-//					new OpenDialog(new InfoDialog("Class name cannot null")).openPage();
-//				}
-//				if (!classCode.equals("") && !clazzName.equals("")) {
-				String classCode = classID.getText();
-				String clazzName = className.getText();
-				Clazz clazz = new Clazz();
-				clazz.setCode(classCode);
-				clazz.setName(clazzName);
-				ServerConnector.getInstance().getClassService().update(clazz);
-				// new OpenDialog(new InfoDialog("Add new classroom: " + resultAdd)).openPage();
-				new OpenDialog(new InfoDialog("Edit class successfull")).openPage();
-				// ClassroomPart.setTableClassroom();
-				Display.getCurrent().getActiveShell().dispose();
-				// }
-
-			}
-		});
+//		Button btnSave = new Button(container, SWT.NONE);
+//		btnSave.setText("Save");
+//	
+//		btnSave.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//
+////				if (classCode.equals("")) {
+////					new OpenDialog(new InfoDialog("Class code cannot null")).openPage();
+////				}
+////				if (clazzName.equals("")) {
+////					new OpenDialog(new InfoDialog("Class name cannot null")).openPage();
+////				}
+////				if (!classCode.equals("") && !clazzName.equals("")) {
+//				String classCode = classID.getText();
+//				String clazzName = className.getText();
+//				clazz.setCode(classCode);
+//				clazz.setName(clazzName);
+//				ServerConnector.getInstance().getClassService().update(clazz);
+//				// new OpenDialog(new InfoDialog("Add new classroom: " + resultAdd)).openPage();
+//				new OpenDialog(new InfoDialog("Edit class successfull")).openPage();
+//				// ClassroomPart.setTableClassroom();
+//				Display.getCurrent().getActiveShell().dispose();
+//				// }
+//
+//			}
+//		});
 
 	}
 
+	public Clazz getClazzEdit() {
+		String classCode = classID.getText();
+		String clazzName = className.getText();
+		// if (!classCode.equals(" ") && !clazzName.equals(" ")) {
+		clazz.setCode(classCode);
+		clazz.setName(clazzName);
+//		}
+//		else {
+//			new OpenDialog(new InfoDialog("Please fill in all information")).openPage();		
+//		}
+		return clazz;
+
+	}
 
 }

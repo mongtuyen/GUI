@@ -18,16 +18,15 @@ import connect.ServerConnector;
 import event.InfoDialog;
 import event.OpenDialog;
 
-
 public class addClass extends WizardPage {
 	private Text classID;
 	private Text className;
-	//private Composite container;
+	// private Composite container;
 
 	public addClass() {
 		super("wizardPage");
 		setTitle("Create new class");
-		setDescription("");
+		setDescription("Please enter Class details");
 	}
 
 	@Override
@@ -35,21 +34,21 @@ public class addClass extends WizardPage {
 		parent.setSize(500, 800);
 		Composite container = new Composite(parent, SWT.NONE);
 		setControl(container);
-		
+
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		
+
 		GridLayout layout = new GridLayout();
 		container.setLayout(layout);
 		layout.numColumns = 2;
-		
+
 		Label label1 = new Label(container, SWT.NONE);
 		label1.setText("Class ID");
 
-		//Combo travelDate = new Combo(container, SWT.BORDER | SWT.READ_ONLY);
-		//travelDate.setLayoutData(gd);
+		// Combo travelDate = new Combo(container, SWT.BORDER | SWT.READ_ONLY);
+		// travelDate.setLayoutData(gd);
 
 		classID = new Text(container, SWT.BORDER | SWT.SINGLE);
-		//classID.setText("");
+		// classID.setText("");
 		classID.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -57,7 +56,7 @@ public class addClass extends WizardPage {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (!classID.getText().isEmpty()) {
+				if (!classID.getText().isEmpty() && !className.getText().isEmpty()) {
 					setPageComplete(true);
 				}
 			}
@@ -67,7 +66,7 @@ public class addClass extends WizardPage {
 		label2.setText("Name");
 
 		className = new Text(container, SWT.BORDER | SWT.SINGLE);
-		//className.setText("");
+		// className.setText("");
 		className.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -75,64 +74,32 @@ public class addClass extends WizardPage {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (!className.getText().isEmpty()) {
+				if (!className.getText().isEmpty() && !className.getText().isEmpty()) {
 					setPageComplete(true);
 				}
 			}
 		});
-		
-		
-		
-		
+
 		classID.setLayoutData(gd);
-        className.setLayoutData(gd);
-        setControl(container);
-        setPageComplete(false);
-        
-        Button btnAdd = new Button(container, SWT.NONE);
-        btnAdd.setText("Add");
-		btnAdd.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				System.out.println("TEST result:"+classID.getText()+className.getText());
-				try {
-					String classCode = classID.getText();
-					String clazzName = className.getText();
-					
-					if (!classCode.equals("") && !clazzName.equals("")) {
-						Clazz clazz = new Clazz();
-						clazz.setCode(classCode);
-						clazz.setName(clazzName);
-						ServerConnector.getInstance().getClassService().persist(clazz);
-						//new OpenDialog(new InfoDialog("Add new classroom: " + resultAdd)).openPage();
-						//ClassroomPart.setTableClassroom();
-						Display.getCurrent().getActiveShell().dispose();
-					} else {
-						new OpenDialog(new InfoDialog("Class name cannot null")).openPage();
-					}
-				} catch (NumberFormatException e1) {
-					new OpenDialog(new InfoDialog("Invalid number")).openPage();
-				}
-			}
-		});  
-		
-		
+		className.setLayoutData(gd);
+		setControl(container);
+		setPageComplete(false);
+
 	}
 
-	public Text getClassID() {
-		return classID;
-	}
+	public Clazz getClazzEdit() {
+		String classCode = classID.getText();
+		String clazzName = className.getText();
+		Clazz clazz = new Clazz();
+		// if (!classCode.equals(" ") && !clazzName.equals(" ")) {
+		clazz.setCode(classCode);
+		clazz.setName(clazzName);
+//		}
+//		else {
+//			new OpenDialog(new InfoDialog("Please fill in all information")).openPage();		
+//		}
+		return clazz;
 
-	public void setClassID(Text classID) {
-		this.classID = classID;
-	}
-
-	public Text getClassName() {
-		return className;
-	}
-
-	public void setClassName(Text className) {
-		this.className = className;
 	}
 
 }

@@ -1,56 +1,183 @@
 package test;
+
+//import org.eclipse.swt.SWT;
+//import org.eclipse.swt.graphics.Image;
+//import org.eclipse.swt.graphics.Rectangle;
+//import org.eclipse.swt.layout.FillLayout;
+//import org.eclipse.swt.widgets.Display;
+//import org.eclipse.swt.widgets.Event;
+//import org.eclipse.swt.widgets.Listener;
+//import org.eclipse.swt.widgets.Shell;
+//import org.eclipse.swt.widgets.Table;
+//import org.eclipse.swt.widgets.TableColumn;
+//import org.eclipse.swt.widgets.TableItem;
+//
+//public class ShellDialogExample {
+//
+//  public static void main(String[] args) {
+//    Display display = new Display();
+//    final Image image = display.getSystemImage(SWT.ICON_INFORMATION);
+//    Shell shell = new Shell(display);
+//    shell.setText("Images on the right side of the TableItem");
+//    shell.setLayout(new FillLayout());
+//    Table table = new Table(shell, SWT.MULTI | SWT.FULL_SELECTION);
+//    table.setHeaderVisible(true);
+//    table.setLinesVisible(true);
+//    int columnCount = 3;
+//    for (int i = 0; i < columnCount; i++) {
+//      TableColumn column = new TableColumn(table, SWT.NONE);
+//      column.setText("Column " + i);
+//    }
+//    int itemCount = 8;
+//    for (int i = 0; i < itemCount; i++) {
+//      TableItem item = new TableItem(table, SWT.NONE);
+//      item.setText(new String[] { "item " + i + " a", "item " + i + " b", "item " + i + " c" });
+//    }
+//    /*
+//     * NOTE: MeasureItem, PaintItem and EraseItem are called repeatedly.
+//     * Therefore, it is critical for performance that these methods be as
+//     * efficient as possible.
+//     */
+//    Listener paintListener = new Listener() {
+//      public void handleEvent(Event event) {
+//        switch (event.type) {
+//        case SWT.MeasureItem: {
+//          Rectangle rect = image.getBounds();
+//          event.width += rect.width;
+//          event.height = Math.max(event.height, rect.height + 2);
+//          break;
+//        }
+//        case SWT.PaintItem: {
+//          int x = event.x + event.width;
+//          Rectangle rect = image.getBounds();
+//          int offset = Math.max(0, (event.height - rect.height) / 2);
+//          event.gc.drawImage(image, x, event.y + offset);
+//          break;
+//        }
+//        }
+//      }
+//    };
+//    table.addListener(SWT.MeasureItem, paintListener);
+//    table.addListener(SWT.PaintItem, paintListener);
+//
+//    for (int i = 0; i < columnCount; i++) {
+//      table.getColumn(i).pack();
+//    }
+//    shell.setSize(500, 200);
+//    shell.open();
+//    while (!shell.isDisposed()) {
+//      if (!display.readAndDispatch())
+//        display.sleep();
+//    }
+//    if (image != null)
+//      image.dispose();
+//    display.dispose();
+//  }
+//}
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-  
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
+
 public class ShellDialogExample {
-   public static void main(String[] args) {
-      Display display = new Display();
-      Shell shell = new Shell(display);
-  
-      // pos x, pos y, width, height
-      shell.setBounds(200, 200, 300, 200);
-      shell.setText("SWT Checkbox Demonstration");
-      shell.setLayout(new GridLayout());
-  
-      Group buttonGroup = new Group(shell, SWT.NONE);
-      GridLayout gridLayout = new GridLayout();
-      gridLayout.numColumns = 3;
-      buttonGroup.setLayout(gridLayout);
-      buttonGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-       
-      SelectionListener selectionListener = new SelectionAdapter () {
-         public void widgetSelected(SelectionEvent event) {
-            Button button = ((Button) event.widget);
-            System.out.print(button.getText());
-            System.out.println(" selected = " + button.getSelection());
-         };
-      };
-                   
-      Button button1 = new Button(buttonGroup, SWT.CHECK);
-      button1.setText("orange");
-      button1.addSelectionListener(selectionListener);
-      Button button2 = new Button(buttonGroup, SWT.CHECK);
-      button2.setText("pear");
-      button2.addSelectionListener(selectionListener);
-      Button button3 = new Button(buttonGroup, SWT.CHECK);
-      button3.setText("apple");
-      button3.addSelectionListener(selectionListener);
-       
-      shell.open();
-  
-      while (!shell.isDisposed()) {
-         if (!display.readAndDispatch()) {
-            display.sleep();
-         }
-      }
-      display.dispose();
-   }
+
+	public static void main(String[] args) {
+		Display display = new Display();
+		Shell shell = new Shell(display);
+		final Table table = new Table(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+		for (int i = 0; i < 16; i++) {
+			TableItem item = new TableItem(table, 0);
+			item.setText("Item " + i);
+		}
+		table.setBounds(0, 0, 100, 100);
+		table.addListener(SWT.DefaultSelection, new Listener() {
+			public void handleEvent(Event e) {
+				String string = "";
+				TableItem[] selection = table.getSelection();
+				for (int i = 0; i < selection.length; i++)
+					string += selection[i] + " ";
+				System.out.println("DefaultSelection={" + string + "}");
+			}
+		});
+
+		shell.pack();
+		shell.open();
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+		display.dispose();
+	}
 }
+
+//import org.eclipse.swt.SWT;
+//import org.eclipse.swt.graphics.Point;
+//import org.eclipse.swt.graphics.Rectangle;
+//import org.eclipse.swt.widgets.Display;
+//import org.eclipse.swt.widgets.Event;
+//import org.eclipse.swt.widgets.Listener;
+//import org.eclipse.swt.widgets.Shell;
+//import org.eclipse.swt.widgets.Table;
+//import org.eclipse.swt.widgets.TableColumn;
+//import org.eclipse.swt.widgets.TableItem;
+//
+//public class ShellDialogExample {
+//
+//  public static void main(String[] args) {
+//    Display display = new Display();
+//    Shell shell = new Shell(display);
+//    final Table table = new Table(shell, SWT.BORDER | SWT.V_SCROLL);
+//    table.setHeaderVisible(true);
+//    table.setLinesVisible(true);
+//    final int rowCount = 64, columnCount = 4;
+//    for (int i = 0; i < columnCount; i++) {
+//      TableColumn column = new TableColumn(table, SWT.NONE);
+//      column.setText("Column " + i);
+//    }
+//    for (int i = 0; i < rowCount; i++) {
+//      TableItem item = new TableItem(table, SWT.NONE);
+//      for (int j = 0; j < columnCount; j++) {
+//        item.setText(j, "Item " + i + "-" + j);
+//      }
+//    }
+//    for (int i = 0; i < columnCount; i++) {
+//      table.getColumn(i).pack();
+//    }
+//    Point size = table.computeSize(SWT.DEFAULT, 200);
+//    table.setSize(size);
+//    shell.pack();
+//    table.addListener(SWT.MouseDown, new Listener() {
+//      public void handleEvent(Event event) {
+//        Rectangle clientArea = table.getClientArea();
+//        Point pt = new Point(event.x, event.y);
+//        int index = table.getTopIndex();
+//        while (index < table.getItemCount()) {
+//          boolean visible = false;
+//          TableItem item = table.getItem(index);
+//          for (int i = 0; i < columnCount; i++) {
+//            Rectangle rect = item.getBounds(i);
+//            if (rect.contains(pt)) {
+//              System.out.println("Item " + index + "-" + i);
+//            }
+//            if (!visible && rect.intersects(clientArea)) {
+//              visible = true;
+//            }
+//          }
+//          if (!visible)
+//            return;
+//          index++;
+//        }
+//      }
+//    });
+//    shell.open();
+//    while (!shell.isDisposed()) {
+//      if (!display.readAndDispatch())
+//        display.sleep();
+//    }
+//    display.dispose();
+//  }
+//}

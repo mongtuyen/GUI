@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.text.Collator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+
 import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -35,11 +37,30 @@ import edit.MyWizardEdit;
 import edit.MyWizardStudentEdit;
 
 public class ListStudent {
-	
+
 	final static Logger logger = Logger.getLogger(ListStudent.class);
 	private static Table table;
+	
 	static int sum;
 	static Label labelStudentSum;
+	private static Table tableClass;
+	static Label labelClass;
+
+	public static Table getTable() {
+		return table;
+	}
+
+	public static void setTable(Table table) {
+		ListStudent.table = table;
+	}
+
+	public static Label getLabelClass() {
+		return labelClass;
+	}
+
+	public static void setLabelClass(Label labelClass) {
+		ListStudent.labelClass = labelClass;
+	}
 
 	@PostConstruct
 	public void createComposite(Composite parent) throws IOException {
@@ -50,11 +71,11 @@ public class ListStudent {
 
 		table = new Table(parent, SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 		GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
-		gd_table.heightHint = 60;
+		gd_table.heightHint = 120;
 		table.setLayoutData(gd_table);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		String[] titles = { "ID", "Code", "Name", "Age", "Email","Address"};
+		String[] titles = { "ID", "Code", "Name", "Age", "Email", "Address" };
 		final TableColumn column0 = new TableColumn(table, SWT.NONE);
 		column0.setText("ID");
 		final TableColumn column1 = new TableColumn(table, SWT.NONE);
@@ -67,10 +88,7 @@ public class ListStudent {
 		column4.setText("Email");
 		final TableColumn column5 = new TableColumn(table, SWT.NONE);
 		column5.setText("Address");
-//		for (int i = 0; i < titles.length; i++) {
-//			TableColumn column = new TableColumn(table, SWT.NULL);
-//			column.setText(titles[i]);
-//		}
+
 		for (int i = 0; i < titles.length; i++) {
 			table.getColumn(i).pack();
 		}
@@ -84,7 +102,7 @@ public class ListStudent {
 						int value2 = Integer.parseInt(items[j].getText(0));
 						if (value1 < value2) {
 							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2),
-									items[i].getText(3), items[i].getText(4), items[i].getText(5)};
+									items[i].getText(3), items[i].getText(4), items[i].getText(5) };
 							items[i].dispose();
 							TableItem item = new TableItem(table, SWT.NONE, j);
 							item.setText(values);
@@ -97,28 +115,28 @@ public class ListStudent {
 		});
 		table.setSortColumn(column0);
 		table.setSortDirection(SWT.UP);
-		// Sort name
-				column1.addListener(SWT.Selection, new Listener() {
-					public void handleEvent(Event e) {
-						TableItem[] items = table.getItems();
-						Collator collator = Collator.getInstance(Locale.getDefault());
-						for (int i = 1; i < items.length; i++) {
-							String value1 = items[i].getText(1);
-							for (int j = 0; j < i; j++) {
-								String value2 = items[j].getText(1);
-								if (collator.compare(value1, value2) < 0) {
-									String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2),
-											items[i].getText(3), items[i].getText(4), items[i].getText(5) };
-									items[i].dispose();
-									TableItem item = new TableItem(table, SWT.NONE, j);
-									item.setText(values);
-									items = table.getItems();
-									break;
-								}
-							}
+		// Sort code
+		column1.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {
+				TableItem[] items = table.getItems();
+				Collator collator = Collator.getInstance(Locale.getDefault());
+				for (int i = 1; i < items.length; i++) {
+					String value1 = items[i].getText(1);
+					for (int j = 0; j < i; j++) {
+						String value2 = items[j].getText(1);
+						if (collator.compare(value1, value2) < 0) {
+							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2),
+									items[i].getText(3), items[i].getText(4), items[i].getText(5) };
+							items[i].dispose();
+							TableItem item = new TableItem(table, SWT.NONE, j);
+							item.setText(values);
+							items = table.getItems();
+							break;
 						}
 					}
-				});
+				}
+			}
+		});
 		// Sort name
 		column2.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
@@ -152,7 +170,7 @@ public class ListStudent {
 						int value2 = Integer.parseInt(items[j].getText(3));
 						if (value1 < value2) {
 							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2),
-									items[i].getText(3), items[i].getText(4), items[i].getText(5)};
+									items[i].getText(3), items[i].getText(4), items[i].getText(5) };
 							items[i].dispose();
 							TableItem item = new TableItem(table, SWT.NONE, j);
 							item.setText(values);
@@ -172,8 +190,8 @@ public class ListStudent {
 
 		Button btnAdd = new Button(parent, SWT.NONE);
 		btnAdd.setText("Add");
-		//Display display=new Display();
-		//Shell a=new Shell(display);
+		// Display display=new Display();
+		// Shell a=new Shell(display);
 //		btnAdd.addListener(SWT.Selection, new Listener() {
 //			@Override
 //			public void handleEvent(Event arg0) {
@@ -188,18 +206,17 @@ public class ListStudent {
 //		});
 
 		btnAdd.addSelectionListener(new SelectionAdapter() {
-		    @Override
-		    public void widgetSelected(SelectionEvent e) {
-		        WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardStudent());
-		        if (wizardDialog.open() == Window.OK) {
-		            System.out.println("Ok pressed");
-		        } else {
-		            System.out.println("Cancel pressed");
-		        }
-		    }
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardStudent());
+				if (wizardDialog.open() == Window.OK) {
+					System.out.println("Ok pressed");
+				} else {
+					System.out.println("Cancel pressed");
+				}
+			}
 		});
-		
-		
+
 		Button buttonDelete = new Button(parent, SWT.NONE);
 		buttonDelete.setText("Delete");
 		buttonDelete.addListener(SWT.Selection, new Listener() {
@@ -211,7 +228,7 @@ public class ListStudent {
 					for (int i = selectedRows.length - 1; i >= 0; i--) {
 						int studentID = Integer.parseInt(table.getSelection()[i].getText());
 						ServerConnector.getInstance().getStudentService().delete(studentID);
-					}					
+					}
 					MessageDialog.openInformation(new Shell(), "Confirm", "Delete successfull");
 				} else {
 					MessageDialog.openWarning(new Shell(), "Warning", "Please choose a student to delete");
@@ -222,33 +239,53 @@ public class ListStudent {
 		Button checkUpdate = new Button(parent, SWT.NONE);
 		checkUpdate.setText("Edit");
 		checkUpdate.addSelectionListener(new SelectionAdapter() {
-		    @Override
-		    public void widgetSelected(SelectionEvent e) {
-		    	int idStudent = Integer.parseInt(table.getSelection()[0].getText());
-		    	System.out.println("ID STUDENT: "+ idStudent);
-		    	Student student = ServerConnector.getInstance().getStudentService().findById(idStudent);
-		        WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardStudentEdit(student));
-		        if (wizardDialog.open() == Window.OK) {
-		            System.out.println("Ok pressed");
-		        } else {
-		            System.out.println("Cancel pressed");
-		        }
-		    }
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int idStudent = Integer.parseInt(table.getSelection()[0].getText());
+				Student student = ServerConnector.getInstance().getStudentService().findById(idStudent);
+				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardStudentEdit(student));
+				if (wizardDialog.open() == Window.OK) {
+					System.out.println("Ok pressed");
+				} else {
+					System.out.println("Cancel pressed");
+				}
+			}
 		});
+
+
+		// List student of class
+
+		labelClass = new Label(parent, SWT.NONE);
+		labelClass.setText("                                                           ");
+
+		tableClass = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
+		tableClass.setVisible(false);
 		
-//		checkUpdate.addListener(SWT.Selection, new Listener() {
-//			@Override
-//			public void handleEvent(Event arg0) {
-//				if (table.getSelection().length > 0) {
-//					int studentID = Integer.parseInt(table.getSelection()[0].getText());
-//					EditStudent editShell = new EditStudent();
-//					Student student = ServerConnector.getInstance().getStudentService().findById(studentID);
-//					editShell.openShell(Display.getCurrent(), student);
-//				} else {
-//					MessageDialog.openWarning(new Shell(), "Warning", "Please choose a student to edit");
-//				}
-//			}
-//		});
+		GridData gd_table1 = new GridData(SWT.TOP, SWT.FILL, true, true, 2, 1);// SWT.TOP
+		gd_table1.heightHint = 120;
+		gd_table1.widthHint = 160;
+		tableClass.setLayoutData(gd_table1);
+
+		tableClass.setHeaderVisible(true);
+		tableClass.setLinesVisible(true);
+
+		final TableColumn columnCodeClass = new TableColumn(tableClass, SWT.NONE);
+		columnCodeClass.setText("Class ID");
+		final TableColumn columnNameClass = new TableColumn(tableClass, SWT.NONE);
+		columnNameClass.setText("Name");
+
+		table.addListener(SWT.DefaultSelection, new Listener() {
+			int studentID;
+
+			public void handleEvent(Event e) {
+				TableItem[] selection = table.getSelection();
+				for (int i = 0; i < selection.length; i++) {
+					studentID = Integer.parseInt(selection[i].getText());
+				}
+				//listClassFromStudent(studentID);
+			}
+		});
+
 	}
 
 	public static void updateStudentTable(List<Student> l) {
@@ -262,14 +299,6 @@ public class ListStudent {
 			item.setText(3, String.valueOf(l.get(i).getAge()));
 			item.setText(4, String.valueOf(l.get(i).getEmail()));
 			item.setText(5, String.valueOf(l.get(i).getAddress()));
-
-//			Set<Clazz> classes=l.get(i).getClasses();
-//			String str=",";
-//			
-//			for (Clazz a:classes) {
-//				str=str+a.getName();
-//			}
-//			item.setText(4, str);
 		}
 		for (int j = 0; j < table.getColumnCount(); j++) {
 			table.getColumn(j).pack();
@@ -278,6 +307,24 @@ public class ListStudent {
 		labelStudentSum.setText("Total: " + sum);
 		System.out.println(sum);
 		logger.info(l.toString());
-		
+
+	}
+
+	public static void listClassFromStudent(int studentID) {
+		tableClass.removeAll();
+		tableClass.setVisible(true);
+		Student student = ServerConnector.getInstance().getStudentService().findById(studentID);
+		labelClass.setText("LIST CLASS OF " + student.getName());
+
+		Set<Clazz> list = student.getClasses();
+		for (Clazz clazz : list) {
+			TableItem item = new TableItem(tableClass, SWT.BORDER);
+			item.setText(0, clazz.getCode());
+			item.setText(1, clazz.getName());
+		}
+
+		for (int j = 0; j < tableClass.getColumnCount(); j++) {
+			tableClass.getColumn(j).pack();
+		}
 	}
 }

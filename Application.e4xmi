@@ -9,7 +9,7 @@
             <children xsi:type="basic:Part" xmi:id="_XxQY0K9eEeml6cbjhUJDVw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/com.rcp.ListStudent" label="Student"/>
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_swNCsK-EEeml6cbjhUJDVw" elementId="rcptest.partstack.0">
-            <children xsi:type="basic:Part" xmi:id="_uT0xkK-EEeml6cbjhUJDVw" elementId="rcptest.part.detail" label="Detail" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png"/>
+            <children xsi:type="basic:Part" xmi:id="_uT0xkK-EEeml6cbjhUJDVw" elementId="rcptest.part.detail" contributionURI="bundleclass://RCPTest/detail.DetailOfClass" label="Detail" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png"/>
           </children>
         </children>
       </children>
