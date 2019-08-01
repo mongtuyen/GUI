@@ -1,5 +1,44 @@
 package test;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
+public class ShellDialogExample {
+
+  public static void main(String[] args) {
+    Display display = new Display();
+    Shell shell = new Shell(display);
+    
+    Text t = new Text(shell, SWT.SINGLE | SWT.BORDER);
+    t.setBounds(10, 85, 100, 32);
+
+    Text t2 = new Text(shell, SWT.SINGLE | SWT.BORDER);
+    t2.setBounds(10, 25, 100, 32);
+
+    t2.addListener(SWT.FocusIn, new Listener() {
+      public void handleEvent(Event e) {
+        System.out.println("focus in");
+      }
+    });
+    t2.addListener(SWT.FocusOut, new Listener() {
+      public void handleEvent(Event e) {
+       System.out.println("focus out");
+      }
+    });
+    
+    shell.setSize(200, 200);
+    shell.open();
+    while (!shell.isDisposed()) {
+      if (!display.readAndDispatch())
+        display.sleep();
+    }
+    display.dispose();
+  }
+}
 //import org.eclipse.swt.SWT;
 //import org.eclipse.swt.graphics.Image;
 //import org.eclipse.swt.graphics.Rectangle;
@@ -75,44 +114,44 @@ package test;
 //  }
 //}
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
-
-public class ShellDialogExample {
-
-	public static void main(String[] args) {
-		Display display = new Display();
-		Shell shell = new Shell(display);
-		final Table table = new Table(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		for (int i = 0; i < 16; i++) {
-			TableItem item = new TableItem(table, 0);
-			item.setText("Item " + i);
-		}
-		table.setBounds(0, 0, 100, 100);
-		table.addListener(SWT.DefaultSelection, new Listener() {
-			public void handleEvent(Event e) {
-				String string = "";
-				TableItem[] selection = table.getSelection();
-				for (int i = 0; i < selection.length; i++)
-					string += selection[i] + " ";
-				System.out.println("DefaultSelection={" + string + "}");
-			}
-		});
-
-		shell.pack();
-		shell.open();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
-		}
-		display.dispose();
-	}
-}
+//import org.eclipse.swt.SWT;
+//import org.eclipse.swt.widgets.Display;
+//import org.eclipse.swt.widgets.Event;
+//import org.eclipse.swt.widgets.Listener;
+//import org.eclipse.swt.widgets.Shell;
+//import org.eclipse.swt.widgets.Table;
+//import org.eclipse.swt.widgets.TableItem;
+//
+//public class ShellDialogExample {
+//
+//	public static void main(String[] args) {
+//		Display display = new Display();
+//		Shell shell = new Shell(display);
+//		final Table table = new Table(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+//		for (int i = 0; i < 16; i++) {
+//			TableItem item = new TableItem(table, 0);
+//			item.setText("Item " + i);
+//		}
+//		table.setBounds(0, 0, 100, 100);
+//		table.addListener(SWT.DefaultSelection, new Listener() {
+//			public void handleEvent(Event e) {
+//				String string = "";
+//				TableItem[] selection = table.getSelection();
+//				for (int i = 0; i < selection.length; i++)
+//					string += selection[i] + " ";
+//				System.out.println("DefaultSelection={" + string + "}");
+//			}
+//		});
+//
+//		shell.pack();
+//		shell.open();
+//		while (!shell.isDisposed()) {
+//			if (!display.readAndDispatch())
+//				display.sleep();
+//		}
+//		display.dispose();
+//	}
+//}
 
 //import org.eclipse.swt.SWT;
 //import org.eclipse.swt.graphics.Point;

@@ -40,11 +40,19 @@ public class ListStudent {
 
 	final static Logger logger = Logger.getLogger(ListStudent.class);
 	private static Table table;
-	
+	private static Table tableClass;
 	static int sum;
 	static Label labelStudentSum;
-	private static Table tableClass;
+	static int studentID;		
 	static Label labelClass;
+
+	public static int getStudentID() {
+		return studentID;
+	}
+
+	public void setStudentID(int studentID) {
+		this.studentID = studentID;
+	}
 
 	public static Table getTable() {
 		return table;
@@ -52,6 +60,30 @@ public class ListStudent {
 
 	public static void setTable(Table table) {
 		ListStudent.table = table;
+	}
+
+	public static int getSum() {
+		return sum;
+	}
+
+	public static void setSum(int sum) {
+		ListStudent.sum = sum;
+	}
+
+	public static Label getLabelStudentSum() {
+		return labelStudentSum;
+	}
+
+	public static void setLabelStudentSum(Label labelStudentSum) {
+		ListStudent.labelStudentSum = labelStudentSum;
+	}
+
+	public static Table getTableClass() {
+		return tableClass;
+	}
+
+	public static void setTableClass(Table tableClass) {
+		ListStudent.tableClass = tableClass;
 	}
 
 	public static Label getLabelClass() {
@@ -69,7 +101,7 @@ public class ListStudent {
 		label_1.setText("LIST STUDENT");
 		label_1.setBounds(130, 26, 100, 15);
 
-		table = new Table(parent, SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
+		table = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL| SWT.FULL_SELECTION | SWT.MULTI);
 		GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gd_table.heightHint = 120;
 		table.setLayoutData(gd_table);
@@ -190,20 +222,6 @@ public class ListStudent {
 
 		Button btnAdd = new Button(parent, SWT.NONE);
 		btnAdd.setText("Add");
-		// Display display=new Display();
-		// Shell a=new Shell(display);
-//		btnAdd.addListener(SWT.Selection, new Listener() {
-//			@Override
-//			public void handleEvent(Event arg0) {
-//				//AddStudent addShell = new AddStudent();
-//				//AddStudentComposist add=new AddStudentComposist(a, 1);
-
-//				//addShell.openShell(Display.getCurrent());
-//				//add.getDisplay();
-//				
-//				
-//			}
-//		});
 
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -223,7 +241,6 @@ public class ListStudent {
 			@Override
 			public void handleEvent(Event arg0) {
 				int[] selectedRows = table.getSelectionIndices();
-				System.out.println("lenn:" + selectedRows.length);
 				if (table.getSelection().length > 0) {
 					for (int i = selectedRows.length - 1; i >= 0; i--) {
 						int studentID = Integer.parseInt(table.getSelection()[i].getText());
@@ -274,8 +291,8 @@ public class ListStudent {
 		final TableColumn columnNameClass = new TableColumn(tableClass, SWT.NONE);
 		columnNameClass.setText("Name");
 
-		table.addListener(SWT.DefaultSelection, new Listener() {
-			int studentID;
+		table.addListener(SWT.Selection, new Listener() {
+			
 
 			public void handleEvent(Event e) {
 				TableItem[] selection = table.getSelection();
@@ -311,6 +328,7 @@ public class ListStudent {
 	}
 
 	public static void listClassFromStudent(int studentID) {
+		System.out.println("student id: "+studentID); 
 		tableClass.removeAll();
 		tableClass.setVisible(true);
 		Student student = ServerConnector.getInstance().getStudentService().findById(studentID);

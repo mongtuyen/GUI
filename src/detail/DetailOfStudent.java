@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
+import com.rcp.ListClass;
 import com.rcp.ListStudent;
 import com.tuyen.model.Clazz;
 import com.tuyen.model.Student;
@@ -39,38 +40,84 @@ import edit.MyWizardStudentEdit;
 
 public class DetailOfStudent {
 
+	
+	//class
+//	private static Table clazz= ListClass.getTable();
+//	private static Table tableDetailStudent;
+//	static Label textClass;
+	
+	
+	//student
+	
 	final static Logger logger = Logger.getLogger(DetailOfStudent.class);
+	private static Table table=ListStudent.getTable();
+	private static Table studentTable;
 	static int sum;
 	static Label labelStudentSum;
-	private static Table tableClass;
-	private static Table table=ListStudent.getTable();
+	static int studentID;		
 	static Label labelClass;
 
+	
 	@PostConstruct
 	public void createComposite(Composite parent) throws IOException {
-		parent.setLayout(new GridLayout(1, false));	
-
-		// List student of class
+		parent.setLayout(new GridLayout(1, false));
+			
+		//class
+		
+//		textClass = new Label(parent, SWT.NONE);
+//		textClass.setText("                                                           ");
+//		tableDetailStudent = new Table(parent,
+//				SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI | SWT.VIRTUAL);
+//		tableDetailStudent.setVisible(false);
+//		GridData gd_table1 = new GridData(SWT.TOP, SWT.TOP, true, true, 2, 1);// SWT.TOP
+//		gd_table1.heightHint = 160;
+//		gd_table1.widthHint = 160;
+//		tableDetailStudent.setLayoutData(gd_table1);
+//		tableDetailStudent.setHeaderVisible(true);
+//		tableDetailStudent.setLinesVisible(true);
+//		final TableColumn column3 = new TableColumn(tableDetailStudent, SWT.NONE);
+//		column3.setText("Student ID");
+//		final TableColumn column4 = new TableColumn(tableDetailStudent, SWT.NONE);
+//		column4.setText("Name");
+//		clazz.addListener(SWT.DefaultSelection, new Listener() {
+//			int classID;
+//
+//			public void handleEvent(Event e) {
+//				TableItem[] selection = clazz.getSelection();
+//				for (int i = 0; i < selection.length; i++) {
+//					classID = Integer.parseInt(selection[i].getText());
+//
+//				}
+//				logger.info("IIIIIIIIDDDDDDDD" + classID);
+//				System.out.println("fdsgsssss" + classID);
+//				listStudentFromClass(classID);
+//			}
+//		});
+		
+		
+		// student
 
 		labelClass = new Label(parent, SWT.NONE);
-		labelClass.setText("                                                           ");
+		labelClass.setText("gi                                                           ");
 
-		tableClass = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
-		tableClass.setVisible(false);
+		studentTable = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
+		studentTable.setVisible(false);
 		
-		GridData gd_table1 = new GridData(SWT.TOP, SWT.FILL, true, true, 2, 1);// SWT.TOP
+		GridData gd_table1 = new GridData(SWT.TOP, SWT.TOP, true, true, 2, 1);// SWT.TOP
 		gd_table1.heightHint = 160;
-		gd_table1.widthHint = 160;
-		tableClass.setLayoutData(gd_table1);
-		tableClass.setHeaderVisible(true);
-		tableClass.setLinesVisible(true);
+		gd_table1.widthHint = 300;
+		studentTable.setLayoutData(gd_table1);
 
-		final TableColumn columnCodeClass = new TableColumn(tableClass, SWT.NONE);
+		studentTable.setHeaderVisible(true);
+		studentTable.setLinesVisible(true);
+
+		final TableColumn columnCodeClass = new TableColumn(studentTable, SWT.NONE);
 		columnCodeClass.setText("Class ID");
-		final TableColumn columnNameClass = new TableColumn(tableClass, SWT.NONE);
+		final TableColumn columnNameClass = new TableColumn(studentTable, SWT.NONE);
 		columnNameClass.setText("Name");
+
 		table.addListener(SWT.DefaultSelection, new Listener() {
-			int studentID;
+			
 
 			public void handleEvent(Event e) {
 				TableItem[] selection = table.getSelection();
@@ -80,24 +127,42 @@ public class DetailOfStudent {
 				listClassFromStudent(studentID);
 			}
 		});
+
 	}
+	//class
+//	public static void listStudentFromClass(int clazzID) {
+//		tableDetailStudent.removeAll();
+//		tableDetailStudent.setVisible(true);
+//		Clazz clazz = ServerConnector.getInstance().getClassService().findById(clazzID);
+//		textClass.setText("LIST STUDENT OF CLASS " + clazz.getCode());
+//
+//		Set<Student> list = clazz.getStudents();
+//		for (Student student : list) {
+//			TableItem item = new TableItem(tableDetailStudent, SWT.BORDER);
+//			item.setText(0, student.getCode());
+//			item.setText(1, student.getName());
+//		}
+//		for (int j = 0; j < tableDetailStudent.getColumnCount(); j++) {
+//			tableDetailStudent.getColumn(j).pack();
+//		}
+//	}
 
-
+//student
 	public static void listClassFromStudent(int studentID) {
-		tableClass.removeAll();
-		tableClass.setVisible(true);
+		studentTable.removeAll();
+		studentTable.setVisible(true);
 		Student student = ServerConnector.getInstance().getStudentService().findById(studentID);
-		labelClass.setText("LIST CLASS OF " + student.getName());
+		labelClass.setText("List class of student " + student.getName());
 
 		Set<Clazz> list = student.getClasses();
 		for (Clazz clazz : list) {
-			TableItem item = new TableItem(tableClass, SWT.BORDER);
+			TableItem item = new TableItem(studentTable, SWT.BORDER);
 			item.setText(0, clazz.getCode());
 			item.setText(1, clazz.getName());
 		}
 
-		for (int j = 0; j < tableClass.getColumnCount(); j++) {
-			tableClass.getColumn(j).pack();
+		for (int j = 0; j < studentTable.getColumnCount(); j++) {
+			studentTable.getColumn(j).pack();
 		}
 	}
 }

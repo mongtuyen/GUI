@@ -54,9 +54,16 @@ public class ListClass {
 	
 	static Label sumStudent ;
 	
+	int classID;
 	
-	
-	
+	public int getClassID() {
+		return classID;
+	}
+
+	public void setClassID(int classID) {
+		this.classID = classID;
+	}
+
 	public static Table getTable() {
 		return table;
 	}
@@ -116,6 +123,11 @@ public class ListClass {
 		final TableColumn column2 = new TableColumn(table, SWT.NONE);
 		column2.setText("Name");
 
+		final TableColumn columntool = new TableColumn(table, SWT.NONE);
+		columntool.setText("  ");
+		final TableColumn columndelete = new TableColumn(table, SWT.NONE);
+		columndelete.setText("  ");
+		
 		// sort id
 		column0.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
@@ -254,7 +266,7 @@ public class ListClass {
 		tableStudent.setVisible(false);
 		
 		GridData gd_table1 = new GridData(SWT.TOP, SWT.FILL, true, true, 2, 1);// SWT.TOP
-		gd_table1.heightHint = 80;
+		gd_table1.heightHint = 120;
 		gd_table1.widthHint=160;
 		tableStudent.setLayoutData(gd_table1);
 
@@ -273,20 +285,20 @@ public class ListClass {
 		final TableColumn column4 = new TableColumn(tableStudent, SWT.NONE);
 		column4.setText("Name");
 		
-		table.addListener(SWT.DefaultSelection, new Listener() {
-			int classID;
-			public void handleEvent(Event e) {
-				//String string = "";
-				TableItem[] selection = table.getSelection();
-				for (int i = 0; i < selection.length; i++) {
-					classID= Integer.parseInt(selection[i].getText());
-					//string += selection[i].getText() + "gg ";
-				}
-				//System.out.println("DefaultSelection={" + string + "}");
-				
-				//listStudentFromClass(classID);
-			}
-		});
+//		table.addListener(SWT.Selection, new Listener() {
+//			//classID;
+//			public void handleEvent(Event e) {
+//				String string = "";
+//				TableItem[] selection = table.getSelection();
+//				for (int i = 0; i < selection.length; i++) {
+//					classID= Integer.parseInt(selection[i].getText());
+//					string += selection[i].getText() + "gg ";
+//				}
+//				System.out.println("DefaultSelection={" + string + "}");
+//				
+//				//listStudentFromClass(classID);
+//			}
+//		});
 		
 //		Menu menu =new Menu(parent);
 //		MenuItem view =  new MenuItem(menu,SWT.NONE);
@@ -320,6 +332,9 @@ public class ListClass {
 			item.setText(0, String.valueOf(list.get(i).getId()));
 			item.setText(2, list.get(i).getName());
 			item.setText(1,list.get(i).getCode());
+			item.setText(3, "Edit");
+			
+			item.setText(4, "Delete");
 		}
 		for (int j = 0; j < table.getColumnCount(); j++) {
 			table.getColumn(j).pack();
@@ -330,23 +345,23 @@ public class ListClass {
 
 	}
 	
-	public static void listStudentFromClass(int clazzID) {
-		tableStudent.removeAll();
-		tableStudent.setVisible(true);
-		
-		Clazz clazz=ServerConnector.getInstance().getClassService().findById(clazzID);
-		sumStudent.setText("LIST STUDENT OF CLASS " +clazz.getCode());
-		
-		Set<Student> list=clazz.getStudents();
-		for(Student student:list) {
-			TableItem item = new TableItem(tableStudent, SWT.BORDER);
-			item.setText(0, student.getCode());		
-			item.setText(1, student.getName());		
-		}
-
-		for (int j = 0; j < tableStudent.getColumnCount(); j++) {
-			tableStudent.getColumn(j).pack();
-		}
-	}
+//	public static void listStudentFromClass(int clazzID) {
+//		tableStudent.removeAll();
+//		tableStudent.setVisible(true);
+//		
+//		Clazz clazz=ServerConnector.getInstance().getClassService().findById(clazzID);
+//		sumStudent.setText("LIST STUDENT OF CLASS " +clazz.getCode());
+//		
+//		Set<Student> list=clazz.getStudents();
+//		for(Student student:list) {
+//			TableItem item = new TableItem(tableStudent, SWT.BORDER);
+//			item.setText(0, student.getCode());		
+//			item.setText(1, student.getName());		
+//		}
+//
+//		for (int j = 0; j < tableStudent.getColumnCount(); j++) {
+//			tableStudent.getColumn(j).pack();
+//		}
+//	}
 
 }
