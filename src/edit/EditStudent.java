@@ -17,8 +17,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
@@ -40,9 +42,8 @@ public class EditStudent extends WizardPage {
 	private Text age;
 	Student student;
 	Set<Clazz> setClass = new HashSet<>();
-	// private Composite container;
 	Clazz clazz;
-	// private Composite container;
+	static List list;
 
 	public EditStudent(Student student) {
 		super("wizardPage");
@@ -65,9 +66,6 @@ public class EditStudent extends WizardPage {
 
 		Label label1 = new Label(container, SWT.NONE);
 		label1.setText("Student ID");
-
-		// Combo travelDate = new Combo(container, SWT.BORDER | SWT.READ_ONLY);
-		// travelDate.setLayoutData(gd);
 
 		code = new Text(container, SWT.BORDER | SWT.SINGLE);
 		code.setText(student.getCode());
@@ -162,25 +160,36 @@ public class EditStudent extends WizardPage {
 		Label label6 = new Label(container, SWT.NONE);
 		label6.setText("Class");
 
-		final List list = new List(container, SWT.BORDER | SWT.MULTI| SWT.V_SCROLL | SWT.H_SCROLL);
+		// register
+		Composite enroll = new Composite(container, SWT.BORDER);
+		setControl(enroll);
+		enroll.setLayout(layout);
+		GridData gd_composite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		GridLayout layoutEnroll = new GridLayout();
+		enroll.setLayout(layoutEnroll);
+		layoutEnroll.numColumns = 3;
+		gd_composite.heightHint = 90;
+		gd_composite.widthHint = 320;
+		enroll.setLayoutData(gd_composite);
+
+		list = new List(enroll, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.LEFT);
 		int size = ServerConnector.getInstance().getClassService().findAll().size();
 		for (int i = 0; i < ServerConnector.getInstance().getClassService().findAll().size(); i++) {
 			list.add(ServerConnector.getInstance().getClassService().findAll().get(i).getName());
 		}
-		GridData gd_list = new GridData(SWT.NONE, SWT.TOP, true, true, 1, 1);// 
+		GridData gd_list = new GridData(SWT.NONE, SWT.TOP, true, true, 1, 1);
 		gd_list.heightHint = 60;
-		gd_list.widthHint=100;
-		
+		gd_list.widthHint = 100;
+
 		list.setLayoutData(gd_list);
 
-		final Button b1 = new Button(container, SWT.NONE | SWT.PUSH);
+		final Button b1 = new Button(enroll, SWT.NONE | SWT.PUSH | SWT.CENTER);
 		b1.setText("Register");
 
-		final List listUpdate = new List(container, SWT.BORDER | SWT.MULTI| SWT.V_SCROLL | SWT.H_SCROLL);
+		final List listUpdate = new List(enroll, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.RIGHT);
 		setClass = student.getClasses();
 		for (Clazz tmp : setClass) {
 			listUpdate.add(tmp.getName());
-
 		}
 		listUpdate.setLayoutData(gd_list);
 		b1.addSelectionListener(new SelectionAdapter() {
@@ -190,7 +199,7 @@ public class EditStudent extends WizardPage {
 				String selected[] = list.getSelection();
 				for (int i = 0; i < selected.length; i++) {
 					listUpdate.add(selected[i]);
-
+					list.remove(selected[i]);
 					for (int t = 0; t < ServerConnector.getInstance().getClassService().findAll().size(); t++) {
 						if (ServerConnector.getInstance().getClassService().findAll().get(t).getName()
 								.equals(selected[i])) {
@@ -198,7 +207,6 @@ public class EditStudent extends WizardPage {
 							logger.info("ID selected" + classID);
 							clazz = ServerConnector.getInstance().getClassService().findById(classID);
 							setClass.add(clazz);
-							System.out.println(clazz.getName());
 						}
 
 					}
@@ -211,6 +219,7 @@ public class EditStudent extends WizardPage {
 		menu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e) {
 				int selected = listUpdate.getSelectionIndex();
+				String selectedText[] = listUpdate.getSelection();
 
 				if (selected < 0 || selected >= listUpdate.getItemCount())
 					return;
@@ -225,10 +234,21 @@ public class EditStudent extends WizardPage {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						listUpdate.remove(selected);
+						for (int i = 0; i < selectedText.length; i++) {
+							list.add(selectedText[i]);
+						}
 					}
 
 				});
 
+			}
+		});
+		listUpdate.addListener(SWT.MenuDetect, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				if (listUpdate.getSelectionCount() <= 0) {
+					event.doit = false;
+				}
 			}
 		});
 		code.setLayoutData(gd);

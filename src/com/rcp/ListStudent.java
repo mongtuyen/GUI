@@ -14,6 +14,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -22,6 +23,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -43,16 +46,16 @@ public class ListStudent {
 	private static Table tableClass;
 	static int sum;
 	static Label labelStudentSum;
-	static int studentID;		
+	// static int studentID;
 	static Label labelClass;
 
-	public static int getStudentID() {
-		return studentID;
-	}
-
-	public void setStudentID(int studentID) {
-		this.studentID = studentID;
-	}
+//	public static int getStudentID() {
+//		return studentID;
+//	}
+//
+//	public void setStudentID(int studentID) {
+//		this.studentID = studentID;
+//	}
 
 	public static Table getTable() {
 		return table;
@@ -97,11 +100,15 @@ public class ListStudent {
 	@PostConstruct
 	public void createComposite(Composite parent) throws IOException {
 		parent.setLayout(new GridLayout(1, false));
+
+		// Color blue = parent.getSystemColor(SWT.COLOR_BLUE);
+		// Color white = display.getSystemColor(SWT.COLOR_WHITE);
+
 		Label label_1 = new Label(parent, SWT.NONE);
 		label_1.setText("LIST STUDENT");
 		label_1.setBounds(130, 26, 100, 15);
 
-		table = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL| SWT.FULL_SELECTION | SWT.MULTI);
+		table = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI | SWT.BORDER);
 		GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gd_table.heightHint = 120;
 		table.setLayoutData(gd_table);
@@ -220,23 +227,23 @@ public class ListStudent {
 		List<Student> l = ServerConnector.getInstance().getStudentService().findAll();
 		updateStudentTable(l);
 
-		Button btnAdd = new Button(parent, SWT.NONE);
-		btnAdd.setText("Add");
-
-		btnAdd.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardStudent());
-				if (wizardDialog.open() == Window.OK) {
-					System.out.println("Ok pressed");
-				} else {
-					System.out.println("Cancel pressed");
-				}
-			}
-		});
+//		Button btnAdd = new Button(parent, SWT.NONE);
+//		btnAdd.setText("Add");
+//
+//		btnAdd.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardStudent());
+//				if (wizardDialog.open() == Window.OK) {
+//					System.out.println("Ok pressed");
+//				} else {
+//					System.out.println("Cancel pressed");
+//				}
+//			}
+//		});
 
 		Button buttonDelete = new Button(parent, SWT.NONE);
-		buttonDelete.setText("Delete");
+		buttonDelete.setText("Delete all");
 		buttonDelete.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
@@ -252,12 +259,27 @@ public class ListStudent {
 				}
 			}
 		});
+		Menu menu = new Menu(parent);
+		MenuItem remove = new MenuItem(menu, SWT.NONE);
+		remove.setText("Delete");
+		remove.addListener(SWT.Selection, new Listener() {
 
-		Button checkUpdate = new Button(parent, SWT.NONE);
-		checkUpdate.setText("Edit");
-		checkUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void handleEvent(Event event) {
+
+				int idStudent = Integer.parseInt(table.getSelection()[0].getText());
+				ServerConnector.getInstance().getStudentService().delete(idStudent);
+				MessageDialog.openInformation(new Shell(), "Confirm", "Delete successfull");
+
+			}
+		});
+
+		MenuItem update = new MenuItem(menu, SWT.NONE);
+		update.setText("Update");
+		update.addListener(SWT.Selection, new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
 				int idStudent = Integer.parseInt(table.getSelection()[0].getText());
 				Student student = ServerConnector.getInstance().getStudentService().findById(idStudent);
 				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardStudentEdit(student));
@@ -268,16 +290,40 @@ public class ListStudent {
 				}
 			}
 		});
+		table.addListener(SWT.MenuDetect, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				if (table.getSelectionCount() <= 0) {
+					event.doit = false;
+				}
+			}
+		});
+		table.setMenu(menu);
 
+//		Button checkUpdate = new Button(parent, SWT.NONE);
+//		checkUpdate.setText("Edit");
+//		checkUpdate.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				int idStudent = Integer.parseInt(table.getSelection()[0].getText());
+//				Student student = ServerConnector.getInstance().getStudentService().findById(idStudent);
+//				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardStudentEdit(student));
+//				if (wizardDialog.open() == Window.OK) {
+//					System.out.println("Ok pressed");
+//				} else {
+//					System.out.println("Cancel pressed");
+//				}
+//			}
+//		});
 
 		// List student of class
 
 		labelClass = new Label(parent, SWT.NONE);
 		labelClass.setText("                                                           ");
 
-		tableClass = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
+		tableClass = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI | SWT.BORDER);
 		tableClass.setVisible(false);
-		
+
 		GridData gd_table1 = new GridData(SWT.TOP, SWT.FILL, true, true, 2, 1);// SWT.TOP
 		gd_table1.heightHint = 120;
 		gd_table1.widthHint = 160;
@@ -291,17 +337,17 @@ public class ListStudent {
 		final TableColumn columnNameClass = new TableColumn(tableClass, SWT.NONE);
 		columnNameClass.setText("Name");
 
-		table.addListener(SWT.Selection, new Listener() {
-			
-
-			public void handleEvent(Event e) {
-				TableItem[] selection = table.getSelection();
-				for (int i = 0; i < selection.length; i++) {
-					studentID = Integer.parseInt(selection[i].getText());
-				}
-				//listClassFromStudent(studentID);
-			}
-		});
+//		table.addListener(SWT.Selection, new Listener() {
+//			
+//
+//			public void handleEvent(Event e) {
+//				TableItem[] selection = table.getSelection();
+//				for (int i = 0; i < selection.length; i++) {
+//					studentID = Integer.parseInt(selection[i].getText());
+//				}
+//				//listClassFromStudent(studentID);
+//			}
+//		});
 
 	}
 
@@ -327,22 +373,22 @@ public class ListStudent {
 
 	}
 
-	public static void listClassFromStudent(int studentID) {
-		System.out.println("student id: "+studentID); 
-		tableClass.removeAll();
-		tableClass.setVisible(true);
-		Student student = ServerConnector.getInstance().getStudentService().findById(studentID);
-		labelClass.setText("LIST CLASS OF " + student.getName());
-
-		Set<Clazz> list = student.getClasses();
-		for (Clazz clazz : list) {
-			TableItem item = new TableItem(tableClass, SWT.BORDER);
-			item.setText(0, clazz.getCode());
-			item.setText(1, clazz.getName());
-		}
-
-		for (int j = 0; j < tableClass.getColumnCount(); j++) {
-			tableClass.getColumn(j).pack();
-		}
-	}
+//	public static void listClassFromStudent(int studentID) {
+//		System.out.println("student id: "+studentID); 
+//		tableClass.removeAll();
+//		tableClass.setVisible(true);
+//		Student student = ServerConnector.getInstance().getStudentService().findById(studentID);
+//		labelClass.setText("LIST CLASS OF " + student.getName());
+//
+//		Set<Clazz> list = student.getClasses();
+//		for (Clazz clazz : list) {
+//			TableItem item = new TableItem(tableClass, SWT.BORDER);
+//			item.setText(0, clazz.getCode());
+//			item.setText(1, clazz.getName());
+//		}
+//
+//		for (int j = 0; j < tableClass.getColumnCount(); j++) {
+//			tableClass.getColumn(j).pack();
+//		}
+//	}
 }

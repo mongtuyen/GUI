@@ -1,4 +1,4 @@
-package com.rcp;
+package handler;
 
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
