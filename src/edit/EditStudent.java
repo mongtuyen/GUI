@@ -183,16 +183,17 @@ public class EditStudent extends WizardPage {
 
 		list.setLayoutData(gd_list);
 
-		final Button b1 = new Button(enroll, SWT.NONE | SWT.PUSH | SWT.CENTER);
-		b1.setText("Register");
+		final Button buttonRegister = new Button(enroll, SWT.NONE | SWT.PUSH | SWT.CENTER);
+		buttonRegister.setText("Register");
 
 		final List listUpdate = new List(enroll, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.RIGHT);
 		setClass = student.getClasses();
 		for (Clazz tmp : setClass) {
 			listUpdate.add(tmp.getName());
+			list.remove(tmp.getName());
 		}
 		listUpdate.setLayoutData(gd_list);
-		b1.addSelectionListener(new SelectionAdapter() {
+		buttonRegister.addSelectionListener(new SelectionAdapter() {
 			int classID;
 
 			public void widgetSelected(SelectionEvent e) {
@@ -258,7 +259,7 @@ public class EditStudent extends WizardPage {
 		age.setLayoutData(gd);
 
 		setControl(container);
-		setPageComplete(false);
+		//setPageComplete(false);
 
 	}
 

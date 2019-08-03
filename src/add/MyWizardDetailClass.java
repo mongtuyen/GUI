@@ -11,7 +11,7 @@ import connect.ServerConnector;
 public class MyWizardDetailClass extends Wizard {
 
 	protected AddDetailClass one;
-
+	Clazz clazz;
 	public MyWizardDetailClass() {
 		super();
 		setNeedsProgressMonitor(true);
@@ -32,7 +32,7 @@ public class MyWizardDetailClass extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		Clazz clazz = one.getClazz();
+		 clazz = one.getClazz();
 		ServerConnector.getInstance().getClassService().update(clazz);
 		return true;
 	}

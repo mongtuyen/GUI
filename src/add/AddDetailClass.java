@@ -54,10 +54,10 @@ public class AddDetailClass extends WizardPage {
 
 		// input text
 		Label label2 = new Label(container, SWT.NONE);
-		label2.setText("Class ID" + clazz.getCode());
+		label2.setText("Class ID: " + clazz.getCode());
 
 		Label label3 = new Label(container, SWT.NONE);
-		label3.setText("Name" + clazz.getName());
+		label3.setText("Name: " + clazz.getName());
 
 		Label label1 = new Label(container, SWT.NONE);
 		label1.setText("List student");
@@ -72,7 +72,7 @@ public class AddDetailClass extends WizardPage {
 		gd_composite.heightHint = 230;
 		gd_composite.widthHint = 400;
 		enroll.setLayoutData(gd_composite);
-
+		// List student default
 		list = new List(enroll, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.LEFT);
 		int size = ServerConnector.getInstance().getStudentService().findAll().size();
 		for (int i = 0; i < ServerConnector.getInstance().getStudentService().findAll().size(); i++) {
@@ -86,16 +86,17 @@ public class AddDetailClass extends WizardPage {
 
 		list.setLayoutData(gd_list);
 
-		final Button b1 = new Button(enroll, SWT.NONE | SWT.PUSH | SWT.CENTER);
-		b1.setText("Add");
-
+		final Button buttonUpdate = new Button(enroll, SWT.NONE | SWT.PUSH | SWT.CENTER);
+		buttonUpdate.setText("Add");
+		// list studnet update
 		final List listUpdate = new List(enroll, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.RIGHT);
 		listUpdate.setLayoutData(gd_list);
-		for (Student a : clazz.getStudents()) {
+		setStudent = clazz.getStudents();
+		for (Student a : setStudent) {
 			listUpdate.add(a.getCode() + ": " + a.getName());
 			list.remove(a.getCode() + ": " + a.getName());
 		}
-		b1.addSelectionListener(new SelectionAdapter() {
+		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			int studentID;
 
 			public void widgetSelected(SelectionEvent e) {
@@ -104,7 +105,8 @@ public class AddDetailClass extends WizardPage {
 					listUpdate.add(selected[i]);
 					list.remove(selected[i]);
 					code = selected[i].split(":");
-
+					System.out
+							.println("-----------CODE 00--------------------------------------------------" + code[0]);
 					for (int t = 0; t < ServerConnector.getInstance().getStudentService().findAll().size(); t++) {
 						if (ServerConnector.getInstance().getStudentService().findAll().get(t).getCode()
 								.equals(code[0])) {
@@ -158,15 +160,11 @@ public class AddDetailClass extends WizardPage {
 	}
 
 	public Clazz getClazz() {
-		Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClass);
-		// clazz.setText("Class ID: " + clazz.getCode());
-		// name.setText("Name: " + clazz.getName());
-		Clazz clazz1 = new Clazz();
-		clazz1.setId(clazz.getId());
-		clazz1.setCode(clazz.getCode());
-		clazz1.setName(clazz.getName());
-		clazz1.setStudents(setStudent);
-		return clazz1;
+		clazz.setId(clazz.getId());
+		clazz.setCode(clazz.getCode());
+		clazz.setName(clazz.getName());
+		clazz.setStudents(setStudent);
+		return clazz;
 	}
 
 }

@@ -113,7 +113,7 @@ public class DetailOfClass {
 
 		// button add
 		Button btnAdd = new Button(parent, SWT.NONE);
-		btnAdd.setText("Add");
+		btnAdd.setText("Update");
 
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -156,8 +156,8 @@ public class DetailOfClass {
 				for (int i = 0; i < selection.length; i++) {
 					studentID = Integer.parseInt(selection[i].getText());
 				}
-				logger.info("IIIIIIIIDDDDDDDD student" + studentID);
-				System.out.println("fdsgsssss student" + studentID);
+//				logger.info("IIIIIIIIDDDDDDDD student" + studentID);
+//				System.out.println("fdsgsssss student" + studentID);
 				listClassFromStudent(studentID);
 			}
 		});

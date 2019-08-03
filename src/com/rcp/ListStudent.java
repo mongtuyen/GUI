@@ -259,21 +259,8 @@ public class ListStudent {
 				}
 			}
 		});
+		
 		Menu menu = new Menu(parent);
-		MenuItem remove = new MenuItem(menu, SWT.NONE);
-		remove.setText("Delete");
-		remove.addListener(SWT.Selection, new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-
-				int idStudent = Integer.parseInt(table.getSelection()[0].getText());
-				ServerConnector.getInstance().getStudentService().delete(idStudent);
-				MessageDialog.openInformation(new Shell(), "Confirm", "Delete successfull");
-
-			}
-		});
-
 		MenuItem update = new MenuItem(menu, SWT.NONE);
 		update.setText("Update");
 		update.addListener(SWT.Selection, new Listener() {
@@ -288,6 +275,19 @@ public class ListStudent {
 				} else {
 					System.out.println("Cancel pressed");
 				}
+			}
+		});
+		MenuItem remove = new MenuItem(menu, SWT.NONE);
+		remove.setText("Delete");
+		remove.addListener(SWT.Selection, new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+
+				int idStudent = Integer.parseInt(table.getSelection()[0].getText());
+				ServerConnector.getInstance().getStudentService().delete(idStudent);
+				MessageDialog.openInformation(new Shell(), "Confirm", "Delete successfull");
+
 			}
 		});
 		table.addListener(SWT.MenuDetect, new Listener() {
