@@ -4,6 +4,9 @@
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_5aHtAKMBEemiCpJzHNb5Ww" elementId="rcptest.perspectivestack.0">
       <children xsi:type="advanced:Perspective" xmi:id="_696bAKMBEemiCpJzHNb5Ww" elementId="rcptest.perspective.0">
         <children xsi:type="basic:PartSashContainer" xmi:id="_960RAKMBEemiCpJzHNb5Ww" elementId="" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_iqAfULaWEemaUPDEuF1b2Q" elementId="rcptest.partstack.2">
+            <children xsi:type="basic:Part" xmi:id="_kq3j0LaWEemaUPDEuF1b2Q" elementId="rcptest.part.menu" contributionURI="bundleclass://RCPTest/com.rcp.SWTSimpleTree" label="Menu"/>
+          </children>
           <children xsi:type="basic:PartStack" xmi:id="_W7A_EKMCEemiCpJzHNb5Ww" elementId="rcptest.partstack.1" containerData="">
             <children xsi:type="basic:Part" xmi:id="_maB1UKMDEemiCpJzHNb5Ww" elementId="" contributionURI="bundleclass://RCPTest/com.rcp.ListClass" label="Class"/>
             <children xsi:type="basic:Part" xmi:id="_XxQY0K9eEeml6cbjhUJDVw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/com.rcp.ListStudent" label="Student"/>
@@ -11,6 +14,7 @@
           <children xsi:type="basic:PartStack" xmi:id="_swNCsK-EEeml6cbjhUJDVw" elementId="rcptest.partstack.0">
             <children xsi:type="basic:Part" xmi:id="__9htoLQuEemJG8pwIqZ7Qw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/detail.DetailOfStudent" label="Student" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png"/>
             <children xsi:type="basic:Part" xmi:id="_uT0xkK-EEeml6cbjhUJDVw" elementId="rcptest.part.detail" contributionURI="bundleclass://RCPTest/detail.DetailOfClass" label="Detail" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png"/>
+            <children xsi:type="basic:Part" xmi:id="_CAu5ULaREemaUPDEuF1b2Q" elementId="rcptest.part.aaa" contributionURI="bundleclass://RCPTest/detail.DetailStudent" label="AAA"/>
           </children>
         </children>
       </children>

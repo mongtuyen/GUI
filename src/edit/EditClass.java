@@ -29,7 +29,7 @@ public class EditClass extends WizardPage {
 	public EditClass(Clazz clazz) {
 		super("wizardPage");
 		setTitle("Update class");
-		setDescription("Please enter Student details");
+		setDescription("Please enter Class details");
 		this.clazz = clazz;
 	}
 

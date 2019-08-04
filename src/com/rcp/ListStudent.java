@@ -46,16 +46,16 @@ public class ListStudent {
 	private static Table tableClass;
 	static int sum;
 	static Label labelStudentSum;
-	// static int studentID;
+	static int studentID;
 	static Label labelClass;
 
-//	public static int getStudentID() {
-//		return studentID;
-//	}
-//
-//	public void setStudentID(int studentID) {
-//		this.studentID = studentID;
-//	}
+	public static int getStudentID() {
+		return studentID;
+	}
+
+	public void setStudentID(int studentID) {
+		this.studentID = studentID;
+	}
 
 	public static Table getTable() {
 		return table;
@@ -337,17 +337,17 @@ public class ListStudent {
 		final TableColumn columnNameClass = new TableColumn(tableClass, SWT.NONE);
 		columnNameClass.setText("Name");
 
-//		table.addListener(SWT.Selection, new Listener() {
-//			
-//
-//			public void handleEvent(Event e) {
-//				TableItem[] selection = table.getSelection();
-//				for (int i = 0; i < selection.length; i++) {
-//					studentID = Integer.parseInt(selection[i].getText());
-//				}
-//				//listClassFromStudent(studentID);
-//			}
-//		});
+		table.addListener(SWT.Selection, new Listener() {
+			
+
+			public void handleEvent(Event e) {
+				TableItem[] selection = table.getSelection();
+				for (int i = 0; i < selection.length; i++) {
+					studentID = Integer.parseInt(selection[i].getText());
+				}
+				//listClassFromStudent(studentID);
+			}
+		});
 
 	}
 

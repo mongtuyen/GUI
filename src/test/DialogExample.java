@@ -1,90 +1,99 @@
 package test;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.ShellAdapter;
-import org.eclipse.swt.events.ShellEvent;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.swt.*;
+import org.eclipse.swt.layout.*;
+import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.graphics.*;
 
 public class DialogExample {
-  public static void main(String[] args) {
-	  Display display = new Display();
-      Shell shell = new Shell(display);
-      Table table = new Table(shell, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL
-    	        | SWT.H_SCROLL);
-    	    for (int i = 0; i < 12; i++) {
-    	      TableItem item = new TableItem(table, SWT.NONE);
-    	      item.setText("Item " + i);
-    	    }
-    	    table.setSize(100, 100);
-    	    table.addListener(SWT.Selection, new Listener() {
-    	      public void handleEvent(Event event) {
-    	        String string = event.detail == SWT.CHECK ? "Checked"
-    	            : "Selected";
-    	        System.out.println(event.item + " " + string);
-    	      }
-    	    });
-    	    shell.setSize(200, 200);
-    	    shell.open();
-    	    while (!shell.isDisposed()) {
-    	      if (!display.readAndDispatch())
-    	        display.sleep();
-    	    }
-    	    display.dispose();
-//      // pos x, pos y, width, height
-//      shell.setBounds(200, 200, 300, 200);
-//      shell.setText("SWT List Demonstration");
-//      shell.setLayout(new GridLayout());
-//  
-//      String []items = {"Belgium", "The Netherlands", "France", "Germany", "Italy",
-//                        "Luxembourg", "Switzerland", "Austria", "Finland", "Iceland" };
-//        
-//      final List list = new List(shell, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI);
-//      list.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL));
-//      list.setItems (items);
-//              
-//      shell.open();
-//        
-//      shell.addShellListener(new ShellAdapter() {
-//         public void shellClosed(ShellEvent se) {
-//            int[] indices = list.getSelectionIndices();
-//            System.out.println("Selected items:");
-//            for (int i=0; i<indices.length; i++) {
-//               System.out.println(list.getItem(indices[i]));  
-//            }
-//         }
-//      });     
-//  
-//      while (!shell.isDisposed()) {
-//         if (!display.readAndDispatch()) {
-//            display.sleep();
-//         }
-//      }
-//        
-//      display.dispose();
-//   }
-//     
-//   public static void recurseTree(TreeItem item) {
-//      System.out.println(item.getText() + "tChecked=" + item.getChecked());
-//      TreeItem[] treeItems = item.getItems();
-//      for (int i=0; i<treeItems.length; i++) {
-//         TreeItem treeItem = treeItems[i];
-//         recurseTree(treeItem);
-//      }  
-   }
+
+public static void main (String [] args) {
+	Display display = new Display ();
+	Shell shell = new Shell (display);
+	shell.setLayout(new FillLayout());
+	shell.setText("ExpandBar Example");
+	ExpandBar bar = new ExpandBar (shell, SWT.V_SCROLL);
+	Image image = display.getSystemImage(SWT.ICON_QUESTION);
+
+	// First item
+	Composite composite = new Composite (bar, SWT.NONE);
+	GridLayout layout = new GridLayout ();
+	layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 10;
+	layout.verticalSpacing = 10;
+	composite.setLayout(layout);
+	Button button = new Button (composite, SWT.PUSH);
+	button.setText("SWT.PUSH");
+	button = new Button (composite, SWT.RADIO);
+	button.setText("SWT.RADIO");
+	button = new Button (composite, SWT.CHECK);
+	button.setText("SWT.CHECK");
+	button = new Button (composite, SWT.TOGGLE);
+	button.setText("SWT.TOGGLE");
+	ExpandItem item0 = new ExpandItem (bar, SWT.NONE, 0);
+	item0.setText("What is your favorite button");
+	item0.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+	item0.setControl(composite);
+	item0.setImage(image);
+
+	// Second item
+	composite = new Composite (bar, SWT.NONE);
+	layout = new GridLayout (2, false);
+	layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 10;
+	layout.verticalSpacing = 10;
+	composite.setLayout(layout);
+	Label label = new Label (composite, SWT.NONE);
+	label.setImage(display.getSystemImage(SWT.ICON_ERROR));
+	label = new Label (composite, SWT.NONE);
+	label.setText("SWT.ICON_ERROR");
+	label = new Label (composite, SWT.NONE);
+	label.setImage(display.getSystemImage(SWT.ICON_INFORMATION));
+	label = new Label (composite, SWT.NONE);
+	label.setText("SWT.ICON_INFORMATION");
+	label = new Label (composite, SWT.NONE);
+	label.setImage(display.getSystemImage(SWT.ICON_WARNING));
+	label = new Label (composite, SWT.NONE);
+	label.setText("SWT.ICON_WARNING");
+	label = new Label (composite, SWT.NONE);
+	label.setImage(display.getSystemImage(SWT.ICON_QUESTION));
+	label = new Label (composite, SWT.NONE);
+	label.setText("SWT.ICON_QUESTION");
+	ExpandItem item1 = new ExpandItem (bar, SWT.NONE, 1);
+	item1.setText("What is your favorite icon");
+	item1.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+	item1.setControl(composite);
+	item1.setImage(image);
+
+	// Third item
+	composite = new Composite (bar, SWT.NONE);
+	layout = new GridLayout (2, true);
+	layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 10;
+	layout.verticalSpacing = 10;
+	composite.setLayout(layout);
+	label = new Label (composite, SWT.NONE);
+	label.setText("Scale");
+	new Scale (composite, SWT.NONE);
+	label = new Label (composite, SWT.NONE);
+	label.setText("Spinner");
+	new Spinner (composite, SWT.BORDER);
+	label = new Label (composite, SWT.NONE);
+	label.setText("Slider");
+	new Slider (composite, SWT.NONE);
+	ExpandItem item2 = new ExpandItem (bar, SWT.NONE, 2);
+	item2.setText("What is your favorite range widget");
+	item2.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+	item2.setControl(composite);
+	item2.setImage(image);
+
+	item1.setExpanded(true);
+	bar.setSpacing(8);
+	shell.setSize(400, 350);
+	shell.open();
+	while (!shell.isDisposed ()) {
+		if (!display.readAndDispatch ()) {
+			display.sleep ();
+		}
+	}
+	image.dispose();
+	display.dispose();
+}
+
 }
