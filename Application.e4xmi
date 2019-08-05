@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_c3AF0MjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.application" bindingContexts="_c3AF2cjYEeSyMNYR5xypkQ">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_c3AF0cjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.window.main" label="Manage Student" iconURI="platform:/plugin/RCPTest/icons/icons8-student-male-20.png" width="800" height="700">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_c3AF0cjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.window.main" label="Manage Student" iconURI="platform:/plugin/RCPTest/icons/icons8-student-male-20.png" width="900" height="700">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_5aHtAKMBEemiCpJzHNb5Ww" elementId="rcptest.perspectivestack.0">
       <children xsi:type="advanced:Perspective" xmi:id="_696bAKMBEemiCpJzHNb5Ww" elementId="rcptest.perspective.0">
         <children xsi:type="basic:PartSashContainer" xmi:id="_960RAKMBEemiCpJzHNb5Ww" elementId="" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_iqAfULaWEemaUPDEuF1b2Q" elementId="rcptest.partstack.2">
-            <children xsi:type="basic:Part" xmi:id="_kq3j0LaWEemaUPDEuF1b2Q" elementId="rcptest.part.menu" contributionURI="bundleclass://RCPTest/com.rcp.SWTSimpleTree" label="Menu"/>
+          <children xsi:type="basic:PartStack" xmi:id="_iqAfULaWEemaUPDEuF1b2Q" elementId="rcptest.partstack.2" containerData="3000">
+            <children xsi:type="basic:Part" xmi:id="_kq3j0LaWEemaUPDEuF1b2Q" elementId="rcptest.part.menu" containerData="" contributionURI="bundleclass://RCPTest/com.rcp.SWTSimpleTree" label="Menu" iconURI="platform:/plugin/RCPTest/icons/icons8-menu-20 (1).png"/>
           </children>
-          <children xsi:type="basic:PartStack" xmi:id="_W7A_EKMCEemiCpJzHNb5Ww" elementId="rcptest.partstack.1" containerData="">
-            <children xsi:type="basic:Part" xmi:id="_maB1UKMDEemiCpJzHNb5Ww" elementId="" contributionURI="bundleclass://RCPTest/com.rcp.ListClass" label="Class"/>
-            <children xsi:type="basic:Part" xmi:id="_XxQY0K9eEeml6cbjhUJDVw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/com.rcp.ListStudent" label="Student"/>
+          <children xsi:type="basic:PartStack" xmi:id="_W7A_EKMCEemiCpJzHNb5Ww" elementId="rcptest.partstack.1" containerData="6000">
+            <children xsi:type="basic:Part" xmi:id="_maB1UKMDEemiCpJzHNb5Ww" elementId="" contributionURI="bundleclass://RCPTest/com.rcp.ListClass" label="Class" closeable="true">
+              <toolbar xmi:id="_4FSPgLciEemywtA8eclDpg" elementId="rcptest.toolbar.1"/>
+            </children>
+            <children xsi:type="basic:Part" xmi:id="_XxQY0K9eEeml6cbjhUJDVw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/com.rcp.ListStudent" label="Student" closeable="true"/>
           </children>
-          <children xsi:type="basic:PartStack" xmi:id="_swNCsK-EEeml6cbjhUJDVw" elementId="rcptest.partstack.0">
+          <children xsi:type="basic:PartStack" xmi:id="_swNCsK-EEeml6cbjhUJDVw" elementId="rcptest.partstack.0" containerData="3500">
             <children xsi:type="basic:Part" xmi:id="__9htoLQuEemJG8pwIqZ7Qw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/detail.DetailOfStudent" label="Student" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png"/>
-            <children xsi:type="basic:Part" xmi:id="_uT0xkK-EEeml6cbjhUJDVw" elementId="rcptest.part.detail" contributionURI="bundleclass://RCPTest/detail.DetailOfClass" label="Detail" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png"/>
+            <children xsi:type="basic:Part" xmi:id="_uT0xkK-EEeml6cbjhUJDVw" elementId="rcptest.part.detail" contributionURI="bundleclass://RCPTest/detail.DetailOfClass" label="Detail" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png" closeable="true"/>
             <children xsi:type="basic:Part" xmi:id="_CAu5ULaREemaUPDEuF1b2Q" elementId="rcptest.part.aaa" contributionURI="bundleclass://RCPTest/detail.DetailStudent" label="AAA"/>
           </children>
         </children>
@@ -33,8 +35,8 @@
       <children xsi:type="menu:ToolBar" xmi:id="_TjuzAK9fEeml6cbjhUJDVw" elementId="rcptest.toolbar.0">
         <children xsi:type="menu:HandledToolItem" xmi:id="_nECJoLTgEemn2JDRbWY9WQ" elementId="rcptest.handledtoolitem.2" iconURI="platform:/plugin/RCPTest/icons/icons8-add-row-20.png" command="_YmLksLT7Eemn2JDRbWY9WQ">
           <menu xmi:id="_Flci4LT0Eemn2JDRbWY9WQ" elementId="rcptest.menu.test" label="" iconURI="">
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_MMqHcLT0Eemn2JDRbWY9WQ" elementId="rcptest.handledmenuitem.addclass" label="Add class" iconURI="" command="_cD_HILThEemn2JDRbWY9WQ"/>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_O5QQkLT0Eemn2JDRbWY9WQ" elementId="rcptest.handledmenuitem.addstudent" label="Add student" command="_dSn58LTgEemn2JDRbWY9WQ"/>
+            <children xsi:type="menu:HandledMenuItem" xmi:id="_MMqHcLT0Eemn2JDRbWY9WQ" elementId="rcptest.handledmenuitem.addclass" label="Class" iconURI="platform:/plugin/RCPTest/icons/icons8-add-property-20.png" command="_cD_HILThEemn2JDRbWY9WQ"/>
+            <children xsi:type="menu:HandledMenuItem" xmi:id="_O5QQkLT0Eemn2JDRbWY9WQ" elementId="rcptest.handledmenuitem.addstudent" label="Student" iconURI="platform:/plugin/RCPTest/icons/icons8-add-property-20.png" command="_dSn58LTgEemn2JDRbWY9WQ"/>
           </menu>
         </children>
         <children xsi:type="menu:HandledToolItem" xmi:id="_ViSxcK9fEeml6cbjhUJDVw" elementId="rcptest.handledtoolitem.0" iconURI="platform:/plugin/RCPTest/icons/icons8-import-20.png" command="_noTDcKL8EemiCpJzHNb5Ww"/>

@@ -21,7 +21,7 @@ import event.OpenDialog;
 public class addClass extends WizardPage {
 	private Text classID;
 	private Text className;
-	// private Composite container;
+	private Text classSize;
 
 	public addClass() {
 		super("wizardPage");
@@ -43,9 +43,6 @@ public class addClass extends WizardPage {
 
 		Label label1 = new Label(container, SWT.NONE);
 		label1.setText("Class ID");
-
-		// Combo travelDate = new Combo(container, SWT.BORDER | SWT.READ_ONLY);
-		// travelDate.setLayoutData(gd);
 
 		classID = new Text(container, SWT.BORDER | SWT.SINGLE);
 		// classID.setText("");
@@ -80,8 +77,26 @@ public class addClass extends WizardPage {
 			}
 		});
 
+		Label label3 = new Label(container, SWT.NONE);
+		label3.setText("Number of student");
+
+		classSize = new Text(container, SWT.BORDER | SWT.SINGLE);
+		// className.setText("");
+		classSize.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (!className.getText().isEmpty() && !className.getText().isEmpty()) {
+					setPageComplete(true);
+				}
+			}
+		});
 		classID.setLayoutData(gd);
 		className.setLayoutData(gd);
+		classSize.setLayoutData(gd);
 		setControl(container);
 		setPageComplete(false);
 
@@ -90,10 +105,12 @@ public class addClass extends WizardPage {
 	public Clazz getClazzEdit() {
 		String classCode = classID.getText();
 		String clazzName = className.getText();
+		
 		Clazz clazz = new Clazz();
 		// if (!classCode.equals(" ") && !clazzName.equals(" ")) {
 		clazz.setCode(classCode);
 		clazz.setName(clazzName);
+		clazz.setSize(Integer.parseInt(classSize.getText()));
 //		}
 //		else {
 //			new OpenDialog(new InfoDialog("Please fill in all information")).openPage();		

@@ -2,7 +2,9 @@ package add;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuAdapter;
@@ -20,6 +22,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
+import com.rcp.ListClass;
 import com.tuyen.model.Clazz;
 import com.tuyen.model.Student;
 
@@ -27,12 +30,13 @@ import connect.ServerConnector;
 import detail.DetailOfClass;
 
 public class AddDetailClass extends WizardPage {
-
-	Student student;
+	final static Logger logger = Logger.getLogger(AddDetailClass.class);
+	
+	Student studentAdd;
 	Set<Student> setStudent = new HashSet<>();
 	int idClass = DetailOfClass.getClassID();
 	Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClass);
-
+	Student studentDelete;
 	static List list;
 	String[] code;
 
@@ -58,7 +62,10 @@ public class AddDetailClass extends WizardPage {
 
 		Label label3 = new Label(container, SWT.NONE);
 		label3.setText("Name: " + clazz.getName());
-
+		
+		Label label0 = new Label(container, SWT.NONE);
+		label0.setText("Number of student: "+clazz.getSize());
+		
 		Label label1 = new Label(container, SWT.NONE);
 		label1.setText("List student");
 
@@ -105,14 +112,13 @@ public class AddDetailClass extends WizardPage {
 					listUpdate.add(selected[i]);
 					list.remove(selected[i]);
 					code = selected[i].split(":");
-					System.out
-							.println("-----------CODE 00--------------------------------------------------" + code[0]);
+					logger.info("CODE 0: " + code[0]);
 					for (int t = 0; t < ServerConnector.getInstance().getStudentService().findAll().size(); t++) {
 						if (ServerConnector.getInstance().getStudentService().findAll().get(t).getCode()
 								.equals(code[0])) {
 							studentID = ServerConnector.getInstance().getStudentService().findAll().get(t).getId();
-							student = ServerConnector.getInstance().getStudentService().findById(studentID);
-							setStudent.add(student);
+							studentAdd = ServerConnector.getInstance().getStudentService().findById(studentID);
+							setStudent.add(studentAdd);
 						}
 
 					}
@@ -123,6 +129,7 @@ public class AddDetailClass extends WizardPage {
 		final Menu menu = new Menu(listUpdate);
 		listUpdate.setMenu(menu);
 		menu.addMenuListener(new MenuAdapter() {
+			int studentIDDelete;
 			public void menuShown(MenuEvent e) {
 				int selected = listUpdate.getSelectionIndex();
 				String selectedText[] = listUpdate.getSelection();
@@ -141,6 +148,29 @@ public class AddDetailClass extends WizardPage {
 						listUpdate.remove(selected);
 						for (int i = 0; i < selectedText.length; i++) {
 							list.add(selectedText[i]);
+							code = selectedText[i].split(":");
+							System.out.println("code cua student duoc chon:"+code[0]);
+							//remove student
+							for (int t = 0; t < ServerConnector.getInstance().getStudentService().findAll().size(); t++) {
+								if (ServerConnector.getInstance().getStudentService().findAll().get(t).getCode()
+										.equals(code[0])) {
+									studentIDDelete = ServerConnector.getInstance().getStudentService().findAll().get(t)
+											.getId();
+									studentDelete = ServerConnector.getInstance().getStudentService()
+											.findById(studentIDDelete);
+									System.out.println(" student duoc chon:"+studentDelete.toString());
+									
+									setStudent.removeIf(new Predicate<Student>() {
+
+										@Override
+										public boolean test(Student t) {
+											return t.getId() == studentIDDelete;
+										}
+									});
+
+								}
+
+							}
 						}
 					}
 
@@ -163,6 +193,7 @@ public class AddDetailClass extends WizardPage {
 		clazz.setId(clazz.getId());
 		clazz.setCode(clazz.getCode());
 		clazz.setName(clazz.getName());
+		//clazz.setSize(size);
 		clazz.setStudents(setStudent);
 		return clazz;
 	}

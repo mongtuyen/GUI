@@ -1,8 +1,12 @@
 package add;
 
+import java.util.List;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.Wizard;
 
+import com.rcp.ListClass;
+import com.tuyen.model.Clazz;
 import com.tuyen.model.Student;
 
 import connect.ServerConnector;
@@ -33,6 +37,7 @@ public class MyWizardStudent extends Wizard {
 	public boolean performFinish() {
 		Student student = one.getStudent();
 		ServerConnector.getInstance().getStudentService().persist(student);
+		
 		return true;
 	}
 

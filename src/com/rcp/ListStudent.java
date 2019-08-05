@@ -36,7 +36,7 @@ import com.tuyen.model.Student;
 import add.MyWizardClass;
 import add.MyWizardStudent;
 import connect.ServerConnector;
-import edit.MyWizardEdit;
+import edit.MyWizardClassEdit;
 import edit.MyWizardStudentEdit;
 
 public class ListStudent {

@@ -105,8 +105,8 @@ public class DetailOfClass {
 				for (int i = 0; i < selection.length; i++) {
 					classID = Integer.parseInt(selection[i].getText());
 				}
-				logger.info("IIIIIIIIDDDDDDDD" + classID);
-				System.out.println("fdsgsssss" + classID);
+				logger.info("ID class: " + classID);
+				//System.out.println("fdsgsssss" + classID);
 				listStudentFromClass(classID);
 			}
 		});
@@ -174,9 +174,9 @@ public class DetailOfClass {
 		Clazz clazz = ServerConnector.getInstance().getClassService().findById(clazzID);
 		code.setText("Class ID: " + clazz.getCode());
 		name.setText("Name: " + clazz.getName());
-		ageStudent.setVisible(false);
-		mailStudent.setVisible(false);
-		addressStudent.setVisible(false);
+		ageStudent.setText("Size: " + clazz.getSize());
+		mailStudent.setText("Registered: " + clazz.getStudents().size());
+		addressStudent.setText("Vacant position: " + (clazz.getSize()-clazz.getStudents().size()));
 		textClass.setText("List student");
 		column3.setText("Student ID");
 		column4.setText("Name");

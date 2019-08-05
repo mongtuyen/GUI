@@ -25,6 +25,7 @@ public class EditClass extends WizardPage {
 	private Text classID;
 	private Text className;
 	private Clazz clazz;
+	private Text size;
 
 	public EditClass(Clazz clazz) {
 		super("wizardPage");
@@ -58,7 +59,7 @@ public class EditClass extends WizardPage {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (!className.getText().isEmpty() && !className.getText().isEmpty()) {
+				if (!className.getText().isEmpty() && !className.getText().isEmpty() && !size.getText().isEmpty()) {
 					setPageComplete(true);
 				}
 			}
@@ -76,14 +77,32 @@ public class EditClass extends WizardPage {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (!className.getText().isEmpty() && !className.getText().isEmpty()) {
+				if (!className.getText().isEmpty() && !className.getText().isEmpty() && !size.getText().isEmpty()) {
 					setPageComplete(true);
 				}
 			}
 		});
+		Label label3 = new Label(container, SWT.NONE);
+		label3.setText("Number of student");
 
+		size = new Text(container, SWT.BORDER | SWT.SINGLE);
+		size.setText(String.valueOf(clazz.getSize()));
+
+		size.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (!className.getText().isEmpty() && !className.getText().isEmpty() && !size.getText().isEmpty()) {
+					setPageComplete(true);
+				}
+			}
+		});
 		classID.setLayoutData(gd);
 		className.setLayoutData(gd);
+		size.setLayoutData(gd);
 		setControl(container);
 		setPageComplete(false);
 
@@ -140,13 +159,9 @@ public class EditClass extends WizardPage {
 	public Clazz getClazzEdit() {
 		String classCode = classID.getText();
 		String clazzName = className.getText();
-		// if (!classCode.equals(" ") && !clazzName.equals(" ")) {
 		clazz.setCode(classCode);
 		clazz.setName(clazzName);
-//		}
-//		else {
-//			new OpenDialog(new InfoDialog("Please fill in all information")).openPage();		
-//		}
+		clazz.setSize(Integer.parseInt(size.getText()));
 		return clazz;
 
 	}

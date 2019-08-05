@@ -14,19 +14,21 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 public class SWTSimpleTree {
 	@PostConstruct
 	public void createComposite(Composite parent) throws IOException {
-	
+		
 		ExpandBar bar = new ExpandBar (parent, SWT.V_SCROLL);
-		Image image = Display.getDefault().getSystemImage(SWT.ICON_WORKING);
+		Image image = Display.getDefault().getSystemImage(SWT.ICON_INFORMATION);
 		
 		Composite composite = new Composite (bar, SWT.NONE);
 		GridLayout layout = new GridLayout ();
@@ -43,7 +45,7 @@ public class SWTSimpleTree {
 		item0.setText("Manage Student");
 		item0.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item0.setControl(composite);
-		item0.setImage(image);
+		//item0.setImage(image);
 		
 
 
@@ -74,60 +76,27 @@ public class SWTSimpleTree {
 //				System.out.println("Selection={" + string + "}");
 //			}
 //		});
-		ProgressBar progressBar1 = new ProgressBar(parent, SWT.NULL);
-		ProgressBar progressBar2 = new ProgressBar(parent, SWT.SMOOTH);
-		ProgressBar progressBar3 = new ProgressBar(parent, SWT.INDETERMINATE);
-	
-	}
-	
-	
+		
+		Table tableStudent = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI | SWT.BORDER);
+		tableStudent.setVisible(false);
+
+		GridData gd_table1 = new GridData(SWT.TOP, SWT.FILL, true, true, 2, 1);// SWT.TOP
+		gd_table1.heightHint = 120;
+		gd_table1.widthHint = 160;
+		tableStudent.setLayoutData(gd_table1);
+
+		tableStudent.setHeaderVisible(true);
+		tableStudent.setLinesVisible(true);
+//		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
+//		group.setLocation(50, 50);		
+//		group.setText("Process");
+//		Label label7 = new Label(group, SWT.NONE);
+//		label7.setText("Label in Group");
+//		label7.setLocation(20,20);
+//		label7.pack();
+//		ProgressBar progressBar1 = new ProgressBar(parent, SWT.NULL);
+//		ProgressBar progressBar2 = new ProgressBar(parent, SWT.SMOOTH);
+//		ProgressBar progressBar3 = new ProgressBar(parent, SWT.INDETERMINATE);	
+		//group.pack();
+	}		
 }
-//  Display display = new Display();
-//  Shell shell = new Shell(display);
-//  
-//  Tree tree;
-//
-//  public SWTSimpleTree() {
-//    shell.setLayout(new GridLayout());
-//    
-//    tree = new Tree(shell, SWT.BORDER);
-//    
-//    tree.setLayoutData(new GridData(GridData.FILL_BOTH));
-//    
-//    TreeItem item = new TreeItem(tree, SWT.NULL);
-//    item.setText("ITEM");
-//    
-//    TreeItem item2 = new TreeItem(item, SWT.NULL);
-//    item2.setText("ITEM2");
-//    
-//    TreeItem item3 = new TreeItem(item2, SWT.NULL);
-//    item3.setText("ITEM3");
-//    
-//    System.out.println("item: " + item.getParent() + ", " + item.getParentItem());
-//    System.out.println("item2: " + item2.getParent() + ", " + item2.getParentItem());
-//    
-//    System.out.println(tree.getItemCount());
-//    System.out.println(tree.getItems().length);
-//    
-//    shell.setSize(300, 200);
-//    shell.open();
-//    //textUser.forceFocus();
-//
-//    // Set up the event loop.
-//    while (!shell.isDisposed()) {
-//      if (!display.readAndDispatch()) {
-//        // If no more entries in event queue
-//        display.sleep();
-//      }
-//    }
-//
-//    display.dispose();
-//  }
-//
-//  private void init() {
-//
-//  }
-//
-//  public static void main(String[] args) {
-//    new SWTSimpleTree();
-//  }

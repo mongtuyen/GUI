@@ -1,9 +1,12 @@
 package edit;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -23,6 +26,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import com.tuyen.model.Clazz;
 import com.tuyen.model.Student;
@@ -41,8 +45,10 @@ public class EditStudent extends WizardPage {
 	private Text address;
 	private Text age;
 	Student student;
-	Set<Clazz> setClass = new HashSet<>();
-	Clazz clazz;
+	static Set<Clazz> setClass = new HashSet<>();
+	Clazz clazzAdd;
+	Clazz clazzDelete;
+
 	static List list;
 
 	public EditStudent(Student student) {
@@ -192,6 +198,8 @@ public class EditStudent extends WizardPage {
 			listUpdate.add(tmp.getName());
 			list.remove(tmp.getName());
 		}
+		// Set<Clazz> setClass = new HashSet<>();
+
 		listUpdate.setLayoutData(gd_list);
 		buttonRegister.addSelectionListener(new SelectionAdapter() {
 			int classID;
@@ -199,15 +207,24 @@ public class EditStudent extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				String selected[] = list.getSelection();
 				for (int i = 0; i < selected.length; i++) {
-					listUpdate.add(selected[i]);
-					list.remove(selected[i]);
+					
 					for (int t = 0; t < ServerConnector.getInstance().getClassService().findAll().size(); t++) {
 						if (ServerConnector.getInstance().getClassService().findAll().get(t).getName()
 								.equals(selected[i])) {
 							classID = ServerConnector.getInstance().getClassService().findAll().get(t).getId();
 							logger.info("ID selected" + classID);
-							clazz = ServerConnector.getInstance().getClassService().findById(classID);
-							setClass.add(clazz);
+							clazzAdd = ServerConnector.getInstance().getClassService().findById(classID);
+							if((clazzAdd.getSize() - clazzAdd.getStudents().size())>0){
+								setClass.add(clazzAdd);
+								listUpdate.add(selected[i]);
+								list.remove(selected[i]);
+							}else {
+								MessageDialog.openError(new Shell(), "Error", "Class " + clazzAdd.getName() + " is full");
+							}
+							
+							
+							//System.out.println("List class add:" + setClass.toString());
+
 						}
 
 					}
@@ -218,6 +235,8 @@ public class EditStudent extends WizardPage {
 		final Menu menu = new Menu(listUpdate);
 		listUpdate.setMenu(menu);
 		menu.addMenuListener(new MenuAdapter() {
+			int classIDDelete;
+
 			public void menuShown(MenuEvent e) {
 				int selected = listUpdate.getSelectionIndex();
 				String selectedText[] = listUpdate.getSelection();
@@ -237,6 +256,26 @@ public class EditStudent extends WizardPage {
 						listUpdate.remove(selected);
 						for (int i = 0; i < selectedText.length; i++) {
 							list.add(selectedText[i]);
+							// remove list
+							for (int t = 0; t < ServerConnector.getInstance().getClassService().findAll().size(); t++) {
+								if (ServerConnector.getInstance().getClassService().findAll().get(t).getName()
+										.equals(selectedText[i])) {
+									classIDDelete = ServerConnector.getInstance().getClassService().findAll().get(t)
+											.getId();
+									clazzDelete = ServerConnector.getInstance().getClassService()
+											.findById(classIDDelete);
+									// setClass.remove(clazzDelete);
+									setClass.removeIf(new Predicate<Clazz>() {
+
+										@Override
+										public boolean test(Clazz t) {
+											return t.getId() == classIDDelete;
+										}
+									});
+
+								}
+
+							}
 						}
 					}
 
@@ -259,7 +298,7 @@ public class EditStudent extends WizardPage {
 		age.setLayoutData(gd);
 
 		setControl(container);
-		//setPageComplete(false);
+		// setPageComplete(false);
 
 	}
 
@@ -279,9 +318,25 @@ public class EditStudent extends WizardPage {
 			student.setClasses(setClass);
 		} else {
 			new OpenDialog(new InfoDialog("Please fill in all information")).openPage();
-
 		}
 		return student;
+
+	}
+
+	public static void main(String[] args) {
+		Set<Clazz> set = new HashSet<>();
+
+		Clazz c1 = new Clazz(1, "rewf", "ygh", 23);
+		Clazz c2 = new Clazz(2, "gtc", "gfhj", 54);
+		// Clazz c3 = ServerConnector.getInstance().getClassService().findById(1);
+		// set.add(c3);
+		set.add(c2);
+		set.add(c1);
+		System.out.println(set);
+
+		System.out.println("SET BEFORE" + set.toString());
+		set.remove(c1);
+		System.out.println("SET After" + set.toString());
 
 	}
 

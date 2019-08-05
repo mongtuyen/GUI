@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -24,6 +27,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -47,6 +51,7 @@ public class AddStudent1 extends WizardPage {
 	Set<Clazz> setClass = new HashSet<>();
 	Clazz clazz;
 	static List list;
+
 	public AddStudent1() {
 		super("wizardPage");
 		setTitle("Create new student");
@@ -127,13 +132,28 @@ public class AddStudent1 extends WizardPage {
 		label4.setText("Email");
 
 		mail = new Text(container, SWT.BORDER | SWT.SINGLE);
+		
 		mail.addKeyListener(new KeyListener() {
+		
+
 			@Override
 			public void keyPressed(KeyEvent e) {
+				
+				Status status = new Status(IStatus.OK, "not_used", 0, "", null);
+			     // If the event is triggered by the destination or departure fields
+			     // set the corresponding status variable to the right value
+			   if ((e.widget == mail)) {
+				 if (!mail.getText().contains("@gmail.com"))
+				       status = new Status(IStatus.ERROR, "not_used", 0, 
+				           "Email not valid", null);        
+			//	 destinationStatus = status;
+			     }
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
+				
+				
 				if (!code.getText().isEmpty() && !name.getText().isEmpty() && !age.getText().isEmpty()
 						&& !mail.getText().isEmpty() && !address.getText().isEmpty()) {
 					setPageComplete(true);
@@ -199,19 +219,26 @@ public class AddStudent1 extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				String selected[] = list.getSelection();
 				for (int i = 0; i < selected.length; i++) {
-					listUpdate.add(selected[i]);
-					list.remove(selected[i]);
+
 					for (int t = 0; t < ServerConnector.getInstance().getClassService().findAll().size(); t++) {
 						if (ServerConnector.getInstance().getClassService().findAll().get(t).getName()
 								.equals(selected[i])) {
 							classID = ServerConnector.getInstance().getClassService().findAll().get(t).getId();
 							logger.info("ID selected" + classID);
 							clazz = ServerConnector.getInstance().getClassService().findById(classID);
-							setClass.add(clazz);
-							//System.out.println(clazz.getName());
+							if ((clazz.getSize() - clazz.getStudents().size()) > 0) {
+								setClass.add(clazz);
+								listUpdate.add(selected[i]);
+								list.remove(selected[i]);
+							} else {
+								MessageDialog.openError(new Shell(), "Error", "Class " + clazz.getName() + " is full");
+							}
+
+							// System.out.println(clazz.getName());
 						}
 
 					}
+
 				}
 			}
 		});
@@ -228,12 +255,12 @@ public class AddStudent1 extends WizardPage {
 				MenuItem[] items = menu.getItems();
 				for (int i = 0; i < items.length; i++) {
 					items[i].dispose();
-					
+
 				}
 				MenuItem newItem = new MenuItem(menu, SWT.NONE);
 				newItem.setText("Delete");
 				newItem.addSelectionListener(new SelectionAdapter() {
-					
+
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						listUpdate.remove(selected);
@@ -246,15 +273,15 @@ public class AddStudent1 extends WizardPage {
 
 			}
 		});
-		
+
 		listUpdate.addListener(SWT.MenuDetect, new Listener() {
-			  @Override
-			  public void handleEvent(Event event) {
-			    if (listUpdate.getSelectionCount() <= 0) {
-			      event.doit = false;
-			    }
-			  }
-			});
+			@Override
+			public void handleEvent(Event event) {
+				if (listUpdate.getSelectionCount() <= 0) {
+					event.doit = false;
+				}
+			}
+		});
 		code.setLayoutData(gd);
 		name.setLayoutData(gd);
 		address.setLayoutData(gd);

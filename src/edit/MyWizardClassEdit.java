@@ -7,11 +7,11 @@ import com.tuyen.model.Clazz;
 
 import connect.ServerConnector;
 
-public class MyWizardEdit extends Wizard {
+public class MyWizardClassEdit extends Wizard {
 
     protected EditClass one;
     Clazz clazz;
-    public MyWizardEdit(Clazz c) {
+    public MyWizardClassEdit(Clazz c) {
         super();
         setNeedsProgressMonitor(true);
         this.clazz=c;

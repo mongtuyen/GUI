@@ -43,7 +43,7 @@ import com.tuyen.model.Student;
 import add.MyWizardClass;
 import add.addClass;
 import connect.ServerConnector;
-import edit.MyWizardEdit;
+import edit.MyWizardClassEdit;
 
 public class ListClass {
 
@@ -56,6 +56,15 @@ public class ListClass {
 	static Label sumStudent;
 
 	int classID;
+	static List<Clazz> l;
+	
+	public static List<Clazz> getL() {
+		return l;
+	}
+
+	public void setL(List<Clazz> l) {
+		this.l = l;
+	}
 
 	public int getClassID() {
 		return classID;
@@ -99,10 +108,12 @@ public class ListClass {
 
 	@PostConstruct
 	public void createComposite(Composite parent) throws IOException {
+		
+		parent.setSize(30,20);
 		parent.setLayout(new GridLayout(1, false));
 		Label label_1 = new Label(parent, SWT.NONE);
 		label_1.setText("LIST CLASS");
-		label_1.setBounds(130, 26, 100, 15);
+		//label_1.setBounds(130, 26, 100, 15);
 
 		table = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI| SWT.BORDER);
 
@@ -112,19 +123,20 @@ public class ListClass {
 
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		String[] titles = { "ID", "Code", "Name" };
-
+		
 		final TableColumn column0 = new TableColumn(table, SWT.NONE);
 		column0.setText("ID");
 		final TableColumn column1 = new TableColumn(table, SWT.NONE);
 		column1.setText("Code");
 		final TableColumn column2 = new TableColumn(table, SWT.NONE);
 		column2.setText("Name");
-
-//		final TableColumn columntool = new TableColumn(table, SWT.NONE);
-//		columntool.setText("  ");
-//		final TableColumn columndelete = new TableColumn(table, SWT.NONE);
-//		columndelete.setText("  ");
+		final TableColumn column3 = new TableColumn(table, SWT.NONE);
+		column3.setText("Size");
+		final TableColumn column4 = new TableColumn(table, SWT.NONE);
+		column4.setText("Registered");
+		final TableColumn column5 = new TableColumn(table, SWT.NONE);
+		column5.setText("Vacant position");
+		
 
 		Menu menu = new Menu(parent);
 		// menu delete
@@ -159,7 +171,7 @@ public class ListClass {
 				if (table.getSelection().length > 0) {
 					int idClazz = Integer.parseInt(table.getSelection()[0].getText());
 					Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
-					WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardEdit(clazz));
+					WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardClassEdit(clazz));
 					if (wizardDialog.open() == Window.OK) {
 						System.out.println("Ok pressed");
 					} else {
@@ -245,14 +257,11 @@ public class ListClass {
 
 		table.setSortColumn(column0);
 		table.setSortDirection(SWT.UP);
-		System.out.println("COUNTTTTTTTTTTT: "+table.getColumnCount());
-		for (int i = 0; i < titles.length; i++) {
-			table.getColumn(i).pack();
-		}
+		
 		labelClassSum = new Label(parent, SWT.NONE);
 		labelClassSum.setText("Total: " + sum);
 
-		List<Clazz> l = ServerConnector.getInstance().getClassService().findAll();
+		 l = ServerConnector.getInstance().getClassService().findAll();
 		updateClazzTable(l);
 //		Button btnAdd = new Button(parent, SWT.NONE);
 //		btnAdd.setText("Add");
@@ -344,10 +353,10 @@ public class ListClass {
 //			column.setWidth(600);
 //		}
 
-		final TableColumn column3 = new TableColumn(tableStudent, SWT.NONE);
-		column3.setText("Student ID");
-		final TableColumn column4 = new TableColumn(tableStudent, SWT.NONE);
-		column4.setText("Name");
+		final TableColumn columnID = new TableColumn(tableStudent, SWT.NONE);
+		columnID.setText("Student ID");
+		final TableColumn columnName = new TableColumn(tableStudent, SWT.NONE);
+		columnName.setText("Name");
 
 //		table.addListener(SWT.Selection, new Listener() {
 //			//classID;
@@ -400,8 +409,9 @@ public class ListClass {
 			item.setText(0, String.valueOf(list.get(i).getId()));
 			item.setText(2, list.get(i).getName());
 			item.setText(1, list.get(i).getCode());
-//			item.setText(3, "Edit");
-//			item.setText(4, "Delete");
+			item.setText(3, String.valueOf(list.get(i).getSize()));
+			item.setText(4, String.valueOf(list.get(i).getStudents().size()));
+			item.setText(5, String.valueOf((list.get(i).getSize()-list.get(i).getStudents().size())));
 		}
 		for (int j = 0; j < table.getColumnCount(); j++) {
 			table.getColumn(j).pack();
