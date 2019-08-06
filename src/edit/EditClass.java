@@ -1,9 +1,17 @@
 package edit;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Predicate;
+
+import org.apache.log4j.Logger;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.MenuAdapter;
+import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -11,22 +19,35 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import com.tuyen.model.Clazz;
 import com.tuyen.model.Student;
 import com.tuyen.service.ClazzService;
 
+import add.AddStudent1;
 import connect.ServerConnector;
 import event.InfoDialog;
 import event.OpenDialog;
 
 public class EditClass extends WizardPage {
+	final static Logger logger = Logger.getLogger(EditClass.class);
+
 	private Text classID;
 	private Text className;
+	private Text sizeClass;
 	private Clazz clazz;
-	private Text size;
-
+	static Set<Student> setStudent = new HashSet<>();
+	static List list;
+	Student studentAdd;
+	Student studentDelete;
+	String[] code;
 	public EditClass(Clazz clazz) {
 		super("wizardPage");
 		setTitle("Update class");
@@ -51,7 +72,6 @@ public class EditClass extends WizardPage {
 
 		classID = new Text(container, SWT.BORDER | SWT.SINGLE);
 		classID.setText(clazz.getCode());
-
 		classID.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -59,7 +79,7 @@ public class EditClass extends WizardPage {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (!className.getText().isEmpty() && !className.getText().isEmpty() && !size.getText().isEmpty()) {
+				if (!className.getText().isEmpty() && !className.getText().isEmpty() && !sizeClass.getText().isEmpty()) {
 					setPageComplete(true);
 				}
 			}
@@ -77,7 +97,7 @@ public class EditClass extends WizardPage {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (!className.getText().isEmpty() && !className.getText().isEmpty() && !size.getText().isEmpty()) {
+				if (!className.getText().isEmpty() && !className.getText().isEmpty() && !sizeClass.getText().isEmpty()) {
 					setPageComplete(true);
 				}
 			}
@@ -85,75 +105,156 @@ public class EditClass extends WizardPage {
 		Label label3 = new Label(container, SWT.NONE);
 		label3.setText("Number of student");
 
-		size = new Text(container, SWT.BORDER | SWT.SINGLE);
-		size.setText(String.valueOf(clazz.getSize()));
+		sizeClass = new Text(container, SWT.BORDER | SWT.SINGLE);
+		sizeClass.setText(String.valueOf(clazz.getSize()));
 
-		size.addKeyListener(new KeyListener() {
+		sizeClass.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (!className.getText().isEmpty() && !className.getText().isEmpty() && !size.getText().isEmpty()) {
+				if (!className.getText().isEmpty() && !className.getText().isEmpty() && !sizeClass.getText().isEmpty()) {
 					setPageComplete(true);
 				}
 			}
 		});
+		
+		Label labelList = new Label(container, SWT.NONE);
+		labelList.setText("List student");
+
+		Composite enroll = new Composite(container, SWT.BORDER);
+		setControl(enroll);
+		enroll.setLayout(layout);
+		GridData gd_composite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		GridLayout layoutEnroll = new GridLayout();
+		enroll.setLayout(layoutEnroll);
+		layoutEnroll.numColumns = 3;
+		gd_composite.heightHint = 190;
+		gd_composite.widthHint = 400;
+		enroll.setLayoutData(gd_composite);
+		// List student default
+		list = new List(enroll, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.LEFT);
+		int size = ServerConnector.getInstance().getStudentService().findAll().size();
+		for (int i = 0; i < ServerConnector.getInstance().getStudentService().findAll().size(); i++) {
+			list.add(ServerConnector.getInstance().getStudentService().findAll().get(i).getCode() + ": "
+					+ ServerConnector.getInstance().getStudentService().findAll().get(i).getName());
+		}
+
+		GridData gd_list = new GridData(SWT.TOP, SWT.TOP, true, true, 1, 1);
+		gd_list.widthHint = 150;
+		gd_list.heightHint = 150;
+
+		list.setLayoutData(gd_list);
+
+		final Button buttonAdd = new Button(enroll, SWT.NONE | SWT.PUSH | SWT.CENTER);
+		buttonAdd.setText("Add");
+		// list studnet update
+		final List listUpdate = new List(enroll, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.RIGHT);
+		listUpdate.setLayoutData(gd_list);
+		setStudent = clazz.getStudents();
+		for (Student a : setStudent) {
+			listUpdate.add(a.getCode() + ": " + a.getName());
+			list.remove(a.getCode() + ": " + a.getName());
+		}
+		
+		buttonAdd.addSelectionListener(new SelectionAdapter() {
+			int studentID;
+
+			public void widgetSelected(SelectionEvent e) {
+				String selected[] = list.getSelection();
+				for (int i = 0; i < selected.length; i++) {
+					
+					code = selected[i].split(":");
+					//logger.info("CODE 0: " + code[0]);
+					for (int t = 0; t < ServerConnector.getInstance().getStudentService().findAll().size(); t++) {
+						if (ServerConnector.getInstance().getStudentService().findAll().get(t).getCode()
+								.equals(code[0])) {
+							studentID = ServerConnector.getInstance().getStudentService().findAll().get(t).getId();
+							studentAdd = ServerConnector.getInstance().getStudentService().findById(studentID);
+							System.out.println("size set:"+(setStudent.size()+1)+"class size:"+clazz.getSize());
+							if((setStudent.size()+1)<=clazz.getSize()) {
+								setStudent.add(studentAdd);
+								listUpdate.add(selected[i]);
+								list.remove(selected[i]);
+							}
+							else {
+								MessageDialog.openError(new Shell(), "Error", "Class " + clazz.getName() + " is full");
+							}
+							
+						}
+
+					}
+				}
+			}
+		});
+
+		final Menu menu = new Menu(listUpdate);
+		listUpdate.setMenu(menu);
+		menu.addMenuListener(new MenuAdapter() {
+			int studentIDDelete;
+
+			public void menuShown(MenuEvent e) {
+				int selected = listUpdate.getSelectionIndex();
+				String selectedText[] = listUpdate.getSelection();
+				if (selected < 0 || selected >= listUpdate.getItemCount())
+					return;
+
+				MenuItem[] items = menu.getItems();
+				for (int i = 0; i < items.length; i++) {
+					items[i].dispose();
+				}
+				MenuItem newItem = new MenuItem(menu, SWT.NONE);
+				newItem.setText("Delete");
+				newItem.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						listUpdate.remove(selected);
+						for (int i = 0; i < selectedText.length; i++) {
+							list.add(selectedText[i]);
+							code = selectedText[i].split(":");
+							// remove student
+							for (int t = 0; t < ServerConnector.getInstance().getStudentService().findAll()
+									.size(); t++) {
+								if (ServerConnector.getInstance().getStudentService().findAll().get(t).getCode()
+										.equals(code[0])) {
+									studentIDDelete = ServerConnector.getInstance().getStudentService().findAll().get(t).getId();
+									studentDelete = ServerConnector.getInstance().getStudentService().findById(studentIDDelete);
+									
+									setStudent.removeIf(new Predicate<Student>() {
+
+										@Override
+										public boolean test(Student t) {
+											return t.getId() == studentIDDelete;
+										}
+									});
+									System.out.println("List student sau khi xoa:" + setStudent.toString());
+
+								}
+
+							}
+						}
+					}
+
+				});
+
+			}
+		});
+		listUpdate.addListener(SWT.MenuDetect, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				if (listUpdate.getSelectionCount() <= 0) {
+					event.doit = false;
+				}
+			}
+		});
+
 		classID.setLayoutData(gd);
 		className.setLayoutData(gd);
-		size.setLayoutData(gd);
+		sizeClass.setLayoutData(gd);
 		setControl(container);
-		setPageComplete(false);
-
-		// Button btnSave = new Button(shell, SWT.NULL);
-//		btnSave.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				String className = textClazzName.getText();
-//				int classID = Integer.parseInt(textClazzID.getText());
-//				Clazz clazz=new Clazz();
-//				clazz.setId(classID);
-//				clazz.setName(className);
-//				ServerConnector tmp = ServerConnector.getInstance();
-//				ClazzService clazzService = tmp.getClassService();
-//				clazzService.update(clazz);
-//			
-//				shell.dispose();
-//				
-//			}
-//		});
-//		btnSave.setText("Save");
-//        
-
-//		Button btnSave = new Button(container, SWT.NONE);
-//		btnSave.setText("Save");
-//	
-//		btnSave.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//
-////				if (classCode.equals("")) {
-////					new OpenDialog(new InfoDialog("Class code cannot null")).openPage();
-////				}
-////				if (clazzName.equals("")) {
-////					new OpenDialog(new InfoDialog("Class name cannot null")).openPage();
-////				}
-////				if (!classCode.equals("") && !clazzName.equals("")) {
-//				String classCode = classID.getText();
-//				String clazzName = className.getText();
-//				clazz.setCode(classCode);
-//				clazz.setName(clazzName);
-//				ServerConnector.getInstance().getClassService().update(clazz);
-//				// new OpenDialog(new InfoDialog("Add new classroom: " + resultAdd)).openPage();
-//				new OpenDialog(new InfoDialog("Edit class successfull")).openPage();
-//				// ClassroomPart.setTableClassroom();
-//				Display.getCurrent().getActiveShell().dispose();
-//				// }
-//
-//			}
-//		});
-
+		
 	}
 
 	public Clazz getClazzEdit() {
@@ -161,7 +262,8 @@ public class EditClass extends WizardPage {
 		String clazzName = className.getText();
 		clazz.setCode(classCode);
 		clazz.setName(clazzName);
-		clazz.setSize(Integer.parseInt(size.getText()));
+		clazz.setSize(Integer.parseInt(sizeClass.getText()));
+		clazz.setStudents(setStudent);
 		return clazz;
 
 	}

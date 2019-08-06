@@ -2,7 +2,10 @@ package handler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -32,13 +35,14 @@ public class ExportHandler {
 	public void execute(Shell shell) throws XmlException, IOException {
 		FileDialog dialog = new FileDialog(shell, SWT.SAVE);
 		dialog.setFilterNames(new String[] { "Xml Files", "All Files (*.*)" });
-		dialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); 
+		dialog.setFilterExtensions(new String[] { "*.xml", "*.*", "*.rar" }); 
 		dialog.open();
 		String filename = dialog.getFileName();
 		save(dialog.getFilterPath() + File.separator + filename);
 		
 	}
-
+	static Set<Student> setStudent;
+	static int idClass;
 	private static void save(String filename) {
 		try {
 			DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
@@ -62,10 +66,40 @@ public class ExportHandler {
 				classId.appendChild(document.createTextNode(String.valueOf(list.get(i).getId())));
 				clazz.appendChild(classId);
 
+				Element classCode = document.createElement("code");
+				classCode.appendChild(document.createTextNode(String.valueOf(list.get(i).getCode())));
+				clazz.appendChild(classCode);
+				
 				Element className = document.createElement("name");
 				className.appendChild(document.createTextNode(list.get(i).getName()));
 				clazz.appendChild(className);
-			}
+				
+				Element classSize = document.createElement("size");
+				classSize.appendChild(document.createTextNode(String.valueOf(list.get(i).getSize())));
+				clazz.appendChild(classSize);
+				//bo SET cua 1 lop
+				
+				setStudent=list.get(i).getStudents();
+				idClass=list.get(i).getId();
+			
+			List<Student> listStudent=new ArrayList<Student>(setStudent);
+			for(int j=0;j<listStudent.size();j++) {
+				Element enrollment = document.createElement("enrollment");
+				root.appendChild(enrollment);
+				Attr attrEnroll = document.createAttribute("operator");
+				attrEnroll.setValue("create");
+				enrollment.setAttributeNode(attrEnroll);
+				Element classIdE = document.createElement("classid");
+				classIdE.appendChild(document.createTextNode(String.valueOf(idClass)));
+				enrollment.appendChild(classIdE);
+
+				Element studentE = document.createElement("studentid");
+				studentE.appendChild(document.createTextNode(String.valueOf(listStudent.get(j).getId())));
+				enrollment.appendChild(studentE);
+				
+			}}
+			
+			
 			// student
 			List<Student> lt = ServerConnector.getInstance().getStudentService().findAll();
 			for (int i = 0; i < lt.size(); i++) {
@@ -98,9 +132,9 @@ public class ExportHandler {
 				studentAddress.appendChild(document.createTextNode(lt.get(i).getAddress()));
 				student.appendChild(studentAddress);
 
-				Element studentClazz = document.createElement("class");
-				studentClazz.appendChild(document.createTextNode(String.valueOf(lt.get(i).getClasses())));
-				student.appendChild(studentClazz);
+//				Element studentClazz = document.createElement("class");
+//				studentClazz.appendChild(document.createTextNode(String.valueOf(lt.get(i).getClasses())));
+//				student.appendChild(studentClazz);
 			}
 
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();

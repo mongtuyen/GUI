@@ -57,7 +57,7 @@ public class ListClass {
 
 	int classID;
 	static List<Clazz> l;
-	
+
 	public static List<Clazz> getL() {
 		return l;
 	}
@@ -108,14 +108,14 @@ public class ListClass {
 
 	@PostConstruct
 	public void createComposite(Composite parent) throws IOException {
-		
-		parent.setSize(30,20);
+
+		parent.setSize(30, 20);
 		parent.setLayout(new GridLayout(1, false));
 		Label label_1 = new Label(parent, SWT.NONE);
 		label_1.setText("LIST CLASS");
-		//label_1.setBounds(130, 26, 100, 15);
+		// label_1.setBounds(130, 26, 100, 15);
 
-		table = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI| SWT.BORDER);
+		table = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI | SWT.BORDER);
 
 		GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);// SWT.TOP
 		gd_table.heightHint = 120;
@@ -123,7 +123,7 @@ public class ListClass {
 
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		
+
 		final TableColumn column0 = new TableColumn(table, SWT.NONE);
 		column0.setText("ID");
 		final TableColumn column1 = new TableColumn(table, SWT.NONE);
@@ -136,9 +136,28 @@ public class ListClass {
 		column4.setText("Registered");
 		final TableColumn column5 = new TableColumn(table, SWT.NONE);
 		column5.setText("Vacant position");
-		
 
 		Menu menu = new Menu(parent);
+
+		// menu update
+		MenuItem update = new MenuItem(menu, SWT.NONE);
+		update.setText("Update");
+		update.addListener(SWT.Selection, new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+				//if (table.getSelection().length > 0) {
+					int idClazz = Integer.parseInt(table.getSelection()[0].getText());
+					Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
+					WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardClassEdit(clazz));
+					if (wizardDialog.open() == Window.OK) {
+						System.out.println("Ok pressed");
+					} else {
+						System.out.println("Cancel pressed");
+					}
+				//}
+			}
+		});
 		// menu delete
 		MenuItem remove = new MenuItem(menu, SWT.NONE);
 		remove.setText("Delete");
@@ -153,7 +172,8 @@ public class ListClass {
 						MessageDialog.openInformation(new Shell(), "Confirm", "Delete successfull");
 					} else {
 						Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
-						MessageDialog.openError(new Shell(), "Error", clazz.getName() + " exist in Student table");
+						MessageDialog.openError(new Shell(), "Error",
+								"Class " + clazz.getName() + " has students enrolled.");
 					}
 				} else {
 					MessageDialog.openWarning(new Shell(), "Warning", "Please choose a class to delete");
@@ -161,33 +181,14 @@ public class ListClass {
 			}
 		});
 
-		// menu update
-		MenuItem update = new MenuItem(menu, SWT.NONE);
-		update.setText("Update");
-		update.addListener(SWT.Selection, new Listener() {
-
+		table.addListener(SWT.MenuDetect, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				if (table.getSelection().length > 0) {
-					int idClazz = Integer.parseInt(table.getSelection()[0].getText());
-					Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
-					WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardClassEdit(clazz));
-					if (wizardDialog.open() == Window.OK) {
-						System.out.println("Ok pressed");
-					} else {
-						System.out.println("Cancel pressed");
-					}
+				if (table.getSelectionCount() <= 0) {
+					event.doit = false;
 				}
 			}
 		});
-		table.addListener(SWT.MenuDetect, new Listener() {
-			  @Override
-			  public void handleEvent(Event event) {
-			    if (table.getSelectionCount() <= 0) {
-			      event.doit = false;
-			    }
-			  }
-			});
 		table.setMenu(menu);
 
 		// sort id
@@ -199,7 +200,8 @@ public class ListClass {
 					for (int j = 0; j < i; j++) {
 						int value2 = Integer.parseInt(items[j].getText(0));
 						if (value1 < value2) {
-							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2) };
+							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2),
+									items[i].getText(3), items[i].getText(4), items[i].getText(5) };
 							items[i].dispose();
 							TableItem item = new TableItem(table, SWT.NONE, j);
 							item.setText(values);
@@ -221,7 +223,8 @@ public class ListClass {
 					for (int j = 0; j < i; j++) {
 						String value2 = items[j].getText(1);
 						if (collator.compare(value1, value2) < 0) {
-							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2) };
+							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2),
+									items[i].getText(3), items[i].getText(4), items[i].getText(5) };
 							items[i].dispose();
 							TableItem item = new TableItem(table, SWT.NONE, j);
 							item.setText(values);
@@ -243,7 +246,8 @@ public class ListClass {
 					for (int j = 0; j < i; j++) {
 						String value2 = items[j].getText(2);
 						if (collator.compare(value1, value2) < 0) {
-							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2) };
+							String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2),
+									items[i].getText(3), items[i].getText(4), items[i].getText(5) };
 							items[i].dispose();
 							TableItem item = new TableItem(table, SWT.NONE, j);
 							item.setText(values);
@@ -257,11 +261,11 @@ public class ListClass {
 
 		table.setSortColumn(column0);
 		table.setSortDirection(SWT.UP);
-		
+
 		labelClassSum = new Label(parent, SWT.NONE);
 		labelClassSum.setText("Total: " + sum);
 
-		 l = ServerConnector.getInstance().getClassService().findAll();
+		l = ServerConnector.getInstance().getClassService().findAll();
 		updateClazzTable(l);
 //		Button btnAdd = new Button(parent, SWT.NONE);
 //		btnAdd.setText("Add");
@@ -295,22 +299,19 @@ public class ListClass {
 //				} else {
 //					MessageDialog.openWarning(new Shell(), "Warning", "Please choose a class to delete");
 //				}
-				
-				
-				
+
 				int[] selectedRows = table.getSelectionIndices();
 				if (table.getSelection().length > 0) {
 					for (int i = selectedRows.length - 1; i >= 0; i--) {
-						//int studentID = Integer.parseInt(table.getSelection()[i].getText());
-						int idClazz = Integer.parseInt(table.getSelection()[i].getText());						
+						// int studentID = Integer.parseInt(table.getSelection()[i].getText());
+						int idClazz = Integer.parseInt(table.getSelection()[i].getText());
 						ServerConnector.getInstance().getClassService().delete(idClazz);
 					}
 					MessageDialog.openInformation(new Shell(), "Confirm", "Delete successfull");
 				} else {
 					MessageDialog.openWarning(new Shell(), "Warning", "Please choose a class to delete");
-				}		
-				
-				
+				}
+
 			}
 		});
 
@@ -393,15 +394,14 @@ public class ListClass {
 //			  }
 //			});
 //		table.setMenu(menu);
-		
+
 	}
 
 	public static void updateClazzTable(List<Clazz> list) {
 
 		table.removeAll();
 		logger.info("update list class");
-		
-		
+
 		for (int i = 0; i < list.size(); i++) {
 			TableItem item = new TableItem(table, SWT.BORDER);
 			Button edit = new Button(table, SWT.BORDER);
@@ -411,7 +411,7 @@ public class ListClass {
 			item.setText(1, list.get(i).getCode());
 			item.setText(3, String.valueOf(list.get(i).getSize()));
 			item.setText(4, String.valueOf(list.get(i).getStudents().size()));
-			item.setText(5, String.valueOf((list.get(i).getSize()-list.get(i).getStudents().size())));
+			item.setText(5, String.valueOf((list.get(i).getSize() - list.get(i).getStudents().size())));
 		}
 		for (int j = 0; j < table.getColumnCount(); j++) {
 			table.getColumn(j).pack();
@@ -419,7 +419,6 @@ public class ListClass {
 		sum = list.size();
 		labelClassSum.setText("Total: " + sum);
 		logger.info(list);
-		
 
 	}
 

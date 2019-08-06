@@ -112,20 +112,22 @@ public class DetailOfClass {
 		});
 
 		// button add
-		Button btnAdd = new Button(parent, SWT.NONE);
-		btnAdd.setText("Update");
-
-		btnAdd.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardDetailClass());
-				if (wizardDialog.open() == Window.OK) {
-					System.out.println("Ok pressed");
-				} else {
-					System.out.println("Cancel pressed");
-				}
-			}
-		});
+//		Button btnUpdate = new Button(parent, SWT.NONE);
+//		btnUpdate.setText("Update");
+//
+//		btnUpdate.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				Clazz clazz=ServerConnector.getInstance().getClassService().findById(classID);				
+//				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardDetailClass(clazz));
+//				if (wizardDialog.open() == Window.OK) {
+//					System.out.println("Ok pressed");
+//				} else {
+//					System.out.println("Cancel pressed");
+//				}
+//			}
+//		});
+		
 		// student
 //		codeStudent = new Label(parent, SWT.NONE);
 //		codeStudent.setText("                                                           ");
@@ -146,8 +148,6 @@ public class DetailOfClass {
 //		 final TableColumn columnNameClass = new TableColumn(tableDetailClass, SWT.NONE);
 //		  columnNameClass.setText("Name");
 
-		// System.out.println("==============================================before add
-		// listener table student");
 		tableStudent.addListener(SWT.Selection, new Listener() {
 			int studentID;
 
@@ -156,14 +156,9 @@ public class DetailOfClass {
 				for (int i = 0; i < selection.length; i++) {
 					studentID = Integer.parseInt(selection[i].getText());
 				}
-//				logger.info("IIIIIIIIDDDDDDDD student" + studentID);
-//				System.out.println("fdsgsssss student" + studentID);
 				listClassFromStudent(studentID);
 			}
 		});
-		// System.out.println("init table detail in composite");
-//		System.out.println("Student IIIIIIIIIIIDDDDDDDDDDD:"+studentID);
-//		listClassFromStudent(studentID);
 	}
 	// class
 
@@ -192,23 +187,6 @@ public class DetailOfClass {
 	}
 
 	public static void listClassFromStudent(int studentID) {
-//		Student student = ServerConnector.getInstance().getStudentService().findById(studentID);
-//		codeClass.setText("Student ID: "+student.getCode());
-//		nameClass.setText("Name: "+student.getName());
-//		Table tableDetailClass = new Table(parentComposite, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI); tableDetailClass.setVisible(false);
-//		GridData gd_table13 = new GridData(SWT.TOP, SWT.FILL, true, true, 2, 1);
-//		gd_table13.heightHint = 120; 
-//		gd_table13.widthHint = 160;
-//		tableDetailClass.setLayoutData(gd_table13);
-//		tableDetailClass.setHeaderVisible(true);
-//		tableDetailClass.setLinesVisible(true);
-//		final TableColumn columnCodeClass = new TableColumn(tableDetailClass, SWT.NONE); 
-//		columnCodeClass.setText("Class ID"); 
-//		final TableColumn columnNameClass = new TableColumn(tableDetailClass, SWT.NONE);
-//		columnNameClass.setText("Name");				 
-//		
-
-		// System.out.println("dusfggggggggfgggggggggg"+studentID);
 		tableDetailStudent.removeAll();
 		tableDetailStudent.setVisible(true);
 		Student student = ServerConnector.getInstance().getStudentService().findById(studentID);
@@ -233,6 +211,24 @@ public class DetailOfClass {
 			tableDetailStudent.getColumn(j).pack();
 		}
 
+		
+		
+//		Student student = ServerConnector.getInstance().getStudentService().findById(studentID);
+//		codeClass.setText("Student ID: "+student.getCode());
+//		nameClass.setText("Name: "+student.getName());
+//		Table tableDetailClass = new Table(parentComposite, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI); tableDetailClass.setVisible(false);
+//		GridData gd_table13 = new GridData(SWT.TOP, SWT.FILL, true, true, 2, 1);
+//		gd_table13.heightHint = 120; 
+//		gd_table13.widthHint = 160;
+//		tableDetailClass.setLayoutData(gd_table13);
+//		tableDetailClass.setHeaderVisible(true);
+//		tableDetailClass.setLinesVisible(true);
+//		final TableColumn columnCodeClass = new TableColumn(tableDetailClass, SWT.NONE); 
+//		columnCodeClass.setText("Class ID"); 
+//		final TableColumn columnNameClass = new TableColumn(tableDetailClass, SWT.NONE);
+//		columnNameClass.setText("Name");				 
+
+		
 		// tableDetailStudent.dispose();
 //		tableDetailClass.removeAll();
 //		tableDetailClass.setVisible(true);

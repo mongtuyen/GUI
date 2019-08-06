@@ -285,9 +285,16 @@ public class ListStudent {
 			public void handleEvent(Event event) {
 
 				int idStudent = Integer.parseInt(table.getSelection()[0].getText());
-				ServerConnector.getInstance().getStudentService().delete(idStudent);
-				MessageDialog.openInformation(new Shell(), "Confirm", "Delete successfull");
-
+				Student student = ServerConnector.getInstance().getStudentService().findById(studentID);
+				if (student.getClasses().isEmpty()) {
+					ServerConnector.getInstance().getStudentService().delete(idStudent);
+					MessageDialog.openInformation(new Shell(), "Confirm", "Delete successfull");
+				}
+				else {
+					MessageDialog.openError(new Shell(), "Error",
+						"Student " + student.getName() + " has registered for cources");
+				}
+				
 			}
 		});
 		table.addListener(SWT.MenuDetect, new Listener() {

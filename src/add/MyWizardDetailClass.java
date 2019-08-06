@@ -7,14 +7,17 @@ import com.tuyen.model.Clazz;
 import com.tuyen.model.Student;
 
 import connect.ServerConnector;
+import detail.DetailOfClass;
 
 public class MyWizardDetailClass extends Wizard {
 
-	protected AddDetailClass one;
+	protected AddDetailClass detailClass;
 	Clazz clazz;
-	public MyWizardDetailClass() {
+
+	public MyWizardDetailClass(Clazz l) {
 		super();
 		setNeedsProgressMonitor(true);
+		this.clazz=l;
 	}
 
 	@Override
@@ -24,16 +27,18 @@ public class MyWizardDetailClass extends Wizard {
 
 	@Override
 	public void addPages() {
-		one = new AddDetailClass();
-
-		addPage(one);
+		detailClass = new AddDetailClass();	
+		addPage(detailClass);
 
 	}
 
 	@Override
 	public boolean performFinish() {
-		 clazz = one.getClazz();
-		ServerConnector.getInstance().getClassService().update(clazz);
+		System.out.println("Class ben wizard truoc khi update: "+clazz.getStudents().toString());	
+		clazz = detailClass.getClazz();
+		System.out.println("Class ben wizard sau khi update: "+clazz.getStudents().toString());
+		ServerConnector.getInstance().getClassService().persist(clazz);
+		DetailOfClass.listStudentFromClass(clazz.getId());
 		return true;
 	}
 

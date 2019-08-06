@@ -94,7 +94,7 @@ public class SWTSimpleTree {
 //		label7.setText("Label in Group");
 //		label7.setLocation(20,20);
 //		label7.pack();
-//		ProgressBar progressBar1 = new ProgressBar(parent, SWT.NULL);
+		ProgressBar progressBar1 = new ProgressBar(parent, SWT.NULL);
 //		ProgressBar progressBar2 = new ProgressBar(parent, SWT.SMOOTH);
 //		ProgressBar progressBar3 = new ProgressBar(parent, SWT.INDETERMINATE);	
 		//group.pack();

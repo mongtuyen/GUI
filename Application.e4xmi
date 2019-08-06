@@ -16,7 +16,6 @@
           <children xsi:type="basic:PartStack" xmi:id="_swNCsK-EEeml6cbjhUJDVw" elementId="rcptest.partstack.0" containerData="3500">
             <children xsi:type="basic:Part" xmi:id="__9htoLQuEemJG8pwIqZ7Qw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/detail.DetailOfStudent" label="Student" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png"/>
             <children xsi:type="basic:Part" xmi:id="_uT0xkK-EEeml6cbjhUJDVw" elementId="rcptest.part.detail" contributionURI="bundleclass://RCPTest/detail.DetailOfClass" label="Detail" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png" closeable="true"/>
-            <children xsi:type="basic:Part" xmi:id="_CAu5ULaREemaUPDEuF1b2Q" elementId="rcptest.part.aaa" contributionURI="bundleclass://RCPTest/detail.DetailStudent" label="AAA"/>
           </children>
         </children>
       </children>

@@ -3,7 +3,6 @@ package add;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
-
 import org.apache.log4j.Logger;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -21,19 +20,16 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-
-import com.rcp.ListClass;
 import com.tuyen.model.Clazz;
 import com.tuyen.model.Student;
-
 import connect.ServerConnector;
 import detail.DetailOfClass;
 
 public class AddDetailClass extends WizardPage {
 	final static Logger logger = Logger.getLogger(AddDetailClass.class);
-	
+
 	Student studentAdd;
-	Set<Student> setStudent = new HashSet<>();
+	static Set<Student> setStudent = new HashSet<>();
 	int idClass = DetailOfClass.getClassID();
 	Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClass);
 	Student studentDelete;
@@ -62,10 +58,10 @@ public class AddDetailClass extends WizardPage {
 
 		Label label3 = new Label(container, SWT.NONE);
 		label3.setText("Name: " + clazz.getName());
-		
+
 		Label label0 = new Label(container, SWT.NONE);
-		label0.setText("Number of student: "+clazz.getSize());
-		
+		label0.setText("Number of student: " + clazz.getSize());
+
 		Label label1 = new Label(container, SWT.NONE);
 		label1.setText("List student");
 
@@ -130,6 +126,7 @@ public class AddDetailClass extends WizardPage {
 		listUpdate.setMenu(menu);
 		menu.addMenuListener(new MenuAdapter() {
 			int studentIDDelete;
+
 			public void menuShown(MenuEvent e) {
 				int selected = listUpdate.getSelectionIndex();
 				String selectedText[] = listUpdate.getSelection();
@@ -149,17 +146,17 @@ public class AddDetailClass extends WizardPage {
 						for (int i = 0; i < selectedText.length; i++) {
 							list.add(selectedText[i]);
 							code = selectedText[i].split(":");
-							System.out.println("code cua student duoc chon:"+code[0]);
-							//remove student
-							for (int t = 0; t < ServerConnector.getInstance().getStudentService().findAll().size(); t++) {
+							System.out.println("code cua student duoc chon:" + code[0]);
+							// remove student
+							for (int t = 0; t < ServerConnector.getInstance().getStudentService().findAll()
+									.size(); t++) {
 								if (ServerConnector.getInstance().getStudentService().findAll().get(t).getCode()
 										.equals(code[0])) {
-									studentIDDelete = ServerConnector.getInstance().getStudentService().findAll().get(t)
-											.getId();
-									studentDelete = ServerConnector.getInstance().getStudentService()
-											.findById(studentIDDelete);
-									System.out.println(" student duoc chon:"+studentDelete.toString());
-									
+									studentIDDelete = ServerConnector.getInstance().getStudentService().findAll().get(t).getId();
+									studentDelete = ServerConnector.getInstance().getStudentService().findById(studentIDDelete);
+									System.out.println(" student duoc chon:" + studentDelete.toString());
+									System.out.println("List student truoc khi xoa:" + setStudent.toString());
+
 									setStudent.removeIf(new Predicate<Student>() {
 
 										@Override
@@ -167,11 +164,13 @@ public class AddDetailClass extends WizardPage {
 											return t.getId() == studentIDDelete;
 										}
 									});
+									System.out.println("List student sau khi xoa:" + setStudent.toString());
 
 								}
 
 							}
 						}
+						ServerConnector.getInstance().getStudentService().update(studentDelete);
 					}
 
 				});
@@ -190,12 +189,40 @@ public class AddDetailClass extends WizardPage {
 	}
 
 	public Clazz getClazz() {
-		clazz.setId(clazz.getId());
-		clazz.setCode(clazz.getCode());
-		clazz.setName(clazz.getName());
-		//clazz.setSize(size);
+		//clazz.setCode(clazz.getCode());
+		//clazz.setName(clazz.getName());
+		// clazz.setSize(size);
 		clazz.setStudents(setStudent);
+		System.out.println("Class truyen di: "+clazz.getStudents().toString());
+		ServerConnector.getInstance().getClassService().update(clazz);
 		return clazz;
+	}
+	public static void main(String []args) {
+		Student b= ServerConnector.getInstance().getStudentService().findById(7);
+		
+//		
+		Student b1= ServerConnector.getInstance().getStudentService().findById(2);
+//		Set<Student> set = new HashSet<>();
+//	
+//		set.add(b);
+//		set.add(b1);
+//		
+//		Clazz a=new Clazz(6,"Ma","Ten",2,set);
+//		ServerConnector.getInstance().getClassService().persist(a);
+//		
+		Clazz test=ServerConnector.getInstance().getClassService().findById(1);
+		System.out.println("Class truyen di: "+test.getStudents().toString());
+		test.getStudents().add(b1);
+//		test.getStudents().removeIf(new Predicate<Student>() {
+//
+//			@Override
+//			public boolean test(Student t) {
+//				return t.getId() == b.getId();
+//			}
+//		});
+		System.out.println("Class truyen di 1: "+test.getStudents().toString());
+		
+		
 	}
 
 }

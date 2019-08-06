@@ -324,20 +324,22 @@ public class EditStudent extends WizardPage {
 	}
 
 	public static void main(String[] args) {
-		Set<Clazz> set = new HashSet<>();
-
-		Clazz c1 = new Clazz(1, "rewf", "ygh", 23);
-		Clazz c2 = new Clazz(2, "gtc", "gfhj", 54);
-		// Clazz c3 = ServerConnector.getInstance().getClassService().findById(1);
-		// set.add(c3);
-		set.add(c2);
-		set.add(c1);
-		System.out.println(set);
-
-		System.out.println("SET BEFORE" + set.toString());
-		set.remove(c1);
-		System.out.println("SET After" + set.toString());
-
+//		Set<Clazz> set = new HashSet<>();
+//
+//		Clazz c1 = new Clazz(1, "rewf", "ygh", 23);
+//		Clazz c2 = new Clazz(2, "gtc", "gfhj", 54);
+//		// Clazz c3 = ServerConnector.getInstance().getClassService().findById(1);
+//		// set.add(c3);
+//		set.add(c2);
+//		set.add(c1);
+//		System.out.println(set);
+//
+//		System.out.println("SET BEFORE" + set.toString());
+//		set.remove(c1);
+//		System.out.println("SET After" + set.toString());
+			String a="b150. rgurhfg";
+			String[] code=a.split(". ");
+			System.out.println(code[0]);
 	}
 
 }

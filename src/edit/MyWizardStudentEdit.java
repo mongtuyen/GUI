@@ -6,6 +6,7 @@ import org.eclipse.jface.wizard.Wizard;
 import com.tuyen.model.Student;
 
 import connect.ServerConnector;
+import detail.DetailOfClass;
 
 public class MyWizardStudentEdit extends Wizard {
 
@@ -34,6 +35,7 @@ public class MyWizardStudentEdit extends Wizard {
 	public boolean performFinish() {
 		student = one.getStudent();
 		ServerConnector.getInstance().getStudentService().update(student);
+		DetailOfClass.listClassFromStudent(student.getId());
 		return true;
 	}
 

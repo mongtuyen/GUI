@@ -6,10 +6,11 @@ import org.eclipse.jface.wizard.Wizard;
 import com.tuyen.model.Clazz;
 
 import connect.ServerConnector;
+import detail.DetailOfClass;
 
 public class MyWizardClassEdit extends Wizard {
 
-    protected EditClass one;
+    protected EditClass editClass;
     Clazz clazz;
     public MyWizardClassEdit(Clazz c) {
         super();
@@ -24,15 +25,18 @@ public class MyWizardClassEdit extends Wizard {
 
     @Override
     public void addPages() {
-        one = new EditClass(clazz);      
-        addPage(one);  
+        editClass = new EditClass(clazz);      
+        addPage(editClass);  
     }
 
     @Override
     public boolean performFinish() {
-    	clazz = one.getClazzEdit();
+    	clazz = editClass.getClazzEdit();
+    	
     	ServerConnector.getInstance().getClassService().update(clazz);
-        return true;
+    	System.out.println("LIST CLASS WIZARD: "+clazz.toString());
+       DetailOfClass.listStudentFromClass(clazz.getId());
+    	return true;
     }
     @Override
     public boolean performCancel() {
