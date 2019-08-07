@@ -46,8 +46,6 @@ public class SWTSimpleTree {
 		item0.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item0.setControl(composite);
 		//item0.setImage(image);
-		
-
 
 //		Tree tree = new Tree(parent, SWT.BORDER);
 //		TreeItem item = new TreeItem(tree, SWT.NULL);
@@ -94,7 +92,8 @@ public class SWTSimpleTree {
 //		label7.setText("Label in Group");
 //		label7.setLocation(20,20);
 //		label7.pack();
-		ProgressBar progressBar1 = new ProgressBar(parent, SWT.NULL);
+		//ProgressBar progressBar1 = new ProgressBar(parent, SWT.NULL);
+	//	progressBar1.setSelection(50);
 //		ProgressBar progressBar2 = new ProgressBar(parent, SWT.SMOOTH);
 //		ProgressBar progressBar3 = new ProgressBar(parent, SWT.INDETERMINATE);	
 		//group.pack();

@@ -26,8 +26,8 @@ public class OpenHandler {
 		String selected = dialog.open();
 		File f = new File(selected);
 		StudentDefinitions catalog = StudentDefinitions.Factory.parse(f);
-		ServerConnector.getInstance().getClassService().getXMLFileFromGUI(catalog.toString());
 		ServerConnector.getInstance().getStudentService().getXMLFileFromGUI(catalog.toString());
+		ServerConnector.getInstance().getClassService().getXMLFileFromGUI(catalog.toString());
 		logger.info("File path: " + selected);
 		MessageDialog.openInformation(new Shell(), "Confirm", "Import successfull");
 	

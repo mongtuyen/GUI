@@ -146,16 +146,14 @@ public class ListClass {
 
 			@Override
 			public void handleEvent(Event event) {
-				//if (table.getSelection().length > 0) {
-					int idClazz = Integer.parseInt(table.getSelection()[0].getText());
-					Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
-					WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardClassEdit(clazz));
-					if (wizardDialog.open() == Window.OK) {
-						System.out.println("Ok pressed");
-					} else {
-						System.out.println("Cancel pressed");
-					}
-				//}
+				int idClazz = Integer.parseInt(table.getSelection()[0].getText());
+				Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
+				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardClassEdit(clazz));
+				if (wizardDialog.open() == Window.OK) {
+					System.out.println("Ok pressed");
+				} else {
+					System.out.println("Cancel pressed");
+				}
 			}
 		});
 		// menu delete
@@ -167,11 +165,13 @@ public class ListClass {
 			public void handleEvent(Event event) {
 				if (table.getSelection().length > 0) {
 					int idClazz = Integer.parseInt(table.getSelection()[0].getText());
-					boolean deleted = ServerConnector.getInstance().getClassService().delete(idClazz);
-					if (deleted) {
+					Clazz clazz=ServerConnector.getInstance().getClassService().findById(idClazz);
+					//boolean deleted = 
+					if (clazz.getStudents().isEmpty()) {
+						ServerConnector.getInstance().getClassService().delete(idClazz);
 						MessageDialog.openInformation(new Shell(), "Confirm", "Delete successfull");
 					} else {
-						Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
+						//Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
 						MessageDialog.openError(new Shell(), "Error",
 								"Class " + clazz.getName() + " has students enrolled.");
 					}
@@ -267,39 +267,13 @@ public class ListClass {
 
 		l = ServerConnector.getInstance().getClassService().findAll();
 		updateClazzTable(l);
-//		Button btnAdd = new Button(parent, SWT.NONE);
-//		btnAdd.setText("Add");
-//
-//		btnAdd.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardClass());
-//				if (wizardDialog.open() == Window.OK) {
-//					System.out.println("Ok pressed");
-//				} else {
-//					System.out.println("Cancel pressed");
-//				}
-//			}
-//		});
+
 
 		Button buttonDelete = new Button(parent, SWT.NONE);
 		buttonDelete.setText("Delete all");
 		buttonDelete.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
-//				if (table.getSelection().length > 0) {
-//					int idClazz = Integer.parseInt(table.getSelection()[0].getText());
-//					boolean deleted = ServerConnector.getInstance().getClassService().delete(idClazz);
-//					if (deleted) {
-//						MessageDialog.openInformation(new Shell(), "Confirm", "Delete successfull");
-//					} else {
-//						Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
-//						MessageDialog.openError(new Shell(), "Error", clazz.getName() + " exist in Student table");
-//					}
-//				} else {
-//					MessageDialog.openWarning(new Shell(), "Warning", "Please choose a class to delete");
-//				}
-
 				int[] selectedRows = table.getSelectionIndices();
 				if (table.getSelection().length > 0) {
 					for (int i = selectedRows.length - 1; i >= 0; i--) {
@@ -315,25 +289,8 @@ public class ListClass {
 			}
 		});
 
-//		Button checkUpdate = new Button(parent, SWT.NONE);
-//		checkUpdate.setText("Edit");
-//
-//		checkUpdate.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				int idClazz = Integer.parseInt(table.getSelection()[0].getText());
-//				Clazz clazz = ServerConnector.getInstance().getClassService().findById(idClazz);
-//				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardEdit(clazz));
-//				if (wizardDialog.open() == Window.OK) {
-//					System.out.println("Ok pressed");
-//				} else {
-//					System.out.println("Cancel pressed");
-//				}
-//			}
-//		});
 
 		// List student of class
-
 		sumStudent = new Label(parent, SWT.NONE);
 		sumStudent.setText("                                                           ");
 
@@ -348,52 +305,11 @@ public class ListClass {
 		tableStudent.setHeaderVisible(true);
 		tableStudent.setLinesVisible(true);
 
-//		for (int i = 0; i < titles.length; i++) {
-//			TableColumn column = new TableColumn(table, SWT.BORDER);
-//			column.setText(titles[i]);
-//			column.setWidth(600);
-//		}
 
 		final TableColumn columnID = new TableColumn(tableStudent, SWT.NONE);
 		columnID.setText("Student ID");
 		final TableColumn columnName = new TableColumn(tableStudent, SWT.NONE);
 		columnName.setText("Name");
-
-//		table.addListener(SWT.Selection, new Listener() {
-//			//classID;
-//			public void handleEvent(Event e) {
-//				String string = "";
-//				TableItem[] selection = table.getSelection();
-//				for (int i = 0; i < selection.length; i++) {
-//					classID= Integer.parseInt(selection[i].getText());
-//					string += selection[i].getText() + "gg ";
-//				}
-//				System.out.println("DefaultSelection={" + string + "}");
-//				
-//				//listStudentFromClass(classID);
-//			}
-//		});
-
-//		Menu menu =new Menu(parent);
-//		MenuItem view =  new MenuItem(menu,SWT.NONE);
-//		view.setText("View");
-//		view.addListener(SWT.Selection, new Listener() {
-//			
-//			@Override
-//			public void handleEvent(Event event) {
-//				int index = table.getSelectionIndex();
-//				System.out.println("index  "+index);
-//			}
-//		});
-//		table.addListener(SWT.MenuDetect, new Listener() {
-//			  @Override
-//			  public void handleEvent(Event event) {
-//			    if (table.getSelectionCount() <= 0) {
-//			      event.doit = false;
-//			    }
-//			  }
-//			});
-//		table.setMenu(menu);
 
 	}
 

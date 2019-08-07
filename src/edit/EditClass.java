@@ -14,6 +14,7 @@ import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -58,6 +59,9 @@ public class EditClass extends WizardPage {
 	@Override
 	public void createControl(Composite parent) {
 		parent.setSize(500, 800);
+		Color blue =Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
+		
+		
 		Composite container = new Composite(parent, SWT.NONE);
 		setControl(container);
 
@@ -72,6 +76,7 @@ public class EditClass extends WizardPage {
 
 		classID = new Text(container, SWT.BORDER | SWT.SINGLE);
 		classID.setText(clazz.getCode());
+		classID.setBackground(blue);
 		classID.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -90,6 +95,7 @@ public class EditClass extends WizardPage {
 
 		className = new Text(container, SWT.BORDER | SWT.SINGLE);
 		className.setText(clazz.getName());
+		className.setBackground(blue);
 		className.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -107,7 +113,7 @@ public class EditClass extends WizardPage {
 
 		sizeClass = new Text(container, SWT.BORDER | SWT.SINGLE);
 		sizeClass.setText(String.valueOf(clazz.getSize()));
-
+		sizeClass.setBackground(blue);
 		sizeClass.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -141,11 +147,9 @@ public class EditClass extends WizardPage {
 			list.add(ServerConnector.getInstance().getStudentService().findAll().get(i).getCode() + ": "
 					+ ServerConnector.getInstance().getStudentService().findAll().get(i).getName());
 		}
-
 		GridData gd_list = new GridData(SWT.TOP, SWT.TOP, true, true, 1, 1);
 		gd_list.widthHint = 150;
 		gd_list.heightHint = 150;
-
 		list.setLayoutData(gd_list);
 
 		final Button buttonAdd = new Button(enroll, SWT.NONE | SWT.PUSH | SWT.CENTER);
@@ -153,6 +157,7 @@ public class EditClass extends WizardPage {
 		// list studnet update
 		final List listUpdate = new List(enroll, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.RIGHT);
 		listUpdate.setLayoutData(gd_list);
+		listUpdate.setBackground(blue);
 		setStudent = clazz.getStudents();
 		for (Student a : setStudent) {
 			listUpdate.add(a.getCode() + ": " + a.getName());

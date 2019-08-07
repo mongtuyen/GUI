@@ -15,6 +15,7 @@ import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -60,7 +61,13 @@ public class EditStudent extends WizardPage {
 
 	@Override
 	public void createControl(Composite parent) {
+		Color blue =Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
+		
+		Color blue1 =Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
+		Color blue2 =Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+		
 		parent.setSize(500, 800);
+		parent.setBackground(blue2);
 		Composite container = new Composite(parent, SWT.NONE);
 		setControl(container);
 
@@ -75,6 +82,7 @@ public class EditStudent extends WizardPage {
 
 		code = new Text(container, SWT.BORDER | SWT.SINGLE);
 		code.setText(student.getCode());
+		code.setBackground(blue);
 		code.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -94,6 +102,7 @@ public class EditStudent extends WizardPage {
 
 		name = new Text(container, SWT.BORDER | SWT.SINGLE);
 		name.setText(student.getName());
+		name.setBackground(blue);
 		name.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -113,6 +122,7 @@ public class EditStudent extends WizardPage {
 
 		age = new Text(container, SWT.BORDER | SWT.SINGLE);
 		age.setText(String.valueOf(student.getAge()));
+		age.setBackground(blue);
 		age.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -132,6 +142,7 @@ public class EditStudent extends WizardPage {
 
 		mail = new Text(container, SWT.BORDER | SWT.SINGLE);
 		mail.setText(student.getEmail());
+		mail.setBackground(blue);
 		mail.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -150,6 +161,7 @@ public class EditStudent extends WizardPage {
 		label5.setText("Address");
 		address = new Text(container, SWT.BORDER | SWT.SINGLE);
 		address.setText(student.getAddress());
+		address.setBackground(blue);
 		address.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -201,6 +213,7 @@ public class EditStudent extends WizardPage {
 		// Set<Clazz> setClass = new HashSet<>();
 
 		listUpdate.setLayoutData(gd_list);
+		listUpdate.setBackground(blue);
 		buttonRegister.addSelectionListener(new SelectionAdapter() {
 			int classID;
 
@@ -221,10 +234,6 @@ public class EditStudent extends WizardPage {
 							}else {
 								MessageDialog.openError(new Shell(), "Error", "Class " + clazzAdd.getName() + " is full");
 							}
-							
-							
-							//System.out.println("List class add:" + setClass.toString());
-
 						}
 
 					}

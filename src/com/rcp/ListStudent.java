@@ -101,7 +101,8 @@ public class ListStudent {
 	public void createComposite(Composite parent) throws IOException {
 		parent.setLayout(new GridLayout(1, false));
 
-		// Color blue = parent.getSystemColor(SWT.COLOR_BLUE);
+//		Color blue =Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
+//		parent.setBackground(blue);
 		// Color white = display.getSystemColor(SWT.COLOR_WHITE);
 
 		Label label_1 = new Label(parent, SWT.NONE);
@@ -227,21 +228,6 @@ public class ListStudent {
 		List<Student> l = ServerConnector.getInstance().getStudentService().findAll();
 		updateStudentTable(l);
 
-//		Button btnAdd = new Button(parent, SWT.NONE);
-//		btnAdd.setText("Add");
-//
-//		btnAdd.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardStudent());
-//				if (wizardDialog.open() == Window.OK) {
-//					System.out.println("Ok pressed");
-//				} else {
-//					System.out.println("Cancel pressed");
-//				}
-//			}
-//		});
-
 		Button buttonDelete = new Button(parent, SWT.NONE);
 		buttonDelete.setText("Delete all");
 		buttonDelete.addListener(SWT.Selection, new Listener() {
@@ -259,7 +245,7 @@ public class ListStudent {
 				}
 			}
 		});
-		
+
 		Menu menu = new Menu(parent);
 		MenuItem update = new MenuItem(menu, SWT.NONE);
 		update.setText("Update");
@@ -289,12 +275,11 @@ public class ListStudent {
 				if (student.getClasses().isEmpty()) {
 					ServerConnector.getInstance().getStudentService().delete(idStudent);
 					MessageDialog.openInformation(new Shell(), "Confirm", "Delete successfull");
-				}
-				else {
+				} else {
 					MessageDialog.openError(new Shell(), "Error",
-						"Student " + student.getName() + " has registered for cources");
+							"Student " + student.getName() + " has registered for cources");
 				}
-				
+
 			}
 		});
 		table.addListener(SWT.MenuDetect, new Listener() {
@@ -307,24 +292,7 @@ public class ListStudent {
 		});
 		table.setMenu(menu);
 
-//		Button checkUpdate = new Button(parent, SWT.NONE);
-//		checkUpdate.setText("Edit");
-//		checkUpdate.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				int idStudent = Integer.parseInt(table.getSelection()[0].getText());
-//				Student student = ServerConnector.getInstance().getStudentService().findById(idStudent);
-//				WizardDialog wizardDialog = new WizardDialog(parent.getShell(), new MyWizardStudentEdit(student));
-//				if (wizardDialog.open() == Window.OK) {
-//					System.out.println("Ok pressed");
-//				} else {
-//					System.out.println("Cancel pressed");
-//				}
-//			}
-//		});
-
 		// List student of class
-
 		labelClass = new Label(parent, SWT.NONE);
 		labelClass.setText("                                                           ");
 
@@ -345,14 +313,13 @@ public class ListStudent {
 		columnNameClass.setText("Name");
 
 		table.addListener(SWT.Selection, new Listener() {
-			
 
 			public void handleEvent(Event e) {
 				TableItem[] selection = table.getSelection();
 				for (int i = 0; i < selection.length; i++) {
 					studentID = Integer.parseInt(selection[i].getText());
 				}
-				//listClassFromStudent(studentID);
+				// listClassFromStudent(studentID);
 			}
 		});
 

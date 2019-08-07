@@ -31,5 +31,5 @@ Bundle-ClassPath: lib/jboss-client.jar,
  lib/log4j-core-2.5.jar,
  lib/xmlbeans.jar,
  lib/log4j-api-2.5.jar,
- lib/student-api-1.0-SNAPSHOT.jar,
- lib/XMLBean-1.0-SNAPSHOT.jar
+ lib/XMLBean-1.0-SNAPSHOT.jar,
+ lib/student-api-1.0-SNAPSHOT.jar

@@ -14,12 +14,16 @@
             <children xsi:type="basic:Part" xmi:id="_XxQY0K9eEeml6cbjhUJDVw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/com.rcp.ListStudent" label="Student" closeable="true"/>
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_swNCsK-EEeml6cbjhUJDVw" elementId="rcptest.partstack.0" containerData="3500">
-            <children xsi:type="basic:Part" xmi:id="__9htoLQuEemJG8pwIqZ7Qw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/detail.DetailOfStudent" label="Student" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png"/>
-            <children xsi:type="basic:Part" xmi:id="_uT0xkK-EEeml6cbjhUJDVw" elementId="rcptest.part.detail" contributionURI="bundleclass://RCPTest/detail.DetailOfClass" label="Detail" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png" closeable="true"/>
+            <children xsi:type="basic:Part" xmi:id="__9htoLQuEemJG8pwIqZ7Qw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/detail.DetailOfStudent" label="Student" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png" closeable="true"/>
+            <children xsi:type="basic:Part" xmi:id="_uT0xkK-EEeml6cbjhUJDVw" elementId="rcptest.part.detail" contributionURI="bundleclass://RCPTest/detail.DetailOfClass" label="Detail" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png" closeable="true">
+              <handlers xmi:id="_zpAC8Lj6EemBe9_1HDmyyw" elementId="rcptest.handler.3" contributionURI="bundleclass://RCPTest/handler.eventHandler"/>
+            </children>
+            <children xsi:type="basic:Part" xmi:id="_EpGfMLkBEemBe9_1HDmyyw" elementId="rcptest.part.0"/>
           </children>
         </children>
       </children>
     </children>
+    <snippets xsi:type="basic:Part" xmi:id="_VZhNkLjvEemBe9_1HDmyyw" elementId="rcptest.part.snippetdetails" contributionURI="bundleclass://RCPTest/detail.DetailOfClass" label="Snippet Details" closeable="true"/>
     <mainMenu xmi:id="_BMYsQKL-EemiCpJzHNb5Ww" elementId="main.menu" mnemonics="">
       <children xsi:type="menu:Menu" xmi:id="_GqG5MKL-EemiCpJzHNb5Ww" elementId="" label="File">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_SCtJIKL-EemiCpJzHNb5Ww" elementId="" label="Exit" command="_fXRocKL8EemiCpJzHNb5Ww"/>
@@ -32,7 +36,7 @@
     </mainMenu>
     <trimBars xmi:id="_RRQaEK9fEeml6cbjhUJDVw" elementId="rcptest.trimbar.0">
       <children xsi:type="menu:ToolBar" xmi:id="_TjuzAK9fEeml6cbjhUJDVw" elementId="rcptest.toolbar.0">
-        <children xsi:type="menu:HandledToolItem" xmi:id="_nECJoLTgEemn2JDRbWY9WQ" elementId="rcptest.handledtoolitem.2" iconURI="platform:/plugin/RCPTest/icons/icons8-add-row-20.png" command="_YmLksLT7Eemn2JDRbWY9WQ">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_nECJoLTgEemn2JDRbWY9WQ" elementId="rcptest.handledtoolitem.2" iconURI="platform:/plugin/RCPTest/icons/icons8-add-property-20.png" command="_YmLksLT7Eemn2JDRbWY9WQ">
           <menu xmi:id="_Flci4LT0Eemn2JDRbWY9WQ" elementId="rcptest.menu.test" label="" iconURI="">
             <children xsi:type="menu:HandledMenuItem" xmi:id="_MMqHcLT0Eemn2JDRbWY9WQ" elementId="rcptest.handledmenuitem.addclass" label="Class" iconURI="platform:/plugin/RCPTest/icons/icons8-add-property-20.png" command="_cD_HILThEemn2JDRbWY9WQ"/>
             <children xsi:type="menu:HandledMenuItem" xmi:id="_O5QQkLT0Eemn2JDRbWY9WQ" elementId="rcptest.handledmenuitem.addstudent" label="Student" iconURI="platform:/plugin/RCPTest/icons/icons8-add-property-20.png" command="_dSn58LTgEemn2JDRbWY9WQ"/>
@@ -55,6 +59,7 @@
     <children xmi:id="_c3AF2sjYEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_c3AF28jYEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
   </rootContext>
+  <descriptors xmi:id="_nrODULjvEemBe9_1HDmyyw" elementId="rcptest.partdescriptor.searchresults" label="Search Results"/>
   <commands xmi:id="_fXRocKL8EemiCpJzHNb5Ww" elementId="exit" commandName="exitCommand"/>
   <commands xmi:id="_noTDcKL8EemiCpJzHNb5Ww" elementId="open" commandName="Import data"/>
   <commands xmi:id="_Bbt_4K4OEemZyugBggKJpQ" elementId="rcptest.command.exportcommand" commandName="Export data"/>
