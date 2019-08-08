@@ -36,7 +36,7 @@ public class DetailOfClass {
 	static Label textClass;
 	static Label code;
 	static Label name;
-
+ 
 	// student
 	private static Table tableStudent = ListStudent.getTable();
 	private static Table tableDetailClass;

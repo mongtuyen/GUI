@@ -1,6 +1,8 @@
 package com.rcp;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import javax.annotation.PostConstruct;
 
@@ -29,6 +31,10 @@ public class SWTSimpleTree {
 		
 		ExpandBar bar = new ExpandBar (parent, SWT.V_SCROLL);
 		Image image = Display.getDefault().getSystemImage(SWT.ICON_INFORMATION);
+		
+//		URL url = new URL("C:\\Users\\ntmongtuyen\\eclipse-workspace\\RCPTest\\icons\\icons8-student-male-20.png");
+//		InputStream is = url.openStream();
+//		Image image1 = new Image(Display.getCurrent(), is);
 		
 		Composite composite = new Composite (bar, SWT.NONE);
 		GridLayout layout = new GridLayout ();
@@ -75,16 +81,7 @@ public class SWTSimpleTree {
 //			}
 //		});
 		
-		Table tableStudent = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI | SWT.BORDER);
-		tableStudent.setVisible(false);
-
-		GridData gd_table1 = new GridData(SWT.TOP, SWT.FILL, true, true, 2, 1);// SWT.TOP
-		gd_table1.heightHint = 120;
-		gd_table1.widthHint = 160;
-		tableStudent.setLayoutData(gd_table1);
-
-		tableStudent.setHeaderVisible(true);
-		tableStudent.setLinesVisible(true);
+		
 //		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 //		group.setLocation(50, 50);		
 //		group.setText("Process");

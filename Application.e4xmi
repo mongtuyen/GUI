@@ -8,17 +8,18 @@
             <children xsi:type="basic:Part" xmi:id="_kq3j0LaWEemaUPDEuF1b2Q" elementId="rcptest.part.menu" containerData="" contributionURI="bundleclass://RCPTest/com.rcp.SWTSimpleTree" label="Menu" iconURI="platform:/plugin/RCPTest/icons/icons8-menu-20 (1).png"/>
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_W7A_EKMCEemiCpJzHNb5Ww" elementId="rcptest.partstack.1" containerData="6000">
-            <children xsi:type="basic:Part" xmi:id="_maB1UKMDEemiCpJzHNb5Ww" elementId="" contributionURI="bundleclass://RCPTest/com.rcp.ListClass" label="Class" closeable="true">
+            <children xsi:type="basic:Part" xmi:id="_maB1UKMDEemiCpJzHNb5Ww" elementId="" contributionURI="bundleclass://RCPTest/com.rcp.ListClass" label="Class" iconURI="platform:/plugin/RCPTest/icons/icons8-bulleted-list-20.png" closeable="true">
               <toolbar xmi:id="_4FSPgLciEemywtA8eclDpg" elementId="rcptest.toolbar.1"/>
             </children>
-            <children xsi:type="basic:Part" xmi:id="_XxQY0K9eEeml6cbjhUJDVw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/com.rcp.ListStudent" label="Student" closeable="true"/>
+            <children xsi:type="basic:Part" xmi:id="_XxQY0K9eEeml6cbjhUJDVw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/com.rcp.ListStudent" label="Student" iconURI="platform:/plugin/RCPTest/icons/icons8-bulleted-list-20.png" closeable="true">
+              <toolbar xmi:id="_TM4JELmuEemG-ZLyZxBsVg" elementId="rcptest.toolbar.2"/>
+            </children>
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_swNCsK-EEeml6cbjhUJDVw" elementId="rcptest.partstack.0" containerData="3500">
             <children xsi:type="basic:Part" xmi:id="__9htoLQuEemJG8pwIqZ7Qw" elementId="rcptest.part.student" contributionURI="bundleclass://RCPTest/detail.DetailOfStudent" label="Student" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png" closeable="true"/>
             <children xsi:type="basic:Part" xmi:id="_uT0xkK-EEeml6cbjhUJDVw" elementId="rcptest.part.detail" contributionURI="bundleclass://RCPTest/detail.DetailOfClass" label="Detail" iconURI="platform:/plugin/RCPTest/icons/icons8-more-details-20.png" closeable="true">
               <handlers xmi:id="_zpAC8Lj6EemBe9_1HDmyyw" elementId="rcptest.handler.3" contributionURI="bundleclass://RCPTest/handler.eventHandler"/>
             </children>
-            <children xsi:type="basic:Part" xmi:id="_EpGfMLkBEemBe9_1HDmyyw" elementId="rcptest.part.0"/>
           </children>
         </children>
       </children>

@@ -3,6 +3,8 @@ package edit;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -14,6 +16,8 @@ import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -89,13 +93,25 @@ public class EditClass extends WizardPage {
 				}
 			}
 		});
-
+		classID.addVerifyListener(new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				 String string = e.text;
+			        Matcher matcher = Pattern.compile("[a-z A-Z 0-9]*+$").matcher(string);
+			        if (!matcher.matches()) {
+			            e.doit = false;
+			            return;
+			        }
+			}
+			
+		});
 		Label label2 = new Label(container, SWT.NONE);
 		label2.setText("Name");
 
 		className = new Text(container, SWT.BORDER | SWT.SINGLE);
 		className.setText(clazz.getName());
 		className.setBackground(blue);
+		
 		className.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -107,6 +123,19 @@ public class EditClass extends WizardPage {
 					setPageComplete(true);
 				}
 			}
+		});
+		className.addVerifyListener(new VerifyListener() {
+
+			@Override
+			public void verifyText(VerifyEvent e) {
+				 String string = e.text;
+			        Matcher matcher = Pattern.compile("[a-z A-Z]*+$").matcher(string);
+			        if (!matcher.matches()) {
+			            e.doit = false;
+			            return;
+			        }
+			}
+			
 		});
 		Label label3 = new Label(container, SWT.NONE);
 		label3.setText("Number of student");
@@ -126,7 +155,18 @@ public class EditClass extends WizardPage {
 				}
 			}
 		});
-		
+		sizeClass.addVerifyListener(new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				 String string = e.text;
+			        Matcher matcher = Pattern.compile("[0-9]*+$").matcher(string);
+			        if (!matcher.matches()) {
+			            e.doit = false;
+			            return;
+			        }
+			}
+			
+		});
 		Label labelList = new Label(container, SWT.NONE);
 		labelList.setText("List student");
 

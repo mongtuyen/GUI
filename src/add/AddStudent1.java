@@ -2,6 +2,8 @@ package add;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -15,6 +17,8 @@ import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -89,6 +93,19 @@ public class AddStudent1 extends WizardPage {
 					setPageComplete(false);
 			}
 		});
+		code.addVerifyListener(new VerifyListener() {
+
+			@Override
+			public void verifyText(VerifyEvent e) {
+				 String string = e.text;
+			        Matcher matcher = Pattern.compile("[a-z A-Z 0-9]*+$").matcher(string);
+			        if (!matcher.matches()) {
+			            e.doit = false;
+			            return;
+			        }
+			}
+			
+		});
 
 		Label label2 = new Label(container, SWT.NONE);
 		label2.setText("Name");
@@ -108,7 +125,19 @@ public class AddStudent1 extends WizardPage {
 					setPageComplete(false);
 			}
 		});
+		name.addVerifyListener(new VerifyListener() {
 
+			@Override
+			public void verifyText(VerifyEvent e) {
+				 String string = e.text;
+			        Matcher matcher = Pattern.compile("[a-z A-Z]*+$").matcher(string);
+			        if (!matcher.matches()) {
+			            e.doit = false;
+			            return;
+			        }
+			}
+			
+		});
 		Label label3 = new Label(container, SWT.NONE);
 		label3.setText("Age");
 
@@ -127,7 +156,19 @@ public class AddStudent1 extends WizardPage {
 					setPageComplete(false);
 			}
 		});
+		age.addVerifyListener(new VerifyListener() {
 
+			@Override
+			public void verifyText(VerifyEvent e) {
+				 String string = e.text;
+			        Matcher matcher = Pattern.compile("[0-9]*+$").matcher(string);
+			        if (!matcher.matches()) {
+			            e.doit = false;
+			            return;
+			        }
+			}
+			
+		});
 		Label label4 = new Label(container, SWT.NONE);
 		label4.setText("Email");
 
@@ -161,7 +202,19 @@ public class AddStudent1 extends WizardPage {
 					setPageComplete(false);
 			}
 		});
+		mail.addVerifyListener(new VerifyListener() {
 
+			@Override
+			public void verifyText(VerifyEvent e) {
+				 String string = e.text;
+			        Matcher matcher = Pattern.compile("^[\\\\w-\\\\+]+(\\\\.[\\\\w]+)*@[\\\\w-]+(\\\\.[\\\\w]+)*(\\\\.[a-z]{2,})$",Pattern.CASE_INSENSITIVE).matcher(string);
+			        if (!matcher.matches()) {
+			            e.doit = false;
+			            return;
+			        }
+			}
+			
+		});
 		Label label5 = new Label(container, SWT.NONE);
 		label5.setText("Address");
 
