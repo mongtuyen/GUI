@@ -19,6 +19,9 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -32,6 +35,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolTip;
+
 import com.tuyen.model.Clazz;
 import com.tuyen.model.Student;
 import com.tuyen.service.ClazzService;
@@ -53,6 +58,7 @@ public class EditClass extends WizardPage {
 	Student studentAdd;
 	Student studentDelete;
 	String[] code;
+	int number;
 	public EditClass(Clazz clazz) {
 		super("wizardPage");
 		setTitle("Update class");
@@ -143,30 +149,76 @@ public class EditClass extends WizardPage {
 		sizeClass = new Text(container, SWT.BORDER | SWT.SINGLE);
 		sizeClass.setText(String.valueOf(clazz.getSize()));
 		sizeClass.setBackground(blue);
-		sizeClass.addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent e) {
+		final ToolTip toolTip = new ToolTip(getShell(), SWT.BALLOON | SWT.ICON_WARNING);
+		
+		sizeClass.addModifyListener(e -> {
+			String string = sizeClass.getText();
+			String message = null;
+			try {
+				int value = Integer.parseInt(string);
+				int maximum = 120;
+				int minimum = 0;
+				if (value > maximum) {
+					message = "The class size is greater than the maximum limit "+maximum;
+					setPageComplete(false);
+					
+				} else if (value < minimum) {
+					message = "The class size is less than the minimum limit "+minimum;
+					setPageComplete(false);
+				}
+			} catch (Exception ex) {
+				message = "The class size is not numeric";
+				setPageComplete(false);
 			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!className.getText().isEmpty() && !className.getText().isEmpty() && !sizeClass.getText().isEmpty()) {
+			
+			if (message != null) {
+				sizeClass.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+				Rectangle rect = sizeClass.getBounds();
+				GC gc = new GC(sizeClass);
+				Point pt = gc.textExtent(string);
+				gc.dispose();
+				toolTip.setLocation(Display.getCurrent().map(parent, null, rect.x + pt.x, rect.y + rect.height));
+				toolTip.setMessage(message);
+				toolTip.setVisible(true);
+			} else {
+				toolTip.setVisible(false);
+				sizeClass.setForeground(null);
+				if (!className.getText().isEmpty() && !className.getText().isEmpty()&&!sizeClass.getText().isEmpty()) {
 					setPageComplete(true);
 				}
 			}
 		});
+		
+//		sizeClass.addKeyListener(new KeyListener() {
+//			@Override
+//			public void keyPressed(KeyEvent e) {
+//			}
+//
+//			@Override
+//			public void keyReleased(KeyEvent e) {
+//				if (className.getText().isEmpty() && className.getText().isEmpty() && sizeClass.getText().isEmpty()) {
+//					setPageComplete(false);
+//				}
+//			}
+//		});
+		
+		
 		sizeClass.addVerifyListener(new VerifyListener() {
-			@Override
-			public void verifyText(VerifyEvent e) {
-				 String string = e.text;
-			        Matcher matcher = Pattern.compile("[0-9]*+$").matcher(string);
-			        if (!matcher.matches()) {
-			            e.doit = false;
-			            return;
-			        }
-			}
-			
-		});
+		@Override
+		public void verifyText(VerifyEvent e) {
+			 String string = e.text;
+			 if(!e.text.isEmpty()) {
+			 	number=Integer.parseInt(e.text);
+			 }
+//		        Matcher matcher = Pattern.compile("[0-9]*+$").matcher(string);
+//		        if (!matcher.matches()) {
+//		            e.doit = false;
+//		            return;
+//		        }
+		}
+		
+	});
+		
 		Label labelList = new Label(container, SWT.NONE);
 		labelList.setText("List student");
 
@@ -184,7 +236,7 @@ public class EditClass extends WizardPage {
 		list = new List(enroll, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.LEFT);
 		int size = ServerConnector.getInstance().getStudentService().findAll().size();
 		for (int i = 0; i < ServerConnector.getInstance().getStudentService().findAll().size(); i++) {
-			list.add(ServerConnector.getInstance().getStudentService().findAll().get(i).getCode() + ": "
+			list.add(ServerConnector.getInstance().getStudentService().findAll().get(i).getCode() + "- "
 					+ ServerConnector.getInstance().getStudentService().findAll().get(i).getName());
 		}
 		GridData gd_list = new GridData(SWT.TOP, SWT.TOP, true, true, 1, 1);
@@ -200,8 +252,8 @@ public class EditClass extends WizardPage {
 		listUpdate.setBackground(blue);
 		setStudent = clazz.getStudents();
 		for (Student a : setStudent) {
-			listUpdate.add(a.getCode() + ": " + a.getName());
-			list.remove(a.getCode() + ": " + a.getName());
+			listUpdate.add(a.getCode() + "- " + a.getName());
+			list.remove(a.getCode() + "- " + a.getName());
 		}
 		
 		buttonAdd.addSelectionListener(new SelectionAdapter() {
@@ -211,18 +263,18 @@ public class EditClass extends WizardPage {
 				String selected[] = list.getSelection();
 				for (int i = 0; i < selected.length; i++) {
 					
-					code = selected[i].split(":");
-					//logger.info("CODE 0: " + code[0]);
+					code = selected[i].split("-");
+					logger.info("Code student: " + code[0]);
 					for (int t = 0; t < ServerConnector.getInstance().getStudentService().findAll().size(); t++) {
 						if (ServerConnector.getInstance().getStudentService().findAll().get(t).getCode()
 								.equals(code[0])) {
 							studentID = ServerConnector.getInstance().getStudentService().findAll().get(t).getId();
 							studentAdd = ServerConnector.getInstance().getStudentService().findById(studentID);
-							System.out.println("size set:"+(setStudent.size()+1)+"class size:"+clazz.getSize());
-							if((setStudent.size()+1)<=clazz.getSize()) {
+							if((setStudent.size()+1)<=number||(setStudent.size()+1)<=clazz.getSize()) {
 								setStudent.add(studentAdd);
 								listUpdate.add(selected[i]);
 								list.remove(selected[i]);
+								setPageComplete(true);
 							}
 							else {
 								MessageDialog.openError(new Shell(), "Error", "Class " + clazz.getName() + " is full");
@@ -258,7 +310,8 @@ public class EditClass extends WizardPage {
 						listUpdate.remove(selected);
 						for (int i = 0; i < selectedText.length; i++) {
 							list.add(selectedText[i]);
-							code = selectedText[i].split(":");
+							setPageComplete(true);
+							code = selectedText[i].split("-");
 							// remove student
 							for (int t = 0; t < ServerConnector.getInstance().getStudentService().findAll()
 									.size(); t++) {
@@ -274,8 +327,7 @@ public class EditClass extends WizardPage {
 											return t.getId() == studentIDDelete;
 										}
 									});
-									System.out.println("List student sau khi xoa:" + setStudent.toString());
-
+									
 								}
 
 							}
@@ -299,7 +351,7 @@ public class EditClass extends WizardPage {
 		className.setLayoutData(gd);
 		sizeClass.setLayoutData(gd);
 		setControl(container);
-		
+		setPageComplete(false);
 	}
 
 	public Clazz getClazzEdit() {

@@ -57,7 +57,6 @@ public class addClass extends WizardPage {
 		label1.setText("Class ID");
 
 		classID = new Text(container, SWT.BORDER | SWT.SINGLE);
-		// classID.setText("");
 		classID.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -65,7 +64,7 @@ public class addClass extends WizardPage {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (classID.getText().isEmpty() && className.getText().isEmpty()) {//&&!classSize.getText().isEmpty()
+				if (classID.getText().isEmpty() && className.getText().isEmpty()) {
 					setPageComplete(false);
 				}
 			}
@@ -86,7 +85,6 @@ public class addClass extends WizardPage {
 		label2.setText("Name");
 
 		className = new Text(container, SWT.BORDER | SWT.SINGLE);
-		// className.setText("");
 		className.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -94,7 +92,7 @@ public class addClass extends WizardPage {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (className.getText().isEmpty() && className.getText().isEmpty()) { //&&!classSize.getText().isEmpty()
+				if (className.getText().isEmpty() && className.getText().isEmpty()) { 
 					setPageComplete(false);
 				}
 			}
@@ -115,9 +113,7 @@ public class addClass extends WizardPage {
 		Label label3 = new Label(container, SWT.NONE);
 		label3.setText("Number of student");
 
-		classSize = new Text(container, SWT.BORDER | SWT.SINGLE);
-		// className.setText("");
-		
+		classSize = new Text(container, SWT.BORDER | SWT.SINGLE);	
 //		classSize.addVerifyListener(new VerifyListener() {
 //			@Override
 //			public void verifyText(VerifyEvent e) {
@@ -140,16 +136,18 @@ public class addClass extends WizardPage {
 				int maximum = 120;
 				int minimum = 0;
 				if (value > maximum) {
-					message = "Current input is greater than the maximum limit ("+maximum+")";
-					//setPageComplete(false);
+					message = "The class size is greater than the maximum limit "+maximum;
+					setPageComplete(false);
+					
 				} else if (value < minimum) {
-					message = "Current input is less than the minimum limit ("+minimum+")";
-					//setPageComplete(false);
+					message = "The class size is less than the minimum limit "+minimum;
+					setPageComplete(false);
 				}
 			} catch (Exception ex) {
-				message = "Current input is not numeric";
-				//setPageComplete(false);
+				message = "The class size is not numeric";
+				setPageComplete(false);
 			}
+			
 			if (message != null) {
 				classSize.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
 				Rectangle rect = classSize.getBounds();
@@ -165,9 +163,9 @@ public class addClass extends WizardPage {
 				if (!className.getText().isEmpty() && !className.getText().isEmpty()&&!classSize.getText().isEmpty()) {
 					setPageComplete(true);
 				}
-				//setPageComplete(true);
 			}
 		});
+			
 //		classSize.addModifyListener(new ModifyListener() {
 //			@Override
 //			public void modifyText(ModifyEvent event) {
@@ -181,18 +179,18 @@ public class addClass extends WizardPage {
 //		            }
 //			}		
 //		});
-		classSize.addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!className.getText().isEmpty() && !className.getText().isEmpty()&&!classSize.getText().isEmpty()) {
-					setPageComplete(false);
-				}
-			}
-		});
+//		classSize.addKeyListener(new KeyListener() {
+//			@Override
+//			public void keyPressed(KeyEvent e) {
+//			}
+//
+//			@Override
+//			public void keyReleased(KeyEvent e) {
+//				if (!className.getText().isEmpty() && !className.getText().isEmpty()&&!classSize.getText().isEmpty()) {
+//					setPageComplete(false);
+//				}
+//			}
+//		});
 		classID.setLayoutData(gd);
 		className.setLayoutData(gd);
 		classSize.setLayoutData(gd);

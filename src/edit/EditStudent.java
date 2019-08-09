@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -15,7 +17,12 @@ import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -29,6 +36,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolTip;
+
 import com.tuyen.model.Clazz;
 import com.tuyen.model.Student;
 
@@ -63,7 +72,6 @@ public class EditStudent extends WizardPage {
 	public void createControl(Composite parent) {
 		Color blue =Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
 		
-		Color blue1 =Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
 		Color blue2 =Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 		
 		parent.setSize(500, 800);
@@ -96,7 +104,19 @@ public class EditStudent extends WizardPage {
 				}
 			}
 		});
+		code.addVerifyListener(new VerifyListener() {
 
+			@Override
+			public void verifyText(VerifyEvent e) {
+				String string = e.text;
+				Matcher matcher = Pattern.compile("[a-z A-Z 0-9]*+$").matcher(string);
+				if (!matcher.matches()) {
+					e.doit = false;
+					return;
+				}
+			}
+
+		});
 		Label label2 = new Label(container, SWT.NONE);
 		label2.setText("Name");
 
@@ -116,20 +136,59 @@ public class EditStudent extends WizardPage {
 				}
 			}
 		});
+		name.addVerifyListener(new VerifyListener() {
 
+			@Override
+			public void verifyText(VerifyEvent e) {
+				String string = e.text;
+				Matcher matcher = Pattern.compile("[a-z A-Z]*+$").matcher(string);
+				if (!matcher.matches()) {
+					e.doit = false;
+					return;
+				}
+			}
+
+		});
 		Label label3 = new Label(container, SWT.NONE);
 		label3.setText("Age");
 
 		age = new Text(container, SWT.BORDER | SWT.SINGLE);
 		age.setText(String.valueOf(student.getAge()));
 		age.setBackground(blue);
-		age.addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent e) {
+		final ToolTip toolTip = new ToolTip(getShell(), SWT.BALLOON | SWT.ICON_WARNING);
+
+		age.addModifyListener(e -> {
+			String string = age.getText();
+			String message = null;
+			try {
+				int value = Integer.parseInt(string);
+				int maximum = 100;
+				int minimum = 5;
+				if (value > maximum) {
+					message = "The age is greater than the maximum limit " + maximum;
+					setPageComplete(false);
+
+				} else if (value < minimum) {
+					message = "The age is less than the minimum limit " + minimum;
+					setPageComplete(false);
+				}
+			} catch (Exception ex) {
+				message = "The age is not numeric";
+				setPageComplete(false);
 			}
 
-			@Override
-			public void keyReleased(KeyEvent e) {
+			if (message != null) {
+				age.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+				Rectangle rect = age.getBounds();
+				GC gc = new GC(age);
+				Point pt = gc.textExtent(string);
+				gc.dispose();
+				toolTip.setLocation(Display.getCurrent().map(parent, null, rect.x + pt.x, rect.y + rect.height));
+				toolTip.setMessage(message);
+				toolTip.setVisible(true);
+			} else {
+				toolTip.setVisible(false);
+				age.setForeground(null);
 				if (!code.getText().isEmpty() && !name.getText().isEmpty() && !age.getText().isEmpty()
 						&& !mail.getText().isEmpty() && !address.getText().isEmpty()) {
 					setPageComplete(true);
@@ -143,13 +202,32 @@ public class EditStudent extends WizardPage {
 		mail = new Text(container, SWT.BORDER | SWT.SINGLE);
 		mail.setText(student.getEmail());
 		mail.setBackground(blue);
-		mail.addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent e) {
+		mail.addModifyListener(e -> {
+			String value = mail.getText();
+			String message = null;
+			try {
+			//String value = string;
+			//String str=value.substring(value.length()-10, value.length());
+			if (!value.contains("@gmail.com")) {//||!str.equals("@gmail.com")
+				message = "Email invalidate";
+				setPageComplete(false);
 			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
+			} catch (Exception ex) {
+				//message = "The email not null";
+				setPageComplete(false);
+			}
+			if (message != null) {
+				mail.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+				Rectangle rect = mail.getBounds();
+				GC gc = new GC(mail);
+				Point pt = gc.textExtent(value);
+				gc.dispose();
+				toolTip.setLocation(Display.getCurrent().map(parent, null, rect.x + pt.x, rect.y + rect.height));
+				toolTip.setMessage(message);
+				toolTip.setVisible(true);
+			} else {
+				toolTip.setVisible(false);
+				mail.setForeground(null);
 				if (!code.getText().isEmpty() && !name.getText().isEmpty() && !age.getText().isEmpty()
 						&& !mail.getText().isEmpty() && !address.getText().isEmpty()) {
 					setPageComplete(true);
@@ -231,6 +309,7 @@ public class EditStudent extends WizardPage {
 								setClass.add(clazzAdd);
 								listUpdate.add(selected[i]);
 								list.remove(selected[i]);
+								setPageComplete(true);
 							}else {
 								MessageDialog.openError(new Shell(), "Error", "Class " + clazzAdd.getName() + " is full");
 							}
@@ -265,6 +344,7 @@ public class EditStudent extends WizardPage {
 						listUpdate.remove(selected);
 						for (int i = 0; i < selectedText.length; i++) {
 							list.add(selectedText[i]);
+							setPageComplete(true);
 							// remove list
 							for (int t = 0; t < ServerConnector.getInstance().getClassService().findAll().size(); t++) {
 								if (ServerConnector.getInstance().getClassService().findAll().get(t).getName()
@@ -307,7 +387,7 @@ public class EditStudent extends WizardPage {
 		age.setLayoutData(gd);
 
 		setControl(container);
-		// setPageComplete(false);
+		setPageComplete(false);
 
 	}
 
@@ -330,25 +410,6 @@ public class EditStudent extends WizardPage {
 		}
 		return student;
 
-	}
-
-	public static void main(String[] args) {
-//		Set<Clazz> set = new HashSet<>();
-//
-//		Clazz c1 = new Clazz(1, "rewf", "ygh", 23);
-//		Clazz c2 = new Clazz(2, "gtc", "gfhj", 54);
-//		// Clazz c3 = ServerConnector.getInstance().getClassService().findById(1);
-//		// set.add(c3);
-//		set.add(c2);
-//		set.add(c1);
-//		System.out.println(set);
-//
-//		System.out.println("SET BEFORE" + set.toString());
-//		set.remove(c1);
-//		System.out.println("SET After" + set.toString());
-			String a="b150. rgurhfg";
-			String[] code=a.split(". ");
-			System.out.println(code[0]);
 	}
 
 }

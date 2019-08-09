@@ -19,6 +19,9 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -33,6 +36,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolTip;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.rcp.AddStudent;
@@ -86,25 +90,24 @@ public class AddStudent1 extends WizardPage {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (!code.getText().isEmpty() && !name.getText().isEmpty() && !age.getText().isEmpty()
-						&& !mail.getText().isEmpty() && !address.getText().isEmpty()) {
-					setPageComplete(true);
-				} else
+				if (code.getText().isEmpty() && name.getText().isEmpty() && age.getText().isEmpty()
+						&& mail.getText().isEmpty() && address.getText().isEmpty()) {
 					setPageComplete(false);
+				}
 			}
 		});
 		code.addVerifyListener(new VerifyListener() {
 
 			@Override
 			public void verifyText(VerifyEvent e) {
-				 String string = e.text;
-			        Matcher matcher = Pattern.compile("[a-z A-Z 0-9]*+$").matcher(string);
-			        if (!matcher.matches()) {
-			            e.doit = false;
-			            return;
-			        }
+				String string = e.text;
+				Matcher matcher = Pattern.compile("[a-z A-Z 0-9]*+$").matcher(string);
+				if (!matcher.matches()) {
+					e.doit = false;
+					return;
+				}
 			}
-			
+
 		});
 
 		Label label2 = new Label(container, SWT.NONE);
@@ -118,103 +121,147 @@ public class AddStudent1 extends WizardPage {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (!code.getText().isEmpty() && !name.getText().isEmpty() && !age.getText().isEmpty()
-						&& !mail.getText().isEmpty() && !address.getText().isEmpty()) {
-					setPageComplete(true);
-				} else
+				if (code.getText().isEmpty() && name.getText().isEmpty() && age.getText().isEmpty()
+						&& mail.getText().isEmpty() && address.getText().isEmpty()) {
 					setPageComplete(false);
+				}
 			}
 		});
 		name.addVerifyListener(new VerifyListener() {
 
 			@Override
 			public void verifyText(VerifyEvent e) {
-				 String string = e.text;
-			        Matcher matcher = Pattern.compile("[a-z A-Z]*+$").matcher(string);
-			        if (!matcher.matches()) {
-			            e.doit = false;
-			            return;
-			        }
+				String string = e.text;
+				Matcher matcher = Pattern.compile("[a-z A-Z]*+$").matcher(string);
+				if (!matcher.matches()) {
+					e.doit = false;
+					return;
+				}
 			}
-			
+
 		});
 		Label label3 = new Label(container, SWT.NONE);
 		label3.setText("Age");
 
 		age = new Text(container, SWT.BORDER | SWT.SINGLE);
-		age.addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent e) {
+
+		final ToolTip toolTip = new ToolTip(getShell(), SWT.BALLOON | SWT.ICON_WARNING);
+
+		age.addModifyListener(e -> {
+			String string = age.getText();
+			String message = null;
+			try {
+				int value = Integer.parseInt(string);
+				int maximum = 100;
+				int minimum = 5;
+				if (value > maximum) {
+					message = "The age is greater than the maximum limit " + maximum;
+					setPageComplete(false);
+
+				} else if (value < minimum) {
+					message = "The age is less than the minimum limit " + minimum;
+					setPageComplete(false);
+				}
+			} catch (Exception ex) {
+				message = "The age is not numeric";
+				setPageComplete(false);
 			}
 
-			@Override
-			public void keyReleased(KeyEvent e) {
+			if (message != null) {
+				age.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+				Rectangle rect = age.getBounds();
+				GC gc = new GC(age);
+				Point pt = gc.textExtent(string);
+				gc.dispose();
+				toolTip.setLocation(Display.getCurrent().map(parent, null, rect.x + pt.x, rect.y + rect.height));
+				toolTip.setMessage(message);
+				toolTip.setVisible(true);
+			} else {
+				toolTip.setVisible(false);
+				age.setForeground(null);
 				if (!code.getText().isEmpty() && !name.getText().isEmpty() && !age.getText().isEmpty()
 						&& !mail.getText().isEmpty() && !address.getText().isEmpty()) {
 					setPageComplete(true);
-				} else
-					setPageComplete(false);
+				}
 			}
-		});
-		age.addVerifyListener(new VerifyListener() {
-
-			@Override
-			public void verifyText(VerifyEvent e) {
-				 String string = e.text;
-			        Matcher matcher = Pattern.compile("[0-9]*+$").matcher(string);
-			        if (!matcher.matches()) {
-			            e.doit = false;
-			            return;
-			        }
-			}
-			
 		});
 		Label label4 = new Label(container, SWT.NONE);
 		label4.setText("Email");
 
 		mail = new Text(container, SWT.BORDER | SWT.SINGLE);
-		
-		mail.addKeyListener(new KeyListener() {
-		
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				
-				Status status = new Status(IStatus.OK, "not_used", 0, "", null);
-			     // If the event is triggered by the destination or departure fields
-			     // set the corresponding status variable to the right value
-			   if ((e.widget == mail)) {
-				 if (!mail.getText().contains("@gmail.com"))
-				       status = new Status(IStatus.ERROR, "not_used", 0, 
-				           "Email not valid", null);        
-			//	 destinationStatus = status;
-			     }
+		mail.addModifyListener(e -> {
+			String value = mail.getText();
+			String message = null;
+			try {
+			//String value = string;
+			String str=value.substring(value.length()-10, value.length());
+			if (!value.contains("@gmail.com")) {//!str.equals("@gmail.com"
+				message = "Email invalidate";
+				setPageComplete(false);
 			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				
-				
+			} catch (Exception ex) {
+				//message = "The email not null";
+				setPageComplete(false);
+			}
+			if (message != null) {
+				mail.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+				Rectangle rect = mail.getBounds();
+				GC gc = new GC(mail);
+				Point pt = gc.textExtent(value);
+				gc.dispose();
+				toolTip.setLocation(Display.getCurrent().map(parent, null, rect.x + pt.x, rect.y + rect.height));
+				toolTip.setMessage(message);
+				toolTip.setVisible(true);
+			} else {
+				toolTip.setVisible(false);
+				mail.setForeground(null);
 				if (!code.getText().isEmpty() && !name.getText().isEmpty() && !age.getText().isEmpty()
 						&& !mail.getText().isEmpty() && !address.getText().isEmpty()) {
 					setPageComplete(true);
-				} else
-					setPageComplete(false);
+				}
 			}
 		});
-		mail.addVerifyListener(new VerifyListener() {
-
-			@Override
-			public void verifyText(VerifyEvent e) {
-				 String string = e.text;
-			        Matcher matcher = Pattern.compile("^[\\\\w-\\\\+]+(\\\\.[\\\\w]+)*@[\\\\w-]+(\\\\.[\\\\w]+)*(\\\\.[a-z]{2,})$",Pattern.CASE_INSENSITIVE).matcher(string);
-			        if (!matcher.matches()) {
-			            e.doit = false;
-			            return;
-			        }
-			}
-			
-		});
+//		mail.addKeyListener(new KeyListener() {
+//
+//			@Override
+//			public void keyPressed(KeyEvent e) {
+//
+//				Status status = new Status(IStatus.OK, "not_used", 0, "", null);
+//				// If the event is triggered by the destination or departure fields
+//				// set the corresponding status variable to the right value
+//				if ((e.widget == mail)) {
+//					if (!mail.getText().contains("@gmail.com"))
+//						status = new Status(IStatus.ERROR, "not_used", 0, "Email not valid", null);
+//					// destinationStatus = status;
+//				}
+//			}
+//
+//			@Override
+//			public void keyReleased(KeyEvent e) {
+//
+//				if (!code.getText().isEmpty() && !name.getText().isEmpty() && !age.getText().isEmpty()
+//						&& !mail.getText().isEmpty() && !address.getText().isEmpty()) {
+//					setPageComplete(true);
+//				} else
+//					setPageComplete(false);
+//			}
+//		});
+//		mail.addVerifyListener(new VerifyListener() {
+//
+//			@Override
+//			public void verifyText(VerifyEvent e) {
+//				String string = e.text;
+//				Matcher matcher = Pattern
+//						.compile("^[\\\\w-\\\\+]+(\\\\.[\\\\w]+)*@[\\\\w-]+(\\\\.[\\\\w]+)*(\\\\.[a-z]{2,})$",
+//								Pattern.CASE_INSENSITIVE)
+//						.matcher(string);
+//				if (!matcher.matches()) {
+//					e.doit = false;
+//					return;
+//				}
+//			}
+//
+//		});
 		Label label5 = new Label(container, SWT.NONE);
 		label5.setText("Address");
 
@@ -286,8 +333,6 @@ public class AddStudent1 extends WizardPage {
 							} else {
 								MessageDialog.openError(new Shell(), "Error", "Class " + clazz.getName() + " is full");
 							}
-
-							// System.out.println(clazz.getName());
 						}
 
 					}
@@ -341,6 +386,8 @@ public class AddStudent1 extends WizardPage {
 		mail.setLayoutData(gd);
 		age.setLayoutData(gd);
 		setControl(container);
+		setPageComplete(false);
+
 	}
 
 	public Student getStudent() {
@@ -366,5 +413,10 @@ public class AddStudent1 extends WizardPage {
 		}
 		return student;
 	}
-
+//public static void main(String []args) {
+//	String a="tuyen@gmail.com";
+//	String str=a.substring(a.length()-10, a.length());
+//	System.out.println(str);
+//	
+//}
 }

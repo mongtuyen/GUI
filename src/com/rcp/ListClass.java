@@ -270,7 +270,7 @@ public class ListClass {
 
 
 		Button buttonDelete = new Button(parent, SWT.NONE);
-		buttonDelete.setText("Delete all");
+		buttonDelete.setText("Delete selected item");
 		buttonDelete.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
